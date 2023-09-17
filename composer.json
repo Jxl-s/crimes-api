@@ -2,7 +2,7 @@
     "name": "jxl-s/crimes-api",
     "autoload": {
         "psr-4": {
-            "jxl-s\\CrimesApi\\": "app/"
+            "Vanier\\Api\\": "app/"
         }
     },
     "authors": [
