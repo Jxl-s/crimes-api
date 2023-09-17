@@ -1,0 +1,1 @@
+.\php.bat composer.phar %*

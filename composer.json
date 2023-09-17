@@ -1,0 +1,15 @@
+{
+    "name": "jxl-s/crimes-api",
+    "autoload": {
+        "psr-4": {
+            "jxl-s\\CrimesApi\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "jxl-s",
+            "email": "77560326+Jxl-s@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
