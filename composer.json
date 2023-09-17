@@ -11,5 +11,11 @@
             "email": "77560326+Jxl-s@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^7.8",
+        "vlucas/phpdotenv": "^5.5",
+        "firebase/php-jwt": "^6.8",
+        "monolog/monolog": "^3.4",
+        "slim/slim": "^4.12"
+    }
 }
