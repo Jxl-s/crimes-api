@@ -10,4 +10,29 @@ class CrimesModel extends BaseModel
     {
         parent::__construct();
     }
+
+    // TODO: Implement this
+    public function getAllCrimes()
+    {
+    }
+
+    // TODO: Implement this
+    public function getCrimeByCode($crime_code)
+    {
+    }
+
+    // TODO: Implement this
+    public function createCrime()
+    {
+    }
+
+    // TODO: Implement this
+    public function updateCrime()
+    {
+    }
+
+    // TODO: Implement this
+    public function deleteCrime($crime_code)
+    {
+    }
 }

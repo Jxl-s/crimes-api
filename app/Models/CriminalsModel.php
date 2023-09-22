@@ -10,4 +10,35 @@ class CriminalsModel extends BaseModel
     {
         parent::__construct();
     }
+
+
+    // TODO: Implement this
+    public function getAllCriminals()
+    {
+    }
+
+    // TODO: Implement this
+    public function getCriminalById($criminal_id)
+    {
+    }
+
+    // TODO: Implement this
+    public function getCriminalReports($criminal_id)
+    {
+    }
+
+    // TODO: Implement this
+    public function createCriminal()
+    {
+    }
+
+    // TODO: Implement this
+    public function updateCriminal()
+    {
+    }
+
+    // TODO: Implement this
+    public function deleteCriminal($criminal_id)
+    {
+    }
 }
