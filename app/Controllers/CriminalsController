@@ -1,0 +1,29 @@
+<?php
+
+namespace Vanier\Api\Controllers;
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class CriminalsController extends BaseController
+{
+    public function handleGetCriminals(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+
+    public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+
+    public function handleUpdateCriminals(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+
+    public function handleDeleteCriminals(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+}
