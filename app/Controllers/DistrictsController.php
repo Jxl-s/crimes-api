@@ -12,6 +12,11 @@ class DistrictsController extends BaseController
         return $response;
     }
 
+    public function handleGetDistrictById(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+    
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)
     {
         return $response;

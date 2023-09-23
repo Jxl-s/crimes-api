@@ -12,6 +12,11 @@ class CriminalsController extends BaseController
         return $response;
     }
 
+    public function handleGetCriminalById(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {
         return $response;

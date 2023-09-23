@@ -12,6 +12,11 @@ class VictimsController extends BaseController
         return $response;
     }
 
+    public function handleGetVictimById(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+    
     public function handleCreateVictims(Request $request, Response $response, array $uri_args)
     {
         return $response;

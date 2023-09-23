@@ -12,6 +12,11 @@ class PoliceController extends BaseController
         return $response;
     }
 
+    public function handleGetPoliceById(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+    
     public function handleCreatePolice(Request $request, Response $response, array $uri_args)
     {
         return $response;

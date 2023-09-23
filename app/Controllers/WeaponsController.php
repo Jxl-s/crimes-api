@@ -12,6 +12,11 @@ class WeaponsController extends BaseController
         return $response;
     }
 
+    public function handleGetWeaponById(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+    
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)
     {
         return $response;

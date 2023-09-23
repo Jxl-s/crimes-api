@@ -12,6 +12,11 @@ class ReportsController extends BaseController
         return $response;
     }
 
+    public function handleGetReportById(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
+    
     public function handleCreateReports(Request $request, Response $response, array $uri_args)
     {
         return $response;
