@@ -4,17 +4,40 @@ namespace Vanier\Api\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpNotFoundException;
+use Vanier\Api\Helpers\Input;
+use Vanier\Api\Models\ModiModel;
 
 class ModiController extends BaseController
 {
-    public function handleGetModi(Request $request, Response $response, array $uri_args)
-    {
-        return $response;
+    private $modi_model;
+
+    public function __construct() {
+        $this->modi_model = new ModiModel();
     }
 
-    public function handleGetModiById(Request $request, Response $response, array $uri_args)
+    public function handleGetModi(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $filters = $request->getQueryParams();
+
+        $page = $filters['page'] ?? 1;
+        $page_size = $filters['page_size'] ?? 10;
+
+        $this->modi_model->setPaginationOptions($page, $page_size);
+        $modi = $this->modi_model->getAllModi($filters);
+
+        return $this->prepareOkResponse($response, (array) $modi);
+    }
+
+    public function handleGetModiByCode(Request $request, Response $response, array $uri_args)
+    {
+        $code = $uri_args['mo_code'];
+        if (!Input::isInt((int) $code))
+            throw new HttpNotFoundException($request, "Invalid Code");
+        
+        $modus = $this->modi_model->getModusByCode($code);
+        //step 3) send the response
+        return $this->prepareOkResponse($response, (array) $modus);
     }
     
     public function handleCreateModi(Request $request, Response $response, array $uri_args)

@@ -325,6 +325,27 @@ class BaseModel
         return $stmt->rowCount();
     }
 
+    protected function paginate($sql, $args = [], $fetchMode = PDO::FETCH_ASSOC) {
+        //1. Get the number of rows that will be returned by
+        $row_count = $this->count($sql, $args);
+
+        //2. Instaniate the paginate helper
+        $pagination_helper = new PaginationHelper(
+            $this->current_page, $this->records_per_page,
+            $row_count
+        );
+
+        //3. get off set
+        $offset = $pagination_helper->getOffset();
+        //extends sql with offsets + limited # records
+        $sql .= " LIMIT $offset, $this->records_per_page ";
+        //-- 
+        $data = $pagination_helper->getPaginationInfo();
+        $data['data'] = $this->fetchAll($sql, $args);
+
+        return $data;
+    }
+
     public function setPaginationOptions(int $current_page, int $records_per_page): void
     {
         $this->current_page = $current_page;

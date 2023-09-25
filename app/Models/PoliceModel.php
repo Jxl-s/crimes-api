@@ -12,13 +12,21 @@ class PoliceModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getAllPolice()
+    public function getAllPolice(array $filters)
     {
+        $filters_values = [];
+        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+
+        //filters handle
+
+        return $this->paginate($sql, $filters_values);
     }
 
     // TODO: Implement this
-    public function getPoliceById($police_id)
+    public function getPoliceById($badge_id)
     {
+        $sql = "SELECT * FROM $this->table_name WHERE badge_id = :badge_id";
+        return $this->fetchAll($sql, [':badge_id' => $badge_id]);
     }
 
     // TODO: Implement this

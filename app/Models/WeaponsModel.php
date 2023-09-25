@@ -12,13 +12,21 @@ class WeaponsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getAllWeapons()
+    public function getAllWeapons(array $filters)
     {
+        $filters_values = [];
+        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+
+        //filters handle
+
+        return $this->paginate($sql, $filters_values);
     }
 
     // TODO: Implement this
     public function getWeaponById($weapon_id)
     {
+        $sql = "SELECT * FROM $this->table_name WHERE weapon_id = :weapon_id";
+        return $this->fetchAll($sql, [':weapon_id' => $weapon_id]);
     }
 
     // TODO: Implement this

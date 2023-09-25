@@ -12,13 +12,21 @@ class ModiModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getAllModi()
+    public function getAllModi(array $filters)
     {
+        $filters_values = [];
+        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+
+        //filters handle
+
+        return $this->paginate($sql, $filters_values);
     }
 
     // TODO: Implement this
-    public function getModusByCode($modus_code)
+    public function getModusByCode($mo_code)
     {
+        $sql = "SELECT * FROM $this->table_name WHERE mo_code = :mo_code";
+        return $this->fetchAll($sql, [':mo_code' => $mo_code]);
     }
 
     // TODO: Implement this

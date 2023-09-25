@@ -2,7 +2,6 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Controllers\AboutController;
 use Vanier\Api\Controllers\CrimesController;
 use Vanier\Api\Controllers\CriminalsController;
@@ -31,7 +30,7 @@ $app->get('/hello', function (Request $request, Response $response, $args) {
 
 //crimes
 $app->get('/crimes', [CrimesController::class, 'handleGetCrimes']);
-$app->get('/crimes/{crime_id}', [CrimesController::class, 'handleGetCrimeById']);
+$app->get('/crimes/{crime_code}', [CrimesController::class, 'handleGetCrimeByCode']);
 
 $app->post('/crimes', [CrimesController::class, 'handleCreateCrimes']);
 $app->delete('/crimes', [CrimesController::class, 'handleDeleteCrimes']);
@@ -40,22 +39,25 @@ $app->put('/crimes', [CrimesController::class, 'handleUpdateCrimes']);
 //criminals
 $app->get('/criminals', [CriminalsController::class, 'handleGetCriminals']);
 $app->get('/criminals/{criminal_id}', [CriminalsController::class, 'handleGetCriminalById']);
+// $app->get('/criminals/{criminal_id}/reports', [CriminalsController::class, '']);
 
 $app->post('/criminals', [CriminalsController::class, 'handleCreateCriminals']);
 $app->delete('/criminals', [CriminalsController::class, 'handleDeleteCriminals']);
 $app->put('/criminals', [CriminalsController::class, 'handleUpdateCriminals']);
 
-//Districts
+//districts
 $app->get('/districts', [DistrictsController::class, 'handleGetDistricts']);
 $app->get('/districts/{district_id}', [DistrictsController::class, 'handleGetDistrictById']);
+// $app->get('/districts/{district_id}/reports', [DistrictsController::class, '']);
+// $app->get('/districts/{district_id}/police', [DistrictsController::class, '']);
 
 $app->post('/districts', [DistrictsController::class, 'handleCreateDistricts']);
 $app->delete('/districts', [DistrictsController::class, 'handleDeleteDistricts']);
 $app->put('/districts', [DistrictsController::class, 'handleUpdateDistricts']);
 
-//Districts
+//modi
 $app->get('/modi', [ModiController::class, 'handleGetModi']);
-$app->get('/modi/{modi_id}', [ModiController::class, 'handleGetModiById']);
+$app->get('/modi/{mo_code}', [ModiController::class, 'handleGetModiByCode']);
 
 $app->post('/modi', [ModiController::class, 'handleCreateModi']);
 $app->delete('/modi', [ModiController::class, 'handleDeleteModi']);
@@ -63,7 +65,8 @@ $app->put('/modi', [ModiController::class, 'handleUpdateModi']);
 
 //Police
 $app->get('/police', [PoliceController::class, 'handleGetPolice']);
-$app->get('/police/{police_id}', [PoliceController::class, 'handleGetPoliceById']);
+$app->get('/police/{badge_id}', [PoliceController::class, 'handleGetPoliceById']);
+// $app->get('/police/{police_id}/reports', [PoliceController::class, '']);
 
 $app->post('/police', [PoliceController::class, 'handleCreatePolice']);
 $app->delete('/police', [PoliceController::class, 'handleDeletePolice']);
@@ -72,6 +75,11 @@ $app->put('/police', [PoliceController::class, 'handleUpdatePolice']);
 //reports
 $app->get('/reports', [ReportsController::class, 'handleGetReports']);
 $app->get('/reports/{report_id}', [ReportsController::class, 'handleGetReportById']);
+$app->get('/reports/{report_id}/victims', [ReportsController::class, 'handleGetReportVictims']);
+$app->get('/reports/{report_id}/criminals', [ReportsController::class, 'handleGetReportCriminals']);
+$app->get('/reports/{report_id}/police', [ReportsController::class, 'handleGetReportPolice']);
+$app->get('/reports/{report_id}/crimes', [ReportsController::class, 'handleGetReportCrimes']);
+$app->get('/reports/{report_id}/modus', [ReportsController::class, 'handleGetReportModus']);
 
 $app->post('/reports', [ReportsController::class, 'handleCreateReports']);
 $app->delete('/reports', [ReportsController::class, 'handleDeleteReports']);
@@ -88,6 +96,7 @@ $app->put('/victims', [VictimsController::class, 'handleUpdateVictims']);
 //weapons
 $app->get('/weapons', [WeaponsController::class, 'handleGetWeapons']);
 $app->get('/weapons/{weapon_id}', [WeaponsController::class, 'handleGetWeaponById']);
+// $app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, '']);
 
 $app->post('/weapons', [WeaponsController::class, 'handleCreateWeapons']);
 $app->delete('/weapons', [WeaponsController::class, 'handleDeleteWeapons']);

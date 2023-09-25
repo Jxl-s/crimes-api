@@ -12,13 +12,21 @@ class DistrictsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getAllDistricts()
+    public function getAllDistricts(array $filters)
     {
+        $filters_values = [];
+        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+
+        //filters handle
+
+        return $this->paginate($sql, $filters_values);
     }
 
     // TODO: Implement this
     public function getDistrictById($district_id)
     {
+        $sql = "SELECT * FROM $this->table_name WHERE district_id = :district_id";
+        return $this->fetchAll($sql, [':district_id' => $district_id]);
     }
 
     // TODO: Implement this

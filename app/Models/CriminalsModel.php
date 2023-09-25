@@ -13,13 +13,21 @@ class CriminalsModel extends BaseModel
 
 
     // TODO: Implement this
-    public function getAllCriminals()
+    public function getAllCriminals(array $filters)
     {
+        $filters_values = [];
+        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+
+        //filters handle
+
+        return $this->paginate($sql, $filters_values);
     }
 
     // TODO: Implement this
     public function getCriminalById($criminal_id)
     {
+        $sql = "SELECT * FROM $this->table_name WHERE criminal_id = :criminal_id";
+        return $this->fetchAll($sql, [':criminal_id' => $criminal_id]);
     }
 
     // TODO: Implement this
