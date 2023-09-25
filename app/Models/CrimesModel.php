@@ -30,8 +30,9 @@ class CrimesModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createCrime()
+    public function createCrime($crime)
     {
+        return $this->insert($this->table_name, $crime);
     }
 
     // TODO: Implement this

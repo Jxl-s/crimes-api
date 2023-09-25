@@ -32,8 +32,7 @@ class ModiModel extends BaseModel
     // TODO: Implement this
     public function createModus($modi)
     {
-        return($modi);
-        // return $this->insert($this->table_name, $modi);
+        return $this->insert($this->table_name, $modi);
     }
 
     // TODO: Implement this

@@ -44,7 +44,19 @@ class WeaponsController extends BaseController
     
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $weapons = $request->getParsedBody();
+        
+        //TODO: Validate contents
+
+        foreach ($weapons as $id => $weapon) {
+            $this->weapons_model->createWeapon($weapon);
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateWeapons(Request $request, Response $response, array $uri_args)

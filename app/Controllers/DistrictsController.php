@@ -44,7 +44,19 @@ class DistrictsController extends BaseController
     
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $districts = $request->getParsedBody();
+        
+        //TODO: Validate contents
+
+        foreach ($districts as $id => $district) {
+            $this->districts_model->createDistrict($district);
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateDistricts(Request $request, Response $response, array $uri_args)

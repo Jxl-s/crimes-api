@@ -40,8 +40,9 @@ class DistrictsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createDistrict()
+    public function createDistrict($district)
     {
+        return $this->insert($this->table_name, $district);
     }
 
     // TODO: Implement this

@@ -35,8 +35,9 @@ class WeaponsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createWeapon()
+    public function createWeapon($weapon)
     {
+        return $this->insert($this->table_name, $weapon);
     }
 
     // TODO: Implement this
