@@ -80,32 +80,34 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function getReportCrimes($report_id)
     {
-        $sql = "SELECT crime_code FROM report_crime WHERE report_id = :report_id";
+        //retrieve code + description
+        $sql = "SELECT c.crime_code, crime_desc 
+                FROM crime c JOIN report_crime rc 
+                ON c.crime_code = rc.crime_code
+                WHERE report_id = :report_id";
         $crimes = $this->fetchAll($sql, [':report_id' => $report_id]);
-        //get all crime_code, place into an array
-        $crimes = array_column((array) $crimes, 'crime_code');
 
         $report = $this->getReportById($report_id);
         //extend the current report
         $report['0']['crime_codes'] = $crimes;
         
-        // var_dump($result);exit;
         return $report;
     }
 
     // TODO: Implement this
     public function getReportModi($report_id)
     {
-        $sql = "SELECT mo_code FROM report_modus WHERE report_id = :report_id";
+        //retrieve code + description
+        $sql = "SELECT m.mo_code, mo_desc 
+                FROM modus m JOIN report_modus rm 
+                ON m.mo_code = rm.mo_code
+                WHERE report_id = :report_id";
         $modi = $this->fetchAll($sql, [':report_id' => $report_id]);
-        //get all mo_code, place into an array
-        $modi = array_column((array) $modi, 'mo_code');
 
         $report = $this->getReportById($report_id);
         //extend the current report
         $report['0']['mo_codes'] = $modi;
         
-        // var_dump($result);exit;
         return $report;
     }
 

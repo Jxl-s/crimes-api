@@ -79,7 +79,7 @@ $app->get('/reports/{report_id}/victims', [ReportsController::class, 'handleGetR
 $app->get('/reports/{report_id}/criminals', [ReportsController::class, 'handleGetReportCriminals']);
 $app->get('/reports/{report_id}/police', [ReportsController::class, 'handleGetReportPolice']);
 $app->get('/reports/{report_id}/crimes', [ReportsController::class, 'handleGetReportCrimes']);
-$app->get('/reports/{report_id}/modus', [ReportsController::class, 'handleGetReportModus']);
+$app->get('/reports/{report_id}/modi', [ReportsController::class, 'handleGetReportModus']);
 
 $app->post('/reports', [ReportsController::class, 'handleCreateReports']);
 $app->delete('/reports', [ReportsController::class, 'handleDeleteReports']);
