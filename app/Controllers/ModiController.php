@@ -2,6 +2,7 @@
 
 namespace Vanier\Api\Controllers;
 
+use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpNotFoundException;
@@ -42,7 +43,19 @@ class ModiController extends BaseController
     
     public function handleCreateModi(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $modis = $request->getParsedBody();
+        
+        //TODO: Validate contents
+
+        foreach ($modis as $id => $modi) {
+            $this->modi_model->createModus($modi);
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateModi(Request $request, Response $response, array $uri_args)

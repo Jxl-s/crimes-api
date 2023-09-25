@@ -64,16 +64,17 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function getReportPolice($report_id)
     {
-        $sql = "SELECT badge_id FROM report_police WHERE report_id = :report_id";
+        //retrieve police officer information who was in charged
+        $sql = "SELECT *
+                FROM police p JOIN report_police rp
+                ON p.badge_id = rp.badge_id
+                WHERE report_id = :report_id";
         $police = $this->fetchAll($sql, [':report_id' => $report_id]);
-        //get all crime_code, place into an array
-        $police = array_column((array) $police, 'badge_id');
 
         $report = $this->getReportById($report_id);
         //extend the current report
         $report['0']['police_badge_id'] = $police;
         
-        // var_dump($result);exit;
         return $report;
     }
 

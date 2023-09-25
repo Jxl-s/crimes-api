@@ -39,6 +39,7 @@ $app->put('/crimes', [CrimesController::class, 'handleUpdateCrimes']);
 //criminals
 $app->get('/criminals', [CriminalsController::class, 'handleGetCriminals']);
 $app->get('/criminals/{criminal_id}', [CriminalsController::class, 'handleGetCriminalById']);
+//TODO: methods not yet made
 // $app->get('/criminals/{criminal_id}/reports', [CriminalsController::class, '']);
 
 $app->post('/criminals', [CriminalsController::class, 'handleCreateCriminals']);
@@ -48,6 +49,7 @@ $app->put('/criminals', [CriminalsController::class, 'handleUpdateCriminals']);
 //districts
 $app->get('/districts', [DistrictsController::class, 'handleGetDistricts']);
 $app->get('/districts/{district_id}', [DistrictsController::class, 'handleGetDistrictById']);
+//TODO: methods not yet made
 // $app->get('/districts/{district_id}/reports', [DistrictsController::class, '']);
 // $app->get('/districts/{district_id}/police', [DistrictsController::class, '']);
 
@@ -66,6 +68,7 @@ $app->put('/modi', [ModiController::class, 'handleUpdateModi']);
 //Police
 $app->get('/police', [PoliceController::class, 'handleGetPolice']);
 $app->get('/police/{badge_id}', [PoliceController::class, 'handleGetPoliceById']);
+//TODO: methods not yet made
 // $app->get('/police/{police_id}/reports', [PoliceController::class, '']);
 
 $app->post('/police', [PoliceController::class, 'handleCreatePolice']);
@@ -96,6 +99,7 @@ $app->put('/victims', [VictimsController::class, 'handleUpdateVictims']);
 //weapons
 $app->get('/weapons', [WeaponsController::class, 'handleGetWeapons']);
 $app->get('/weapons/{weapon_id}', [WeaponsController::class, 'handleGetWeaponById']);
+//TODO: methods not yet made
 // $app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, '']);
 
 $app->post('/weapons', [WeaponsController::class, 'handleCreateWeapons']);
