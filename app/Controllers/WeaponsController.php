@@ -5,6 +5,7 @@ namespace Vanier\Api\Controllers;
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\WeaponsModel;
@@ -19,12 +20,7 @@ class WeaponsController extends BaseController
 
     public function handleGetWeapons(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->weapons_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->weapons_model, $request);
         $weapons = $this->weapons_model->getAllWeapons($filters);
 
         return $this->prepareOkResponse($response, (array) $weapons);
@@ -32,13 +28,17 @@ class WeaponsController extends BaseController
 
     public function handleGetWeaponById(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['weapon_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
-        
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
+
+        // Find the weapon
         $weapon = $this->weapons_model->getWeaponById($id);
-        //step 3) send the response
+        if (!$weapon)
+            throw new HttpNotFoundException($request, 'Weapon Not Found');
+
+        // Send the response
         return $this->prepareOkResponse($response, (array) $weapon);
     }
     

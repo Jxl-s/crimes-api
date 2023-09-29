@@ -22,11 +22,10 @@ class ModiModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
-    // TODO: Implement this
     public function getModusByCode($mo_code)
     {
         $sql = "SELECT * FROM $this->table_name WHERE mo_code = :mo_code";
-        return $this->fetchAll($sql, [':mo_code' => $mo_code]);
+        return $this->fetchSingle($sql, ['mo_code' => $mo_code]);
     }
 
     // TODO: Implement this

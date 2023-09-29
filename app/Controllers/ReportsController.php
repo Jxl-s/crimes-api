@@ -5,6 +5,7 @@ namespace Vanier\Api\Controllers;
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\ReportsModel;
@@ -19,12 +20,7 @@ class ReportsController extends BaseController
 
     public function handleGetReports(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->reports_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->reports_model, $request);
         $reports = $this->reports_model->getAllReports($filters);
 
         return $this->prepareOkResponse($response, (array) $reports);
@@ -32,13 +28,17 @@ class ReportsController extends BaseController
 
     public function handleGetReportById(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['report_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         
+        // Find the report
         $report = $this->reports_model->getReportById($id);
-        //step 3) send the response
+        if (!$report)
+            throw new HttpNotFoundException($request, 'Report not found');
+
+        // Send the response
         return $this->prepareOkResponse($response, (array) $report);
     }
 

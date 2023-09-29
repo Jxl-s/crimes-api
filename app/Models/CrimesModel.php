@@ -18,16 +18,15 @@ class CrimesModel extends BaseModel
         $filters_values = [];
         $sql = "SELECT * FROM $this->table_name WHERE 1 ";
 
-        //filters handle
+        // TODO: Filters
 
         return $this->paginate($sql, $filters_values);
     }
 
-    // TODO: Implement this
     public function getCrimeByCode($crime_code)
     {
         $sql = "SELECT * FROM $this->table_name WHERE crime_code = :crime_code";
-        return $this->fetchAll($sql, [':crime_code' => $crime_code]);
+        return $this->fetchSingle($sql, ['crime_code' => $crime_code]);
     }
 
     // TODO: Implement this

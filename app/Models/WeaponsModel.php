@@ -22,11 +22,10 @@ class WeaponsModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
-    // TODO: Implement this
     public function getWeaponById($weapon_id)
     {
         $sql = "SELECT * FROM $this->table_name WHERE weapon_id = :weapon_id";
-        return $this->fetchAll($sql, [':weapon_id' => $weapon_id]);
+        return $this->fetchSingle($sql, ['weapon_id' => $weapon_id]);
     }
 
     // TODO: Implement this
