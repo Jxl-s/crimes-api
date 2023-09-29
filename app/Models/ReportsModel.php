@@ -145,7 +145,8 @@ class ReportsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deleteReport($report_id)
+    public function deleteReport(array $report_id)
     {
+        return $this->delete($this->table_name, ["report_id" => $report_id]);
     }
 }

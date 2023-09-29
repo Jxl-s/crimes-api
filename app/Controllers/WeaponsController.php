@@ -66,6 +66,9 @@ class WeaponsController extends BaseController
 
     public function handleDeleteWeapons(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $weapon = $request->getParsedBody();
+		$this->weapons_model->deleteWeapon($weapon);
+
+		return $this->prepareOkResponse($response, (array) $weapon);
     }
 }

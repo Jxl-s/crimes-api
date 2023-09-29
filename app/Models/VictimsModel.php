@@ -40,7 +40,8 @@ class VictimsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deleteVictim($victim_id)
+    public function deleteVictim(array $victim_id)
     {
+        return $this->delete($this->table_name, ["victim_id" => $victim_id]);
     }
 }

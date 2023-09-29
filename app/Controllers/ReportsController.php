@@ -114,6 +114,9 @@ class ReportsController extends BaseController
 
     public function handleDeleteReports(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $reports = $request->getParsedBody();
+		$this->reports_model->deleteReport($reports);
+
+		return $this->prepareOkResponse($response, (array) $reports);
     }
 }

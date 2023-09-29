@@ -45,7 +45,8 @@ class PoliceModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deletePolice($police_id)
+    public function deletePolice(array $badge_id)
     {
+        return $this->delete($this->table_name, ["badge_id" => $badge_id]);
     }
 }
