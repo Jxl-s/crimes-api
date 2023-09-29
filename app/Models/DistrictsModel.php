@@ -45,8 +45,10 @@ class DistrictsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function updateDistrict()
+    public function updateDistrict($district, $district_id)
     {
+        unset($district["district_id"]);
+        return $this->update($this->table_name, $district, ["district_id" => $district_id]);
     }
 
     // TODO: Implement this

@@ -109,7 +109,7 @@ class BaseModel
         if (empty($args)) {
             return $this->db->query($sql);
         }
-
+        
         $stmt = $this->db->prepare($sql);
         $stmt->execute($args);
 
@@ -237,7 +237,6 @@ class BaseModel
             $whereDetails .= $i == 0 ? "$key = ?" : " AND $key = ?";
             $i++;
         }
-
         $stmt = $this->run("UPDATE $table SET $fieldDetails WHERE $whereDetails", $values);
 
         return $stmt->rowCount();

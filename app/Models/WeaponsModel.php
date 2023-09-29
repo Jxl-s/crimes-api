@@ -42,6 +42,7 @@ class WeaponsModel extends BaseModel
     // TODO: Implement this
     public function updateWeapon()
     {
+        
     }
 
     // TODO: Implement this

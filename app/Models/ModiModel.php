@@ -35,8 +35,10 @@ class ModiModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function updateModus()
+    public function updateModus($modus, $mo_code)
     {
+        unset($modus["mo_code"]);
+        return $this->update($this->table_name, $modus, ["mo_code" => $mo_code]);
     }
 
     // TODO: Implement this
