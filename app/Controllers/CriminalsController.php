@@ -55,8 +55,9 @@ class CriminalsController extends BaseController
     public function handleDeleteCriminals(Request $request, Response $response, array $uri_args)
     {
         $criminals = $request->getParsedBody();
-		$this->criminals_model->deleteCriminal($criminals);
-
+        foreach ($criminals as $id => $criminals) {
+            $this->criminals_model->deleteCriminal($criminals);
+        }
 		return $this->prepareOkResponse($response, (array) $criminals);
     }
 }

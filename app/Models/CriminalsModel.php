@@ -46,7 +46,7 @@ class CriminalsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deleteCriminal(array $criminal_id)
+    public function deleteCriminal($criminal_id)
     {
         return $this->delete($this->table_name, ["criminal_id" => $criminal_id]);
     }

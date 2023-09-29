@@ -66,8 +66,9 @@ class ModiController extends BaseController
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
     {
         $modi = $request->getParsedBody();
-		$this->modi_model->deleteModus($modi);
-
+        foreach ($modi as $id => $modus) {
+            $this->modi_model->deleteModus($modus);
+        }
 		return $this->prepareOkResponse($response, (array) $modi);
     }
 }
