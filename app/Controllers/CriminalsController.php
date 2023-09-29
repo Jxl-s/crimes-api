@@ -19,12 +19,7 @@ class CriminalsController extends BaseController
 
     public function handleGetCriminals(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->criminals_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->criminals_model, $request);
         $criminals = $this->criminals_model->getAllCriminals($filters);
 
         return $this->prepareOkResponse($response, (array) $criminals);

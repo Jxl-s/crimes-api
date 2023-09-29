@@ -16,9 +16,9 @@ class CriminalsModel extends BaseModel
     public function getAllCriminals(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+        $sql = "SELECT criminal_id, first_name, last_name, age, sex, height, descent, is_arrested FROM $this->table_name c INNER JOIN person p ON c.person_id = p.person_id WHERE 1";
 
-        //filters handle
+        // TODO: Filters
 
         return $this->paginate($sql, $filters_values);
     }

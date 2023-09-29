@@ -15,9 +15,9 @@ class VictimsModel extends BaseModel
     public function getAllVictims(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+        $sql = "SELECT victim_id, first_name, last_name, age, sex, height, descent FROM $this->table_name v INNER JOIN person p ON v.person_id = p.person_id WHERE 1";
 
-        //filters handle
+        // TODO: Filters
 
         return $this->paginate($sql, $filters_values);
     }

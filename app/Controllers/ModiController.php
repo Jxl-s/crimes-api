@@ -19,12 +19,7 @@ class ModiController extends BaseController
 
     public function handleGetModi(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->modi_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->modi_model, $request);
         $modi = $this->modi_model->getAllModi($filters);
 
         return $this->prepareOkResponse($response, (array) $modi);

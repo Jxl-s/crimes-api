@@ -19,12 +19,7 @@ class ReportsController extends BaseController
 
     public function handleGetReports(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->reports_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->reports_model, $request);
         $reports = $this->reports_model->getAllReports($filters);
 
         return $this->prepareOkResponse($response, (array) $reports);

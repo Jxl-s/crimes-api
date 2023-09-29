@@ -18,7 +18,7 @@ class CrimesModel extends BaseModel
         $filters_values = [];
         $sql = "SELECT * FROM $this->table_name WHERE 1 ";
 
-        //filters handle
+        // TODO: Filters
 
         return $this->paginate($sql, $filters_values);
     }

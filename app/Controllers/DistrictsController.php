@@ -19,12 +19,7 @@ class DistrictsController extends BaseController
 
     public function handleGetDistricts(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->districts_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->districts_model, $request);
         $districts = $this->districts_model->getAllDistricts($filters);
 
         return $this->prepareOkResponse($response, (array) $districts);

@@ -19,12 +19,7 @@ class VictimsController extends BaseController
 
     public function handleGetVictims(Request $request, Response $response, array $uri_args)
     {
-        $filters = $request->getQueryParams();
-
-        $page = $filters['page'] ?? 1;
-        $page_size = $filters['page_size'] ?? 10;
-
-        $this->victims_model->setPaginationOptions($page, $page_size);
+        $filters = $this->getFilters($this->victims_model, $request);
         $victims = $this->victims_model->getAllVictims($filters);
 
         return $this->prepareOkResponse($response, (array) $victims);
