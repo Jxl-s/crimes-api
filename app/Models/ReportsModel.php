@@ -15,11 +15,33 @@ class ReportsModel extends BaseModel
     public function getAllReports(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+        $sql = "SELECT * FROM $this->table_name r
+        INNER JOIN incident i ON r.incident_id = i.incident_id
+        INNER JOIN location l ON r.location_id = l.location_id
+        WHERE 1
+        ";
 
-        //filters handle
+        $results = $this->paginate($sql, $filters_values);
+        foreach($results['data'] as &$result) {
+            $result['incident'] = [
+                'reported_time' => $result['reported_time'],
+                'occured_time' => $result['occured_time']
+            ];
+        
+            $result['location'] = [
+                'district_id' => $result['district_id'],
+                'address' => $result['address'],
+                'cross_street' => $result['cross_street'],
+                'area_name' => $result['area_name'],
+                'latitude' => $result['latitude'],
+                'longitude' => $result['longitude'],
+            ];
 
-        return $this->paginate($sql, $filters_values);
+            unset($result['incident_id'], $result['reported_time'], $result['occured_time']);
+            unset($result['district_id'], $result['address'], $result['cross_street'], $result['area_name'], $result['latitude'], $result['longitude']);
+        }
+
+        return $results;
     }
 
     // TODO: Implement this

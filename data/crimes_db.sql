@@ -1,3 +1,4 @@
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -20,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `crimes_db`
 --
+CREATE DATABASE crimes_db;
+USE crimes_db;
 
 -- --------------------------------------------------------
 
