@@ -5,6 +5,7 @@ namespace Vanier\Api\Controllers;
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\CriminalsModel;
@@ -13,7 +14,8 @@ class CriminalsController extends BaseController
 {
     private $criminals_model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->criminals_model = new CriminalsModel();
     }
 
@@ -27,13 +29,17 @@ class CriminalsController extends BaseController
 
     public function handleGetCriminalById(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['criminal_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
-        
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Find the criminal
         $criminal = $this->criminals_model->getCriminalById($id);
-        //step 3) send the response
+        if (!$criminal)
+            throw new HttpNotFoundException($request, 'Criminal Not Found');
+
+        // Send the response
         return $this->prepareOkResponse($response, (array) $criminal);
     }
 
@@ -53,6 +59,6 @@ class CriminalsController extends BaseController
         foreach ($criminals as $id => $criminals) {
             $this->criminals_model->deleteCriminal($criminals);
         }
-		return $this->prepareOkResponse($response, (array) $criminals);
+        return $this->prepareOkResponse($response, (array) $criminals);
     }
 }

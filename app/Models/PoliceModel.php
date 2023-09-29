@@ -22,11 +22,10 @@ class PoliceModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
-    // TODO: Implement this
     public function getPoliceById($badge_id)
     {
         $sql = "SELECT * FROM $this->table_name WHERE badge_id = :badge_id";
-        return $this->fetchAll($sql, [':badge_id' => $badge_id]);
+        return $this->fetchSingle($sql, ['badge_id' => $badge_id]);
     }
 
     // TODO: Implement this

@@ -5,6 +5,7 @@ namespace Vanier\Api\Controllers;
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\PoliceModel;
@@ -27,13 +28,17 @@ class PoliceController extends BaseController
 
     public function handleGetPoliceById(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['badge_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         
+        // Find the police
         $police = $this->police_model->getPoliceById($id);
-        //step 3) send the response
+        if (!$police)
+            throw new HttpNotFoundException($request, 'Police Not Found');
+
+        // Send the response
         return $this->prepareOkResponse($response, (array) $police);
     }
     

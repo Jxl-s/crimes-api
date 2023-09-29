@@ -38,17 +38,41 @@ class ReportsModel extends BaseModel
             ];
 
             unset($result['incident_id'], $result['reported_time'], $result['occured_time']);
-            unset($result['district_id'], $result['address'], $result['cross_street'], $result['area_name'], $result['latitude'], $result['longitude']);
+            unset($result['location_id'], $result['district_id'], $result['address'], $result['cross_street'], $result['area_name'], $result['latitude'], $result['longitude']);
         }
 
         return $results;
     }
 
-    // TODO: Implement this
     public function getReportById($report_id)
     {
-        $sql = "SELECT * FROM $this->table_name WHERE report_id = :report_id";
-        return $this->fetchAll($sql, [':report_id' => $report_id]);
+        $sql = "SELECT * FROM $this->table_name r
+        INNER JOIN incident i ON r.incident_id = i.incident_id
+        INNER JOIN location l ON r.location_id = l.location_id
+        WHERE report_id = :report_id
+        ";
+
+        $result = $this->fetchSingle($sql, ['report_id' => $report_id]);
+        if (!$result) return $result;
+
+        $result['incident'] = [
+            'reported_time' => $result['reported_time'],
+            'occured_time' => $result['occured_time']
+        ];
+    
+        $result['location'] = [
+            'district_id' => $result['district_id'],
+            'address' => $result['address'],
+            'cross_street' => $result['cross_street'],
+            'area_name' => $result['area_name'],
+            'latitude' => $result['latitude'],
+            'longitude' => $result['longitude'],
+        ];
+
+        unset($result['incident_id'], $result['reported_time'], $result['occured_time']);
+        unset($result['location_id'], $result['district_id'], $result['address'], $result['cross_street'], $result['area_name'], $result['latitude'], $result['longitude']);
+
+        return $result;
     }
 
     // TODO: Implement this

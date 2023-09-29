@@ -5,6 +5,7 @@ namespace Vanier\Api\Controllers;
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\VictimsModel;
@@ -27,13 +28,17 @@ class VictimsController extends BaseController
 
     public function handleGetVictimById(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['victim_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         
+        // Find the victim
         $victim = $this->victims_model->getVictimById($id);
-        //step 3) send the response
+        if (!$victim)
+            throw new HttpNotFoundException($request, 'Victim Not Found');
+
+        // Send the response
         return $this->prepareOkResponse($response, (array) $victim);
     }
     
