@@ -51,7 +51,8 @@ class DistrictsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deleteDistrict($district_id)
+    public function deleteDistrict(array $district_id)
     {
+        return $this->delete($this->table_name, ["district_id" => $district_id]);
     }
 }

@@ -54,6 +54,9 @@ class PoliceController extends BaseController
 
     public function handleDeletePolice(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $police = $request->getParsedBody();
+		$this->police_model->deletePolice($police);
+
+		return $this->prepareOkResponse($response, (array) $police);
     }
 }

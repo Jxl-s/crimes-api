@@ -9,6 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\CrimesModel;
 
+
 class CrimesController extends BaseController
 {
     private $crimes_model;
@@ -61,11 +62,15 @@ class CrimesController extends BaseController
 
     public function handleUpdateCrimes(Request $request, Response $response, array $uri_args)
     {
+        
         return $response;
     }
 
     public function handleDeleteCrimes(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $crimes = $request->getParsedBody();
+		$this->crimes_model->deleteCrime($crimes);
+
+		return $this->prepareOkResponse($response, (array) $crimes);
     }
 }

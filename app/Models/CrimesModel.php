@@ -1,6 +1,7 @@
 <?php
 
 namespace Vanier\Api\Models;
+use Vanier\Api\Models\BaseModel;
 
 class CrimesModel extends BaseModel
 {
@@ -38,10 +39,12 @@ class CrimesModel extends BaseModel
     // TODO: Implement this
     public function updateCrime()
     {
-    }
 
+    }
+    
     // TODO: Implement this
-    public function deleteCrime($crime_code)
+    public function deleteCrime(array $crimes)
     {
+        return $this->delete($this->table_name, ["crime_code" => $crimes]);
     }
 }

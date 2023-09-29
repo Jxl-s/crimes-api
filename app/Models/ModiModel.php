@@ -41,7 +41,8 @@ class ModiModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deleteModus($modus_code)
+    public function deleteModus(array $mo_code)
     {
+        return $this->delete($this->table_name, ["mo_code" => $mo_code]);
     }
 }
