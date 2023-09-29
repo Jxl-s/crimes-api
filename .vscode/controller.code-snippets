@@ -43,7 +43,7 @@
             "",
             "class ${1:Name}Model extends BaseModel",
             "{",
-            "    private \\$table_name = '${2:Table}';"
+            "    private \\$table_name = '${2:Table}';",
             "",
             "    public function __construct()",
             "    {",
