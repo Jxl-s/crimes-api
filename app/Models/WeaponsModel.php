@@ -46,7 +46,7 @@ class WeaponsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function deleteWeapon(array $weapon_id)
+    public function deleteWeapon($weapon_id)
     {
         return $this->delete($this->table_name, ["weapon_id" => $weapon_id]);
     }
