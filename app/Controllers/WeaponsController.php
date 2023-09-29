@@ -45,9 +45,8 @@ class WeaponsController extends BaseController
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)
     {
         $weapons = $request->getParsedBody();
-        
-        //TODO: Validate contents
 
+        //TODO: Validate contents
         foreach ($weapons as $id => $weapon) {
             $this->weapons_model->createWeapon($weapon);
         }

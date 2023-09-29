@@ -44,7 +44,18 @@ class VictimsController extends BaseController
     
     public function handleCreateVictims(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $victims = $request->getParsedBody();
+        
+        foreach ($victims as $id => $victim) {
+            $this->victims_model->createVictim($victim);
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateVictims(Request $request, Response $response, array $uri_args)
@@ -60,4 +71,5 @@ class VictimsController extends BaseController
         }
 		return $this->prepareOkResponse($response, (array) $victim);
     }
+
 }

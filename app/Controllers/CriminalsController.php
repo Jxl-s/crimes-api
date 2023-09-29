@@ -44,7 +44,18 @@ class CriminalsController extends BaseController
 
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $criminals = $request->getParsedBody();
+        
+        foreach ($criminals as $id => $criminal) {
+            $this->criminals_model->createCriminal($criminal);
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateCriminals(Request $request, Response $response, array $uri_args)

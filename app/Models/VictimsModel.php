@@ -4,6 +4,7 @@ namespace Vanier\Api\Models;
 
 class VictimsModel extends BaseModel
 {
+    private $parent_table_name = 'person';
     private $table_name = 'victim';
 
     public function __construct()
@@ -30,8 +31,10 @@ class VictimsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createVictim()
+    public function createVictim($victim)
     {
+        $id = $this->insert($this->parent_table_name, $victim);
+        return $this->insert($this->table_name, ["person_id" => $id]);
     }
 
     // TODO: Implement this

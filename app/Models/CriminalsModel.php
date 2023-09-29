@@ -4,6 +4,7 @@ namespace Vanier\Api\Models;
 
 class CriminalsModel extends BaseModel
 {
+    private $parent_table_name = 'person';
     private $table_name = 'criminal';
 
     public function __construct()
@@ -38,6 +39,8 @@ class CriminalsModel extends BaseModel
     // TODO: Implement this
     public function createCriminal()
     {
+        $id = $this->insert($this->parent_table_name, $criminal);
+        return $this->insert($this->table_name, ["person_id" => $id]);
     }
 
     // TODO: Implement this

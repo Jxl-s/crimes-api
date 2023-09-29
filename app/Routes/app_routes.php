@@ -33,8 +33,8 @@ $app->get('/crimes', [CrimesController::class, 'handleGetCrimes']);
 $app->get('/crimes/{crime_code}', [CrimesController::class, 'handleGetCrimeByCode']);
 
 $app->post('/crimes', [CrimesController::class, 'handleCreateCrimes']);
-$app->delete('/crimes', [CrimesController::class, 'handleDeleteCrimes']);
-$app->put('/crimes', [CrimesController::class, 'handleUpdateCrimes']);
+$app->delete('/crimes/{crime_id}', [CrimesController::class, 'handleDeleteCrimes']);
+$app->put('/crimes/{crime_id}', [CrimesController::class, 'handleUpdateCrimes']);
 
 //criminals
 $app->get('/criminals', [CriminalsController::class, 'handleGetCriminals']);
@@ -43,8 +43,8 @@ $app->get('/criminals/{criminal_id}', [CriminalsController::class, 'handleGetCri
 // $app->get('/criminals/{criminal_id}/reports', [CriminalsController::class, '']);
 
 $app->post('/criminals', [CriminalsController::class, 'handleCreateCriminals']);
-$app->delete('/criminals', [CriminalsController::class, 'handleDeleteCriminals']);
-$app->put('/criminals', [CriminalsController::class, 'handleUpdateCriminals']);
+$app->delete('/criminals/{criminal_id}', [CriminalsController::class, 'handleDeleteCriminals']);
+$app->put('/criminals/{criminal_id}', [CriminalsController::class, 'handleUpdateCriminals']);
 
 //districts
 $app->get('/districts', [DistrictsController::class, 'handleGetDistricts']);
@@ -54,16 +54,16 @@ $app->get('/districts/{district_id}', [DistrictsController::class, 'handleGetDis
 // $app->get('/districts/{district_id}/police', [DistrictsController::class, '']);
 
 $app->post('/districts', [DistrictsController::class, 'handleCreateDistricts']);
-$app->delete('/districts', [DistrictsController::class, 'handleDeleteDistricts']);
-$app->put('/districts', [DistrictsController::class, 'handleUpdateDistricts']);
+$app->delete('/districts/{district_id}', [DistrictsController::class, 'handleDeleteDistricts']);
+$app->put('/districts/{district_id}', [DistrictsController::class, 'handleUpdateDistricts']);
 
 //modi
 $app->get('/modi', [ModiController::class, 'handleGetModi']);
 $app->get('/modi/{mo_code}', [ModiController::class, 'handleGetModiByCode']);
 
 $app->post('/modi', [ModiController::class, 'handleCreateModi']);
-$app->delete('/modi', [ModiController::class, 'handleDeleteModi']);
-$app->put('/modi', [ModiController::class, 'handleUpdateModi']);
+$app->delete('/modi/{mo_code}', [ModiController::class, 'handleDeleteModi']);
+$app->put('/modi/{mo_code}', [ModiController::class, 'handleUpdateModi']);
 
 //Police
 $app->get('/police', [PoliceController::class, 'handleGetPolice']);
@@ -72,8 +72,8 @@ $app->get('/police/{badge_id}', [PoliceController::class, 'handleGetPoliceById']
 // $app->get('/police/{police_id}/reports', [PoliceController::class, '']);
 
 $app->post('/police', [PoliceController::class, 'handleCreatePolice']);
-$app->delete('/police', [PoliceController::class, 'handleDeletePolice']);
-$app->put('/police', [PoliceController::class, 'handleUpdatePolice']);
+$app->delete('/police/{badge_id}', [PoliceController::class, 'handleDeletePolice']);
+$app->put('/police/{badge_id}', [PoliceController::class, 'handleUpdatePolice']);
 
 //reports
 $app->get('/reports', [ReportsController::class, 'handleGetReports']);
@@ -85,16 +85,16 @@ $app->get('/reports/{report_id}/crimes', [ReportsController::class, 'handleGetRe
 $app->get('/reports/{report_id}/modi', [ReportsController::class, 'handleGetReportModus']);
 
 $app->post('/reports', [ReportsController::class, 'handleCreateReports']);
-$app->delete('/reports', [ReportsController::class, 'handleDeleteReports']);
-$app->put('/reports', [ReportsController::class, 'handleUpdateReports']);
+$app->delete('/reports/{report_id}', [ReportsController::class, 'handleDeleteReports']);
+$app->put('/reports/{report_id}', [ReportsController::class, 'handleUpdateReports']);
 
 //victims
 $app->get('/victims', [VictimsController::class, 'handleGetVictims']);
 $app->get('/victims/{victim_id}', [VictimsController::class, 'handleGetVictimById']);
 
 $app->post('/victims', [VictimsController::class, 'handleCreateVictims']);
-$app->delete('/victims', [VictimsController::class, 'handleDeleteVictims']);
-$app->put('/victims', [VictimsController::class, 'handleUpdateVictims']);
+$app->delete('/victims/{victim_id}', [VictimsController::class, 'handleDeleteVictims']);
+$app->put('/victims/{victim_id}', [VictimsController::class, 'handleUpdateVictims']);
 
 //weapons
 $app->get('/weapons', [WeaponsController::class, 'handleGetWeapons']);
@@ -103,5 +103,5 @@ $app->get('/weapons/{weapon_id}', [WeaponsController::class, 'handleGetWeaponByI
 // $app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, '']);
 
 $app->post('/weapons', [WeaponsController::class, 'handleCreateWeapons']);
-$app->delete('/weapons', [WeaponsController::class, 'handleDeleteWeapons']);
-$app->put('/weapons', [WeaponsController::class, 'handleUpdateWeapons']);
+$app->delete('/weapons/{weapon_id}', [WeaponsController::class, 'handleDeleteWeapons']);
+$app->put('/weapons/{weapon_id}', [WeaponsController::class, 'handleUpdateWeapons']);
