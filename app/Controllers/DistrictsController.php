@@ -41,6 +41,14 @@ class DistrictsController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $district);
     }
+
+    public function handleGetDistrictReports(Request $request, Response $response, array $uri_args) {
+        return $response;
+    }
+
+    public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args) {
+        return $response;
+    }
     
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)
     {

@@ -39,8 +39,7 @@ $app->put('/crimes/{crime_code}', [CrimesController::class, 'handleUpdateCrimes'
 //criminals
 $app->get('/criminals', [CriminalsController::class, 'handleGetCriminals']);
 $app->get('/criminals/{criminal_id}', [CriminalsController::class, 'handleGetCriminalById']);
-//TODO: methods not yet made
-// $app->get('/criminals/{criminal_id}/reports', [CriminalsController::class, '']);
+$app->get('/criminals/{criminal_id}/reports', [CriminalsController::class, 'handleGetCriminalReports']);
 
 $app->post('/criminals', [CriminalsController::class, 'handleCreateCriminals']);
 $app->delete('/criminals/{criminal_id}', [CriminalsController::class, 'handleDeleteCriminals']);
@@ -49,9 +48,8 @@ $app->put('/criminals/{criminal_id}', [CriminalsController::class, 'handleUpdate
 //districts
 $app->get('/districts', [DistrictsController::class, 'handleGetDistricts']);
 $app->get('/districts/{district_id}', [DistrictsController::class, 'handleGetDistrictById']);
-//TODO: methods not yet made
-// $app->get('/districts/{district_id}/reports', [DistrictsController::class, '']);
-// $app->get('/districts/{district_id}/police', [DistrictsController::class, '']);
+$app->get('/districts/{district_id}/reports', [DistrictsController::class, 'handleGetDistrictReports']);
+$app->get('/districts/{district_id}/police', [DistrictsController::class, 'handleGetDistrictPolice']);
 
 $app->post('/districts', [DistrictsController::class, 'handleCreateDistricts']);
 $app->delete('/districts/{district_id}', [DistrictsController::class, 'handleDeleteDistricts']);

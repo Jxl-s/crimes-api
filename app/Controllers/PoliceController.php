@@ -41,6 +41,11 @@ class PoliceController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $police);
     }
+
+    public function handleGetPoliceReports(Request $request, Response $response, array $uri_args)
+    {
+        return $response;
+    }
     
     public function handleCreatePolice(Request $request, Response $response, array $uri_args)
     {

@@ -42,6 +42,10 @@ class WeaponsController extends BaseController
         return $this->prepareOkResponse($response, (array) $weapon);
     }
     
+    public function handleGetWeaponReports(Request $request, Response $response, array $uri_args) {
+        return $response;
+    }
+
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)
     {
         $weapons = $request->getParsedBody();

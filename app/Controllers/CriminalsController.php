@@ -43,6 +43,10 @@ class CriminalsController extends BaseController
         return $this->prepareOkResponse($response, (array) $criminal);
     }
 
+    public function handleGetCriminalReports(Request $request, Response $response, array $uri_args) {
+        return $response;
+    }
+
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {
         $criminals = $request->getParsedBody();
