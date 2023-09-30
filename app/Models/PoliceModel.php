@@ -15,9 +15,32 @@ class PoliceModel extends BaseModel
     public function getAllPolice(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+        $sql = "SELECT * FROM $this->table_name WHERE 1";
 
-        //filters handle
+        if (isset($filters['first_name'])) {
+            $sql .= ' AND first_name LIKE CONCAT(\'%\', :first_name, \'%\')';
+            $filters_values['first_name'] = $filters['first_name'];
+        }
+
+        if (isset($filters['last_name'])) {
+            $sql .= ' AND last_name LIKE CONCAT(\'%\', :last_name, \'%\')';
+            $filters_values['last_name'] = $filters['last_name'];
+        }
+
+        if (isset($filters['from_join_date'])) {
+            $sql .= ' AND join_date >= :from_join_date';
+            $filters_values['from_join_date'] = $filters['from_join_date'];
+        }
+
+        if (isset($filters['to_join_date'])) {
+            $sql .= ' AND join_date <= :to_join_date';
+            $filters_values['to_join_date'] = $filters['to_join_date'];
+        }
+
+        if (isset($filters['rank'])) {
+            $sql .= ' AND rank = :rank';
+            $filters_values['rank'] = $filters['rank'];
+        }
 
         return $this->paginate($sql, $filters_values);
     }

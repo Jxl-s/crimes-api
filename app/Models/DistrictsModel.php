@@ -15,9 +15,17 @@ class DistrictsModel extends BaseModel
     public function getAllDistricts(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+        $sql = "SELECT * FROM $this->table_name WHERE 1";
 
-        //filters handle
+        if (isset($filters['bureau'])) {
+            $sql .= ' AND bureau = :bureau';
+            $filters_values['bureau'] = $filters['bureau'];
+        }
+
+        if (isset($filters['precinct'])) {
+            $sql .= ' AND precinct = :precinct';
+            $filters_values['precinct'] = $filters['precinct'];
+        }
 
         return $this->paginate($sql, $filters_values);
     }

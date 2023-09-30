@@ -17,7 +17,10 @@ class ModiModel extends BaseModel
         $filters_values = [];
         $sql = "SELECT * FROM $this->table_name WHERE 1 ";
 
-        //filters handle
+        if (isset($filters['description'])) {
+            $sql .= ' AND mo_desc LIKE CONCAT(\'%\', :description, \'%\')';
+            $filters_values['description'] = $filters['description'];
+        }
 
         return $this->paginate($sql, $filters_values);
     }

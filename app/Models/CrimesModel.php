@@ -18,7 +18,10 @@ class CrimesModel extends BaseModel
         $filters_values = [];
         $sql = "SELECT * FROM $this->table_name WHERE 1 ";
 
-        // TODO: Filters
+        if (isset($filters['description'])) {
+            $sql .= ' AND crime_desc LIKE CONCAT(\'%\', :description, \'%\')';
+            $filters_values['description'] = $filters['description'];
+        }
 
         return $this->paginate($sql, $filters_values);
     }
