@@ -4,19 +4,21 @@ Project for 420-511-VA (Web Services)
 
 ## Getting Started
 
-Run the following commands to install the project dependencies. Use XAMPP to run the project.
-
-### Windows
+Run the following command to install the project dependencies. Use XAMPP to run the project.
 
 ```shell
 .\composer.bat install
 ```
 
-### Mac or Linux
+## Testing
 
-```bash
-./composer.sh install
+Some tests are setup using PHPUnit. You can run the following commands to
+run the tests.
+
+```shell
+.\phpunit.bat --bootstrap tests/test_config.php --testdox tests
 ```
+
 
 ## Common Issues
 
