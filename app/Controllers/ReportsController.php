@@ -109,19 +109,16 @@ class ReportsController extends BaseController
 
     public function handleUpdateReports(Request $request, Response $response, array $uri_args)
     {
+        $id = $uri_args['report_id'];
         $report = $request->getParsedBody();
-        $this->reports_model->updateReport($report);
-        return $this->prepareOkResponse($response, (array) $report);
-
+        $this->reports_model->updateReport($report, $id);
+        return $this->prepareOkResponse($response, (array) $id);
     }
 
     public function handleDeleteReports(Request $request, Response $response, array $uri_args)
     {
-        $reports = $request->getParsedBody();
-        foreach ($reports as $id => $report) {
-            $this->reports_model->deleteReport($reports);
-        }
-
-		return $this->prepareOkResponse($response, (array) $reports);
+        $report = $uri_args['report_id'];
+        $this->reports_model->deleteReport($report);
+        return $this->prepareOkResponse($response, (array) $report);
     }
 }

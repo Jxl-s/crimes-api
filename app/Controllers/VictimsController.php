@@ -60,16 +60,17 @@ class VictimsController extends BaseController
 
     public function handleUpdateVictims(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $id = $uri_args['victim_id'];
+        $victim = $request->getParsedBody();
+        $this->victims_model->updateVictim($victim, $id);
+        return $this->prepareOkResponse($response, (array) $victim);
     }
 
     public function handleDeleteVictims(Request $request, Response $response, array $uri_args)
     {
-        $victims = $request->getParsedBody();
-        foreach ($victims as $id => $victim) {
-            $this->victims_model->deleteVictim($victim);
-        }
-		return $this->prepareOkResponse($response, (array) $victim);
+        $victim = $uri_args['victim_id'];
+        $this->victims_model->deleteVictim($victim);
+        return $this->prepareOkResponse($response, (array) $victim);
     }
 
 }

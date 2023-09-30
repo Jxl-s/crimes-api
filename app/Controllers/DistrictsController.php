@@ -69,19 +69,16 @@ class DistrictsController extends BaseController
 
     public function handleUpdateDistricts(Request $request, Response $response, array $uri_args)
     {
-        $districts = $request->getParsedBody();
-        foreach ($districts as $id => $district) {
-            $this->districts_model->updateDistrict($district, $district["district_id"]);
-        }
-        return $this->prepareOkResponse($response, (array) $districts);
+        $id = $uri_args['district_id'];
+        $district = $request->getParsedBody();
+        $this->districts_model->updateDistrict($district, $id);
+        return $this->prepareOkResponse($response, (array) $district);
     }
 
     public function handleDeleteDistricts(Request $request, Response $response, array $uri_args)
     {
-        $districts = $request->getParsedBody();
-        foreach ($districts as $id => $district) {
-            $this->districts_model->deleteDistrict($district);
-        }
-		return $this->prepareOkResponse($response, (array) $districts);
+        $district = $uri_args['district_id'];
+        $this->districts_model->deleteDistrict($district);
+        return $this->prepareOkResponse($response, (array) $district);
     }
 }
