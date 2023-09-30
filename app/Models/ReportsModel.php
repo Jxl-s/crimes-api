@@ -75,14 +75,14 @@ class ReportsModel extends BaseModel
         ";
 
         // Filtering parameters
-        if (isset($filters['fromLastUpdate'])) {
-            $sql .= ' AND r.last_update >= :fromLastUpdate';
-            $filters_values['fromLastUpdate'] = $filters['fromLastUpdate'];
+        if (isset($filters['from_last_update'])) {
+            $sql .= ' AND r.last_update >= :from_last_update';
+            $filters_values['from_last_update'] = $filters['from_last_update'];
         }
 
-        if (isset($filters['toLastUpdate'])) {
-            $sql .= ' AND r.last_update <= :toLastUpdate';
-            $filters_values['toLastUpdate'] = $filters['toLastUpdate'];
+        if (isset($filters['to_last_update'])) {
+            $sql .= ' AND r.last_update <= :to_last_update';
+            $filters_values['to_last_update'] = $filters['to_last_update'];
         }
 
         if (isset($filters['fatalities'])) {
@@ -90,24 +90,24 @@ class ReportsModel extends BaseModel
             $filters_values['fatalities'] = $filters['fatalities'];
         }
 
-        if (isset($filters['criminalCount'])) {
-            $sql .= ' AND (SELECT COUNT(*) FROM report_criminal WHERE report_id = r.report_id) = :criminalCount';
-            $filters_values['criminalCount'] = $filters['criminalCount'];
+        if (isset($filters['criminal_count'])) {
+            $sql .= ' AND (SELECT COUNT(*) FROM report_criminal WHERE report_id = r.report_id) = :criminal_count';
+            $filters_values['criminal_count'] = $filters['criminal_count'];
         }
 
-        if (isset($filters['victimCount'])) {
-            $sql .= ' AND (SELECT COUNT(*) FROM report_victim WHERE report_id = r.report_id) = :victimCount';
-            $filters_values['victimCount'] = $filters['victimCount'];
+        if (isset($filters['victim_count'])) {
+            $sql .= ' AND (SELECT COUNT(*) FROM report_victim WHERE report_id = r.report_id) = :victim_count';
+            $filters_values['victim_count'] = $filters['victim_count'];
         }
 
-        if (isset($filters['crimeCode'])) {
-            $sql .= ' AND (SELECT COUNT(*) FROM report_crime WHERE report_id = r.report_id AND crime_code = :crimeCode) >= 1';
-            $filters_values['crimeCode'] = $filters['crimeCode'];
+        if (isset($filters['crime_code'])) {
+            $sql .= ' AND (SELECT COUNT(*) FROM report_crime WHERE report_id = r.report_id AND crime_code = :crime_code) >= 1';
+            $filters_values['crime_code'] = $filters['crime_code'];
         }
 
-        if (isset($filters['modusCode'])) {
-            $sql .= ' AND (SELECT COUNT(*) FROM report_modus WHERE report_id = r.report_id AND mo_code = :modusCode) >= 1';
-            $filters_values['modusCode'] = $filters['modusCode'];
+        if (isset($filters['modus_code'])) {
+            $sql .= ' AND (SELECT COUNT(*) FROM report_modus WHERE report_id = r.report_id AND mo_code = :modus_code) >= 1';
+            $filters_values['modus_code'] = $filters['modus_code'];
         }
 
         if (isset($filters['premise'])) {
