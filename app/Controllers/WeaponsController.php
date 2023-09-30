@@ -64,15 +64,16 @@ class WeaponsController extends BaseController
 
     public function handleUpdateWeapons(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $id = $uri_args['weapon_id'];
+        $weapon = $request->getParsedBody();
+        $this->reports_model->updateReport($report, $id);
+        return $this->prepareOkResponse($response, (array) $id);
     }
 
     public function handleDeleteWeapons(Request $request, Response $response, array $uri_args)
     {
-        $weapons = $request->getParsedBody();
-        foreach ($weapons as $id => $weapon) {
-            $this->weapons_model->deleteWeapon($weapon);
-        }
-		return $this->prepareOkResponse($response, (array) $weapon);
+        $weapon = $uri_args['weapon_id'];
+        $this->weapons_model->deleteWeapon($weapon);
+        return $this->prepareOkResponse($response, (array) $weapon);
     }
 }

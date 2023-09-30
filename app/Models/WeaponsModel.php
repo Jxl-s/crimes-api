@@ -43,9 +43,9 @@ class WeaponsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function updateWeapon()
+    public function updateWeapon($weapon, $weapon_id)
     {
-        
+        return $this->update($this->table_name, $weapon, ["weapon_id" => $weapon_id]);
     }
 
     // TODO: Implement this

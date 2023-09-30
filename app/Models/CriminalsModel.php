@@ -75,12 +75,15 @@ class CriminalsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function updateCriminal()
+    public function updateCriminal($criminal, $criminal_id)
     {
+        $sql = "SELECT `person_id` FROM `$this->table_name` WHERE `criminal_id` = :criminal_id";
+        $id = $this->fetchSingle($sql, ['criminal_id' => $criminal_id]);
+        return $this->update($this->parent_table_name, $criminal, ['person_id' => $id['person_id']]);
     }
 
     // TODO: Implement this
-    public function handleDeleteCriminal($criminal_id)
+    public function deleteCriminal($criminal_id)
     {
         return $this->delete($this->table_name, ["criminal_id" => $criminal_id]);
     }

@@ -64,8 +64,11 @@ class VictimsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function updateVictim()
+    public function updateVictim($victim, $victim_id)
     {
+        $sql = "SELECT `person_id` FROM `$this->table_name` WHERE `victim_id` = :victim_id";
+        $id = $this->fetchSingle($sql, ['victim_id' => $victim_id]);
+        return $this->update($this->parent_table_name, $victim, ['person_id' => $id['person_id']]);
     }
 
     // TODO: Implement this

@@ -59,20 +59,17 @@ class ModiController extends BaseController
 
     public function handleUpdateModi(Request $request, Response $response, array $uri_args)
     {
-        $modi = $request->getParsedBody();
-        foreach ($modi as $id => $modus) {
-            $this->modi_model->updateModus($modus, $modus["mo_code"]);
-        }
-        return $this->prepareOkResponse($response, (array) $modi);
+        $code = $uri_args['mo_code'];
+        $desc = $request->getParsedBody();
+        $this->modi_model->updateModus($desc, $code);
+        return $this->prepareOkResponse($response, (array) $desc);
 
     }
 
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
     {
-        $modi = $request->getParsedBody();
-        foreach ($modi as $id => $modus) {
-            $this->modi_model->deleteModus($modus);
-        }
-		return $this->prepareOkResponse($response, (array) $modi);
+        $modus = $uri_args['mo_code'];
+        $this->modi_model->deleteModus($modus);
+        return $this->prepareOkResponse($response, (array) $modus);
     }
 }
