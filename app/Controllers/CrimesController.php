@@ -63,16 +63,16 @@ class CrimesController extends BaseController
 
     public function handleUpdateCrimes(Request $request, Response $response, array $uri_args)
     {
-
-        return $response;
+        $code = $uri_args['crime_code'];
+        $crime = $request->getParsedBody();
+        $this->crimes_model->updateCrime($crime, $code);
+        return $this->prepareOkResponse($response, (array) $crime);
     }
 
     public function handleDeleteCrimes(Request $request, Response $response, array $uri_args)
     {
-        $crimes = $request->getParsedBody();
-        foreach ($crimes as $id => $crime) {
-            $this->crimes_model->deleteCrime($crime);
-        }
-        return $this->prepareOkResponse($response, (array) $crimes);
+        $code = $uri_args['crime_code'];
+        $this->crimes_model->deleteCrime($code);
+        return $this->prepareOkResponse($response, (array) $code);
     }
 }

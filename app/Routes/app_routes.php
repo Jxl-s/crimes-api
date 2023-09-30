@@ -33,8 +33,8 @@ $app->get('/crimes', [CrimesController::class, 'handleGetCrimes']);
 $app->get('/crimes/{crime_code}', [CrimesController::class, 'handleGetCrimeByCode']);
 
 $app->post('/crimes', [CrimesController::class, 'handleCreateCrimes']);
-$app->delete('/crimes/{crime_id}', [CrimesController::class, 'handleDeleteCrimes']);
-$app->put('/crimes/{crime_id}', [CrimesController::class, 'handleUpdateCrimes']);
+$app->delete('/crimes/{crime_code}', [CrimesController::class, 'handleDeleteCrimes']);
+$app->put('/crimes/{crime_code}', [CrimesController::class, 'handleUpdateCrimes']);
 
 //criminals
 $app->get('/criminals', [CriminalsController::class, 'handleGetCriminals']);

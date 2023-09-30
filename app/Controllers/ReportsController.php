@@ -109,7 +109,10 @@ class ReportsController extends BaseController
 
     public function handleUpdateReports(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $report = $request->getParsedBody();
+        $this->reports_model->updateReport($report);
+        return $this->prepareOkResponse($response, (array) $report);
+
     }
 
     public function handleDeleteReports(Request $request, Response $response, array $uri_args)

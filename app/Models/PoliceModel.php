@@ -39,8 +39,10 @@ class PoliceModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function updatePolice()
+    public function updatePolice($police, $badge_id)
     {
+        unset($police["badge_id"]);
+        return $this->update($this->table_name, $police, ["badge_id" => $badge_id]);
     }
 
     // TODO: Implement this

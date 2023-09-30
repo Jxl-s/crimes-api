@@ -49,7 +49,12 @@ class PoliceController extends BaseController
 
     public function handleUpdatePolice(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $police = $request->getParsedBody();
+        foreach ($police as $id => $police_off) {
+            $this->police_model->updatePolice($police_off, $police_off["badge_id"]);
+        }
+        return $this->prepareOkResponse($response, (array) $police_off);
+
     }
 
     public function handleDeletePolice(Request $request, Response $response, array $uri_args)
