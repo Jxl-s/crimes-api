@@ -15,9 +15,12 @@ class WeaponsModel extends BaseModel
     public function getAllWeapons(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT * FROM $this->table_name WHERE 1 ";
+        $sql = "SELECT * FROM $this->table_name WHERE 1";
 
-        //filters handle
+        if (isset($filters['type'])) {
+            $sql .= ' AND type = :type';
+            $filters_values['type'] = $filters['type'];
+        }
 
         return $this->paginate($sql, $filters_values);
     }

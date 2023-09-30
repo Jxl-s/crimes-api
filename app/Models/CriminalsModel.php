@@ -19,7 +19,36 @@ class CriminalsModel extends BaseModel
         $sql = "SELECT criminal_id, first_name, last_name, age, sex, height, descent, is_arrested FROM $this->table_name c
         INNER JOIN person p ON c.person_id = p.person_id WHERE 1";
 
-        // TODO: Filters
+        // Filters
+        if (isset($filters['first_name'])) {
+            $sql .= ' AND p.first_name LIKE CONCAT(\'%\', :first_name, \'%\')';
+            $filters_values['first_name'] = $filters['first_name'];
+        }
+
+        if (isset($filters['last_name'])) {
+            $sql .= ' AND p.last_name LIKE CONCAT(\'%\', :last_name, \'%\')';
+            $filters_values['last_name'] = $filters['last_name'];
+        }
+
+        if (isset($filters['age'])) {
+            $sql .= ' AND p.age = :age';
+            $filters_values['age'] = $filters['age'];
+        }
+
+        if (isset($filters['descent'])) {
+            $sql .= ' AND p.descent = :descent';
+            $filters_values['descent'] = $filters['descent'];
+        }
+
+        if (isset($filters['sex'])) {
+            $sql .= ' AND p.sex = :sex';
+            $filters_values['sex'] = $filters['sex'];
+        }
+
+        if (isset($filters['is_arrested'])) {
+            $sql .= ' AND c.is_arrested = :is_arrested';
+            $filters_values['is_arrested'] = $filters['is_arrested'];
+        }
 
         return $this->paginate($sql, $filters_values);
     }
