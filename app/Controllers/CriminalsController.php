@@ -49,11 +49,14 @@ class CriminalsController extends BaseController
 
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {
-        $criminals = $request->getParsedBody();
+        $criminal = $request->getParsedBody();
         
-        foreach ($criminals as $id => $criminal) {
-            $this->criminals_model->createCriminal($criminal);
-        }
+        //if an array given, throw exception    
+        if (isset($criminal[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
+        //TODO: Validate Data
+        $this->criminals_model->createCriminal($criminal);
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,

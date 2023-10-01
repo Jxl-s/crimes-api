@@ -52,13 +52,14 @@ class DistrictsController extends BaseController
     
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)
     {
-        $districts = $request->getParsedBody();
+        $district = $request->getParsedBody();
         
-        //TODO: Validate contents
+        //if an array given, throw exception
+        if (isset($district[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
-        foreach ($districts as $id => $district) {
-            $this->districts_model->createDistrict($district);
-        }
+        //TODO: Validate contents
+        $this->districts_model->createDistrict($district);
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,

@@ -68,10 +68,12 @@ class CriminalsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createCriminal()
+    public function createCriminal($criminal)
     {
+        $is_arrested = $criminal["is_arrested"];
+        unset($criminal["is_arrested"]);
         $id = $this->insert($this->parent_table_name, $criminal);
-        return $this->insert($this->table_name, ["person_id" => $id]);
+        return $this->insert($this->table_name, ["person_id" => $id, "is_arrested" => $is_arrested ]);
     }
 
     // TODO: Implement this

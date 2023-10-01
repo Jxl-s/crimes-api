@@ -42,13 +42,14 @@ class ModiController extends BaseController
     
     public function handleCreateModi(Request $request, Response $response, array $uri_args)
     {
-        $modis = $request->getParsedBody();
+        $modi = $request->getParsedBody();
         
-        //TODO: Validate contents
+        //if an array given, throw exception
+        if (isset($modi[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
-        foreach ($modis as $id => $modi) {
-            $this->modi_model->createModus($modi);
-        }
+        //TODO: Validate contents
+        $this->modi_model->createModus($modi);
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
