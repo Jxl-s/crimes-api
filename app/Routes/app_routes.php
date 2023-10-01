@@ -66,8 +66,7 @@ $app->put('/modi/{mo_code}', [ModiController::class, 'handleUpdateModi']);
 //Police
 $app->get('/police', [PoliceController::class, 'handleGetPolice']);
 $app->get('/police/{badge_id}', [PoliceController::class, 'handleGetPoliceById']);
-//TODO: methods not yet made
-// $app->get('/police/{police_id}/reports', [PoliceController::class, '']);
+$app->get('/police/{badge_id}/reports', [PoliceController::class, 'handleGetPoliceReports']);
 
 $app->post('/police', [PoliceController::class, 'handleCreatePolice']);
 $app->delete('/police/{badge_id}', [PoliceController::class, 'handleDeletePolice']);
@@ -97,8 +96,7 @@ $app->put('/victims/{victim_id}', [VictimsController::class, 'handleUpdateVictim
 //weapons
 $app->get('/weapons', [WeaponsController::class, 'handleGetWeapons']);
 $app->get('/weapons/{weapon_id}', [WeaponsController::class, 'handleGetWeaponById']);
-//TODO: methods not yet made
-// $app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, '']);
+$app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, 'handleGetWeaponReports']);
 
 $app->post('/weapons', [WeaponsController::class, 'handleCreateWeapons']);
 $app->delete('/weapons/{weapon_id}', [WeaponsController::class, 'handleDeleteWeapons']);
