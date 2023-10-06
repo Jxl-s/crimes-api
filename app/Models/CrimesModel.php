@@ -41,6 +41,7 @@ class CrimesModel extends BaseModel
     // TODO: Implement this
     public function updateCrime($crime, $crime_code)
     {
+        unset($crime["crime_code"]);
         return $this->update($this->table_name, $crime, ["crime_code" => $crime_code]);
     }
     

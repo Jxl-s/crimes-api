@@ -34,6 +34,8 @@ class WeaponsModel extends BaseModel
     // TODO: Implement this
     public function getWeaponReports($weapon_id)
     {
+        $sql = "SELECT * FROM report WHERE weapon_id = :weapon_id";
+        return $this->fetchAll($sql,[':weapon_id' => $weapon_id]);
     }
 
     // TODO: Implement this
@@ -45,6 +47,7 @@ class WeaponsModel extends BaseModel
     // TODO: Implement this
     public function updateWeapon($weapon, $weapon_id)
     {
+        unset($weapon["weapon_id"]);
         return $this->update($this->table_name, $weapon, ["weapon_id" => $weapon_id]);
     }
 

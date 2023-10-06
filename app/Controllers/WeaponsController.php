@@ -43,7 +43,14 @@ class WeaponsController extends BaseController
     }
     
     public function handleGetWeaponReports(Request $request, Response $response, array $uri_args) {
-        return $response;
+        $weapon_id = $uri_args['weapon_id'];
+        if (!Input::isInt($weapon_id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
+
+        $reports = $this->weapons_model->getWeaponReports($weapon_id);
+            if (!$reports)
+                throw new HttpNotFoundException($request, 'Reports Not Found');
+        return $this->prepareOkResponse($response, (array) $reports);
     }
 
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)

@@ -43,11 +43,25 @@ class DistrictsController extends BaseController
     }
 
     public function handleGetDistrictReports(Request $request, Response $response, array $uri_args) {
-        return $response;
+        $district_id = $uri_args['district_id'];
+        if (!Input::isInt($district_id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
+
+        $reports = $this->districts_model->getDistrictReports($district_id);
+            if (!$reports)
+                throw new HttpNotFoundException($request, 'Reports Not Found');
+        return $this->prepareOkResponse($response, (array) $reports);
     }
 
     public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args) {
-        return $response;
+        $district_id = $uri_args['district_id'];
+        if (!Input::isInt($district_id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
+
+        $police = $this->districts_model->getDistrictPolice($district_id);
+            if (!$police)
+                throw new HttpNotFoundException($request, 'Police Not Found');
+        return $this->prepareOkResponse($response, (array) $police);
     }
     
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)

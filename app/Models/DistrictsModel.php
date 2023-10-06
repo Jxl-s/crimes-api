@@ -39,11 +39,15 @@ class DistrictsModel extends BaseModel
     // TODO: Implement this
     public function getDistrictReports($district_id)
     {
+        $sql = "SELECT report.* FROM report INNER JOIN location ON report.location_id = location.location_id WHERE district_id = :district_id";
+        return $this->fetchAll($sql,[':district_id' => $district_id]);
     }
 
     // TODO: Implement this
     public function getDistrictPolice($district_id)
     {
+        $sql = "SELECT * FROM police WHERE district_id = :district_id";
+        return $this->fetchAll($sql,[':district_id' => $district_id]);
     }
 
     // TODO: Implement this
@@ -55,6 +59,7 @@ class DistrictsModel extends BaseModel
     // TODO: Implement this
     public function updateDistrict($district, $district_id)
     {
+        unset($district["district_id"]);
         return $this->update($this->table_name, $district, ["district_id" => $district_id]);
     }
 

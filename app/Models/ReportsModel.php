@@ -283,6 +283,7 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function updateReport($report, $report_id)
     {
+        unset($report["report_id"]);
         return $this->update($this->table_name, $report, ["report_id" => $report_id]);
     }
 
