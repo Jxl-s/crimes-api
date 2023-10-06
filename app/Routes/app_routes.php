@@ -97,8 +97,7 @@ $app->put('/victims/{victim_id}', [VictimsController::class, 'handleUpdateVictim
 //weapons
 $app->get('/weapons', [WeaponsController::class, 'handleGetWeapons']);
 $app->get('/weapons/{weapon_id}', [WeaponsController::class, 'handleGetWeaponById']);
-//TODO: methods not yet made
-// $app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, '']);
+$app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, 'handleGetWeaponReports']);
 
 $app->post('/weapons', [WeaponsController::class, 'handleCreateWeapons']);
 $app->delete('/weapons/{weapon_id}', [WeaponsController::class, 'handleDeleteWeapons']);
