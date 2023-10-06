@@ -39,7 +39,7 @@ class ReportsModel extends BaseModel
             'longitude' => $report['longitude'],
         ];
 
-        $array_to_ints = fn ($arr) => array_map(fn($x) => intval($x), $arr);
+        $array_to_ints = fn ($arr) => array_map(fn ($x) => intval($x), $arr);
 
         $report['crime_codes'] = $array_to_ints(explode(',', $report['crime_codes']));
         $report['criminal_ids'] = $array_to_ints(explode(',', $report['criminal_ids']));
@@ -164,84 +164,73 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function getReportVictims($report_id)
     {
-        $sql = "SELECT victim_id FROM report_victim WHERE report_id = :report_id";
-        $victims = $this->fetchAll($sql, [':report_id' => $report_id]);
-        //get all crime_code, place into an array
-        $victims = array_column((array) $victims, 'victim_id');
+        $sql = "SELECT v.victim_id, first_name, last_name, age, sex, height, descent FROM report_victim rv
+        INNER JOIN victim v ON rv.victim_id = v.victim_id
+        INNER JOIN person p ON v.person_id = p.person_id
 
-        $report = $this->getReportById($report_id);
-        //extend the current report
-        $report['0']['victim_id'] = $victims;
+        WHERE rv.report_id = :report_id
+        ";
 
-        // var_dump($result);exit;
-        return $report;
+        // No filters are used for this endpoint
+        $victims = $this->fetchAll($sql, ['report_id' => $report_id]);
+        return $victims;
     }
 
     // TODO: Implement this
     public function getReportCriminals($report_id)
     {
-        $sql = "SELECT criminal_id FROM report_criminal WHERE report_id = :report_id";
-        $criminals = $this->fetchAll($sql, [':report_id' => $report_id]);
-        //get all crime_code, place into an array
-        $criminals = array_column((array) $criminals, 'criminal_id');
+        $sql = "SELECT c.criminal_id, first_name, last_name, age, sex, height, descent, is_arrested FROM report_criminal rc
+        INNER JOIN criminal c ON rc.criminal_id = c.criminal_id
+        INNER JOIN person p ON c.person_id = p.person_id
 
-        $report = $this->getReportById($report_id);
-        //extend the current report
-        $report['0']['criminal_id'] = $criminals;
+        WHERE rc.report_id = :report_id
+        ";
 
-        // var_dump($result);exit;
-        return $report;
+        // No filters are used for this endpoint
+        $criminals = $this->fetchAll($sql, ['report_id' => $report_id]);
+        return $criminals;
     }
 
     // TODO: Implement this
     public function getReportPolice($report_id)
     {
-        //retrieve police officer information who was in charged
-        $sql = "SELECT *
-                FROM police p JOIN report_police rp
-                ON p.badge_id = rp.badge_id
-                WHERE report_id = :report_id";
-        $police = $this->fetchAll($sql, [':report_id' => $report_id]);
+        $sql = "SELECT p.* FROM report_police rp
+        INNER JOIN police p ON rp.badge_id = p.badge_id
 
-        $report = $this->getReportById($report_id);
-        //extend the current report
-        $report['0']['police_badge_id'] = $police;
+        WHERE rp.report_id = :report_id
+        ";
 
-        return $report;
+        // No filters are used for this endpoint
+        $police = $this->fetchAll($sql, ['report_id' => $report_id]);
+        return $police;
     }
 
     // TODO: Implement this
     public function getReportCrimes($report_id)
     {
-        //retrieve code + description
-        $sql = "SELECT c.crime_code, crime_desc 
-                FROM crime c JOIN report_crime rc 
-                ON c.crime_code = rc.crime_code
-                WHERE report_id = :report_id";
-        $crimes = $this->fetchAll($sql, [':report_id' => $report_id]);
+        $sql = "SELECT c.* FROM report_crime rc
+        INNER JOIN crime c ON rc.crime_code = c.crime_code
 
-        $report = $this->getReportById($report_id);
-        //extend the current report
-        $report['0']['crime_codes'] = $crimes;
+        WHERE rc.report_id = :report_id
+        ";
 
-        return $report;
+        // No filters are used for this endpoint
+        $crimes = $this->fetchAll($sql, ['report_id' => $report_id]);
+        return $crimes;
     }
 
     // TODO: Implement this
     public function getReportModi($report_id)
     {
-        //retrieve code + description
-        $sql = "SELECT m.mo_code, mo_desc 
-                FROM modus m JOIN report_modus rm 
-                ON m.mo_code = rm.mo_code
-                WHERE report_id = :report_id";
-        $modi = $this->fetchAll($sql, [':report_id' => $report_id]);
+        $sql = "SELECT m.* FROM report_modus rm
+        INNER JOIN modus m ON rm.mo_code = m.mo_code
 
-        $report = $this->getReportById($report_id);
-        //extend the current report
-        $report['0']['mo_codes'] = $modi;
+        WHERE rm.report_id = :report_id
+        ";
 
-        return $report;
+        // No filters are used for this endpoint
+        $crimes = $this->fetchAll($sql, ['report_id' => $report_id]);
+        return $crimes;
     }
 
     // TODO: Implement this
@@ -267,24 +256,24 @@ class ReportsModel extends BaseModel
         unset($report['incident']);
         unset($report['location']);
 
-        
+
         $report["incident_id"] = $this->insert('incident', $incident);
         $report["location_id"] = $this->insert('location', $location);
         $report_id = $this->insert($this->table_name, $report);
 
-        foreach($crime_codes as $key => $code) {
+        foreach ($crime_codes as $key => $code) {
             $this->insert($this->report_crime, ['report_id' => $report_id, 'crime_code' => $code]);
         }
-        foreach($modus_codes as $key => $code) {
+        foreach ($modus_codes as $key => $code) {
             $this->insert($this->report_modus, ['report_id' => $report_id, 'mo_code' => $code]);
         }
-        foreach($criminal_ids as $key => $id) {
+        foreach ($criminal_ids as $key => $id) {
             $this->insert($this->report_criminal, ['report_id' => $report_id, 'criminal_id' => $id]);
         }
-        foreach($victim_ids as $key => $id) {
+        foreach ($victim_ids as $key => $id) {
             $this->insert($this->report_victim, ['report_id' => $report_id, 'victim_id' => $id]);
         }
-        foreach($police_ids as $key => $id) {
+        foreach ($police_ids as $key => $id) {
             $this->insert($this->report_police, ['report_id' => $report_id, 'badge_id' => $id]);
         }
 

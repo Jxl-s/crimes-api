@@ -31,7 +31,7 @@ class ReportsController extends BaseController
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
+            throw new HttpBadRequestException($request, "Invalid ID");
         
         // Find the report
         $report = $this->reports_model->getReportById($id);
@@ -44,62 +44,72 @@ class ReportsController extends BaseController
 
     public function handleGetReportVictims(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['report_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
         
-        $report = $this->reports_model->getReportVictims($id);
-        //step 3) send the response
-        return $this->prepareOkResponse($response, (array) $report);
+        // Get the victims
+        $victims = $this->reports_model->getReportVictims($id);
+
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $victims);
     }
     
     public function handleGetReportCriminals(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['report_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
-        
-        $report = $this->reports_model->getReportCriminals($id);
-        //step 3) send the response
-        return $this->prepareOkResponse($response, (array) $report);
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Get the criminals
+        $criminals = $this->reports_model->getReportCriminals($id);
+
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $criminals);
     }
     
     public function handleGetReportPolice(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['report_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
         
-        $report = $this->reports_model->getReportPolice($id);
-        //step 3) send the response
-        return $this->prepareOkResponse($response, (array) $report);
+        // Get the police officers
+        $police = $this->reports_model->getReportPolice($id);
+
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $police);
     }
     
     public function handleGetReportCrimes(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['report_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
         
-        $report = $this->reports_model->getReportCrimes($id);
-        //step 3) send the response
-        return $this->prepareOkResponse($response, (array) $report);
+        // Get the crimes
+        $crimes = $this->reports_model->getReportCrimes($id);
+
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $crimes);
     }
 
     public function handleGetReportModus(Request $request, Response $response, array $uri_args)
     {
-        // Throwing an exception
+        // Get the ID
         $id = $uri_args['report_id'];
-        if (!Input::isInt($id))
-            throw new HttpNotFoundException($request, "Invalid Code");
-        
-        $report = $this->reports_model->getReportModi($id);
-        //step 3) send the response
-        return $this->prepareOkResponse($response, (array) $report);
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Get the modi
+        $modi = $this->reports_model->getReportModi($id);
+
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $modi);
     }    
 
     public function handleCreateReports(Request $request, Response $response, array $uri_args)
