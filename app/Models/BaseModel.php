@@ -30,6 +30,9 @@ class BaseModel
      */
     private $records_per_page = 5;
 
+    private $sort_by = '1';
+    private $order = 'asc';
+
     /**
      * Instantiates the BaseModel.
      * @global array $db_config    database connection options.
@@ -109,7 +112,7 @@ class BaseModel
         if (empty($args)) {
             return $this->db->query($sql);
         }
-        
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute($args);
 
@@ -268,7 +271,7 @@ class BaseModel
             $limit = "LIMIT $limit";
         }
 
-        echo("DELETE FROM $table WHERE $whereDetails $limit");
+        echo ("DELETE FROM $table WHERE $whereDetails $limit");
         $stmt = $this->run("DELETE FROM $table WHERE $whereDetails $limit", $values);
 
         return $stmt->rowCount();
@@ -325,19 +328,23 @@ class BaseModel
         return $stmt->rowCount();
     }
 
-    protected function paginate($sql, $args = [], $fetchMode = PDO::FETCH_ASSOC) {
+    protected function paginate($sql, $args = [], $fetchMode = PDO::FETCH_ASSOC)
+    {
         //1. Get the number of rows that will be returned by
         $row_count = $this->count($sql, $args);
 
         //2. Instaniate the paginate helper
         $pagination_helper = new PaginationHelper(
-            $this->current_page, $this->records_per_page,
+            $this->current_page,
+            $this->records_per_page,
             $row_count
         );
 
         //3. get off set
         $offset = $pagination_helper->getOffset();
+
         //extends sql with offsets + limited # records
+        $sql .= " ORDER BY $this->sort_by $this->order";
         $sql .= " LIMIT $offset, $this->records_per_page ";
         //-- 
         $data = $pagination_helper->getPaginationInfo();
@@ -350,5 +357,11 @@ class BaseModel
     {
         $this->current_page = $current_page;
         $this->records_per_page = $records_per_page;
+    }
+
+    public function setSortingOptions($sort_by, $order): void
+    {
+        $this->sort_by = $sort_by;
+        $this->order = $order;
     }
 }

@@ -4,6 +4,7 @@ namespace Vanier\Api\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Vanier\Api\Models\BaseModel;
 
 class BaseController
@@ -25,13 +26,31 @@ class BaseController
      * @param Request $request
      * @return array
      */
-    protected function getFilters(BaseModel $model, Request $request) {
+    protected function getFilters(Request $request, BaseModel $model, array $sort_fields)
+    {
         $filters = $request->getQueryParams();
 
+        // Get the fields to use
         $page = $filters['page'] ?? 1;
         $page_size = $filters['page_size'] ?? 10;
 
+        // Get the fields to use
+        $sort_by = $filters['sort_by'] ?? $sort_fields[0];
+        $order = strtolower($filters['order'] ?? 'asc');
+
+        // TODO: Validate pagination fields
+
+        // Validate ordering fields
+        if (!in_array($sort_by, $sort_fields)) {
+            throw new HttpBadRequestException($request, 'sort_by is invalid. Valid values: ' . implode(', ', $sort_fields));
+        }
+
+        if ($order !== 'asc' && $order !== 'desc') {
+            throw new HttpBadRequestException($request, 'order is invalid. Value values: asc, desc');
+        }
+
         $model->setPaginationOptions($page, $page_size);
+        $model->setSortingOptions($sort_by, $order);
 
         return $filters;
     }

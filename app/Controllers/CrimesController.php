@@ -22,7 +22,7 @@ class CrimesController extends BaseController
 
     public function handleGetCrimes(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($this->crimes_model, $request);
+        $filters = $this->getFilters($request, $this->crimes_model, ['crime_code', 'crime_desc']);
         $crimes = $this->crimes_model->getAllCrimes($filters);
 
         return $this->prepareOkResponse($response, (array) $crimes);
