@@ -57,8 +57,9 @@ class PoliceModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createPolice()
+    public function createPolice($police)
     {
+        return $this->insert($this->table_name, $police);
     }
 
     // TODO: Implement this

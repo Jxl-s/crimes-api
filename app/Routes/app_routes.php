@@ -66,8 +66,7 @@ $app->put('/modi/{mo_code}', [ModiController::class, 'handleUpdateModi']);
 //Police
 $app->get('/police', [PoliceController::class, 'handleGetPolice']);
 $app->get('/police/{badge_id}', [PoliceController::class, 'handleGetPoliceById']);
-//TODO: methods not yet made
-// $app->get('/police/{police_id}/reports', [PoliceController::class, '']);
+$app->get('/police/{badge_id}/reports', [PoliceController::class, 'handleGetPoliceReports']);
 
 $app->post('/police', [PoliceController::class, 'handleCreatePolice']);
 $app->delete('/police/{badge_id}', [PoliceController::class, 'handleDeletePolice']);

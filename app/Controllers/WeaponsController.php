@@ -55,12 +55,14 @@ class WeaponsController extends BaseController
 
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)
     {
-        $weapons = $request->getParsedBody();
+        $weapon = $request->getParsedBody();
+
+        //if an array given, throw exception
+        if (isset($weapon[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
         //TODO: Validate contents
-        foreach ($weapons as $id => $weapon) {
-            $this->weapons_model->createWeapon($weapon);
-        }
+        $this->weapons_model->createWeapon($weapon);
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
@@ -73,7 +75,7 @@ class WeaponsController extends BaseController
     {
         $id = $uri_args['weapon_id'];
         $weapon = $request->getParsedBody();
-        $this->reports_model->updateReport($report, $id);
+        $this->weapons_model->updateWeapon($weapon, $id);
         return $this->prepareOkResponse($response, (array) $id);
     }
 

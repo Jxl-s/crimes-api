@@ -49,7 +49,20 @@ class PoliceController extends BaseController
     
     public function handleCreatePolice(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $police = $request->getParsedBody();
+        
+        //if an array given, throw exception
+        if (isset($police[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
+        //TODO: Validate contents
+        $this->police_model->createPolice($police);
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdatePolice(Request $request, Response $response, array $uri_args)

@@ -44,11 +44,14 @@ class VictimsController extends BaseController
     
     public function handleCreateVictims(Request $request, Response $response, array $uri_args)
     {
-        $victims = $request->getParsedBody();
-        
-        foreach ($victims as $id => $victim) {
-            $this->victims_model->createVictim($victim);
-        }
+        $victim = $request->getParsedBody();
+
+        //if an array given, throw exception
+        if (isset($victim[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            
+        //TODO: Validate contents
+        $this->victims_model->createVictim($victim);
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,

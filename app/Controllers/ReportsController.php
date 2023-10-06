@@ -104,7 +104,21 @@ class ReportsController extends BaseController
 
     public function handleCreateReports(Request $request, Response $response, array $uri_args)
     {
-        return $response;
+        $report = $request->getParsedBody();
+        
+        //if an array given, throw exception    
+        if (isset($report[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
+        //TODO: Validate Data
+        $this->reports_model->createReport($report);
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateReports(Request $request, Response $response, array $uri_args)

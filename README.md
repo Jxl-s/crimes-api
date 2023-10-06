@@ -4,18 +4,10 @@ Project for 420-511-VA (Web Services)
 
 ## Getting Started
 
-Run the following commands to install the project dependencies. Use XAMPP to run the project.
-
-### Windows
+Run the following command to install the project dependencies. Use XAMPP to run the project.
 
 ```shell
 .\composer.bat install
-```
-
-### Mac or Linux
-
-```bash
-./composer.sh install
 ```
 
 ## Common Issues

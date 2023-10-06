@@ -5,6 +5,12 @@ namespace Vanier\Api\Models;
 class ReportsModel extends BaseModel
 {
     private $table_name = 'report';
+    private $report_victim = 'report_victim';
+    private $report_criminal = 'report_criminal';
+    private $report_police = 'report_police';
+    private $report_modus = 'report_modus';
+    private $report_crime = 'report_crime';
+
     public function __construct()
     {
         parent::__construct();
@@ -239,9 +245,50 @@ class ReportsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createReport()
+    public function createReport($report)
     {
+        //many to many
+        $crime_codes = $report['crime_codes'];
+        $modus_codes = $report['modus_codes'];
+        $criminal_ids = $report['criminal_ids'];
+        $victim_ids = $report['victim_ids'];
+        $police_ids = $report['police_ids'];
+
+        unset($report['crime_codes']);
+        unset($report['criminal_ids']);
+        unset($report['modus_codes']);
+        unset($report['police_ids']);
+        unset($report['victim_ids']);
+
+        //other entity to create
+        $incident = $report['incident'];
+        $location = $report['location'];
+
+        unset($report['incident']);
+        unset($report['location']);
+
         
+        $report["incident_id"] = $this->insert('incident', $incident);
+        $report["location_id"] = $this->insert('location', $location);
+        $report_id = $this->insert($this->table_name, $report);
+
+        foreach($crime_codes as $key => $code) {
+            $this->insert($this->report_crime, ['report_id' => $report_id, 'crime_code' => $code]);
+        }
+        foreach($modus_codes as $key => $code) {
+            $this->insert($this->report_modus, ['report_id' => $report_id, 'mo_code' => $code]);
+        }
+        foreach($criminal_ids as $key => $id) {
+            $this->insert($this->report_criminal, ['report_id' => $report_id, 'criminal_id' => $id]);
+        }
+        foreach($victim_ids as $key => $id) {
+            $this->insert($this->report_victim, ['report_id' => $report_id, 'victim_id' => $id]);
+        }
+        foreach($police_ids as $key => $id) {
+            $this->insert($this->report_police, ['report_id' => $report_id, 'badge_id' => $id]);
+        }
+
+        return;
     }
 
     // TODO: Implement this

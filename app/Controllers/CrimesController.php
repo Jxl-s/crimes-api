@@ -46,13 +46,14 @@ class CrimesController extends BaseController
 
     public function handleCreateCrimes(Request $request, Response $response, array $uri_args)
     {
-        $crimes = $request->getParsedBody();
+        $crime = $request->getParsedBody();
 
-        //TODO: Validate contents
+        //if an array given, throw exception    
+        if (isset($crime[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
-        foreach ($crimes as $id => $crime) {
-            $this->crimes_model->createCrime($crime);
-        }
+        //TODO: Validate Data
+        $this->crimes_model->createCrime($crime);
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
