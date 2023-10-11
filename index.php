@@ -1,11 +1,14 @@
 <?php
 use Slim\Factory\AppFactory;
+use Vanier\Api\Middleware\HelloMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ .'/app/Config/app_config.php';
 
 // Step 1) Instantiate a Slim app.
 $app = AppFactory::create();
+
+$app->addMiddleware(new HelloMiddleware());
 
 // Add the routing and body parsing middleware.
 $app->addBodyParsingMiddleware();

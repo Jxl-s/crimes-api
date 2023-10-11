@@ -54,6 +54,39 @@ class PoliceModel extends BaseModel
     // TODO: Implement this
     public function getPoliceReports($police_id)
     {
+        $sql = "SELECT * FROM report r
+            INNER JOIN incident i ON r.incident_id = i.incident_id
+            INNER JOIN location l ON r.location_id = l.location_id
+
+            WHERE r.report_id IN (
+                SELECT report_id 
+                FROM report_police rp 
+                WHERE badge_id = :police_id
+            )
+        ";
+        $reports = $this->fetchAll($sql, ['police_id' => $police_id]);
+        
+        foreach ($reports as $key => $report) {
+            //set reports[$key] = a new report (map) after re-formatted
+            $report['incident'] = [
+                'reported_time' => $report['reported_time'],
+                'occured_time' => $report['occured_time']
+            ];
+            $report['location'] = [
+                'district_id' => $report['district_id'],
+                'address' => $report['address'],
+                'cross_street' => $report['cross_street'],
+                'area_name' => $report['area_name'],
+                'latitude' => $report['latitude'],
+                'longitude' => $report['longitude'],
+            ];
+            unset($report['incident_id'], $report['reported_time'], $report['occured_time']);
+            unset($report['location_id'], $report['district_id'], $report['address'], $report['cross_street'], $report['area_name'], $report['latitude'], $report['longitude']);
+            // var_dump($report);exit;
+            $reports[$key] = $report;
+        }
+        
+        return $reports;
     }
 
     // TODO: Implement this

@@ -44,7 +44,18 @@ class CriminalsController extends BaseController
     }
 
     public function handleGetCriminalReports(Request $request, Response $response, array $uri_args) {
-        return $response;
+        // Get the ID
+        $id = $uri_args['criminal_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
+        
+        // Find all cases the given criminal involved in
+        $reports = $this->criminals_model->getCriminalReports($id);
+        //if result not exist (no police) throw exception police not found
+        if (!$reports)
+            throw new HttpNotFoundException($request, 'Criminal Not Found');
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $reports);
     }
 
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)

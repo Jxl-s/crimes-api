@@ -11,7 +11,7 @@ class HelloMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
-        //echo "Hello! From test middleware!";exit;
+        // echo "Hello! From test middleware!";//exit;
         // DO NOT remove the following statements. 
         $response = $handler->handle($request);
         return $response;
