@@ -9,6 +9,7 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\PoliceModel;
+use Vanier\Api\Models\ReportsModel;
 
 class PoliceController extends BaseController
 {
@@ -45,16 +46,17 @@ class PoliceController extends BaseController
 
     public function handleGetPoliceReports(Request $request, Response $response, array $uri_args)
     {
+        // Get the filters
+        $filters = $this->getFilters($request, new ReportsModel(), ['report_id', 'last_update', 'fatalities', 'premise',]);
+        
         // Get the ID
         $id = $uri_args['badge_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
         // Find all cases the given police involved in
-        $policeReport = $this->police_model->getPoliceReports($id);
-        //if result not exist (no police) throw exception police not found
-        if (!$policeReport)
-            throw new HttpNotFoundException($request, 'Police Not Found');
+        $policeReport = $this->police_model->getPoliceReports($id, $filters);
+
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $policeReport);

@@ -52,7 +52,7 @@ class PoliceModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getPoliceReports($police_id)
+    public function getPoliceReports($police_id, $filters)
     {
         $sql = "SELECT * FROM report r
             INNER JOIN incident i ON r.incident_id = i.incident_id
@@ -64,7 +64,31 @@ class PoliceModel extends BaseModel
                 WHERE badge_id = :police_id
             )
         ";
-        $reports = $this->fetchAll($sql, ['police_id' => $police_id]);
+
+        //filtering
+        $filters_values['police_id'] = $police_id;
+
+        if (isset($filters['from_last_update'])) {
+            $sql .= ' AND r.last_update >= :from_last_update';
+            $filters_values['from_last_update'] = $filters['from_last_update'];
+        }
+
+        if (isset($filters['to_last_update'])) {
+            $sql .= ' AND r.last_update <= :to_last_update';
+            $filters_values['to_last_update'] = $filters['to_last_update'];
+        }
+
+        if (isset($filters['fatalities'])) {
+            $sql .= ' AND r.fatalities = :fatalities';
+            $filters_values['fatalities'] = $filters['fatalities'];
+        }
+
+        if (isset($filters['premise'])) {
+            $sql .= ' AND r.premise LIKE CONCAT(\'%\', :premise, \'%\')';
+            $filters_values['premise'] = $filters['premise'];
+        }
+
+        $reports = $this->fetchAll($sql, $filters_values);
         
         foreach ($reports as $key => $report) {
             //set reports[$key] = a new report (map) after re-formatted
