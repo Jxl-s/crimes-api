@@ -65,16 +65,13 @@ class CriminalsModel extends BaseModel
     // TODO: Implement this
     public function getCriminalReports($criminal_id)
     {
-        $sql = "SELECT * FROM report r
+        $sql = "SELECT r.*, i.*, l.* FROM report r
             INNER JOIN incident i ON r.incident_id = i.incident_id
             INNER JOIN location l ON r.location_id = l.location_id
-
-            WHERE r.report_id IN (
-                SELECT report_id 
-                FROM report_criminal rc
-                WHERE criminal_id = :criminal_id
-            )
+            INNER JOIN report_criminal rc ON r.report_id = rc.report_id
+            WHERE rc.criminal_id = :criminal_id
         ";
+
         $reports = $this->fetchAll($sql, ['criminal_id' => $criminal_id]);
         
         foreach ($reports as $key => $report) {
