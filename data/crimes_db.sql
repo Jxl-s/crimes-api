@@ -1,12 +1,11 @@
-
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 25, 2023 at 01:33 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: localhost
+-- Generation Time: Oct 15, 2023 at 06:15 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `crimes_db`
 --
-CREATE DATABASE crimes_db;
-USE crimes_db;
+CREATE DATABASE IF NOT EXISTS `crimes_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `crimes_db`;
 
 -- --------------------------------------------------------
 
@@ -2418,20 +2417,96 @@ INSERT INTO `victim` (`victim_id`, `person_id`) VALUES
 
 CREATE TABLE `weapon` (
   `weapon_id` int(11) NOT NULL,
-  `type` varchar(20) NOT NULL,
-  `status` varchar(10) NOT NULL,
-  `material` varchar(10) NOT NULL,
-  `color` varchar(15) NOT NULL,
-  `other` varchar(50) NOT NULL
+  `type` varchar(50) NOT NULL,
+  `material` varchar(50) NOT NULL,
+  `color` varchar(50) NOT NULL,
+  `description` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `weapon`
 --
 
-INSERT INTO `weapon` (`weapon_id`, `type`, `status`, `material`, `color`, `other`) VALUES
-(400, 'Fist', 'N/A', 'Flesh', 'Skin', 'STRONG-ARM (HANDS, FIST, FEET OR BODILY FORCE)'),
-(500, 'UNKNOWN', 'UNKNOWN', 'UNKNOWN', 'UNKNOWN', 'UNKNOWN WEAPON/OTHER WEAPON');
+INSERT INTO `weapon` (`weapon_id`, `type`, `material`, `color`, `description`) VALUES
+(101, 'Firearm', 'Metal', 'Various', 'REVOLVER'),
+(102, 'Firearm', 'Metal', 'Black', 'HAND GUN'),
+(103, 'Firearm', 'Metal', 'Various', 'RIFLE'),
+(104, 'Firearm', 'Metal', 'Black', 'SHOTGUN'),
+(105, 'Firearm', 'Metal', 'Various', 'SAWED OFF RIFLE/SHOTGUN'),
+(106, 'Firearm', 'Metal', 'Various', 'UNKNOWN FIREARM'),
+(107, 'Firearm', 'Metal', 'Various', 'OTHER FIREARM'),
+(108, 'Firearm', 'Metal', 'Various', 'AUTOMATIC WEAPON/SUB-MACHINE GUN'),
+(109, 'Firearm', 'Metal', 'Black', 'SEMI-AUTOMATIC PISTOL'),
+(110, 'Firearm', 'Metal', 'Various', 'SEMI-AUTOMATIC RIFLE'),
+(111, 'Firearm', 'Plastic', 'Various', 'STARTER PISTOL/REVOLVER'),
+(112, 'Other', 'Plastic', 'Various', 'TOY GUN'),
+(113, 'Other', 'Plastic', 'Black', 'SIMULATED GUN'),
+(114, 'Firearm', 'Plastic', 'Various', 'AIR PISTOL/REVOLVER/RIFLE/BB GUN'),
+(115, 'Firearm', 'Metal', 'Various', 'ASSAULT WEAPON/UZI/AK47/ETC'),
+(116, 'Firearm', 'Metal', 'Various', 'ANTIQUE FIREARM'),
+(117, 'Firearm', 'Metal', 'Various', 'UNKNOWN TYPE SEMIAUTOMATIC ASSAULT RIFLE'),
+(118, 'Firearm', 'Metal', 'Various', 'UZI SEMIAUTOMATIC ASSAULT RIFLE'),
+(119, 'Firearm', 'Metal', 'Various', 'MAC-10 SEMIAUTOMATIC ASSAULT WEAPON'),
+(120, 'Firearm', 'Metal', 'Various', 'MAC-11 SEMIAUTOMATIC ASSAULT WEAPON'),
+(121, 'Firearm', 'Metal', 'Various', 'HECKLER & KOCH 91 SEMIAUTOMATIC ASSAULT RIFLE'),
+(122, 'Firearm', 'Metal', 'Various', 'HECKLER & KOCH 93 SEMIAUTOMATIC ASSAULT RIFLE'),
+(123, 'Firearm', 'Metal', 'Various', 'M1-1 SEMIAUTOMATIC ASSAULT RIFLE'),
+(124, 'Firearm', 'Metal', 'Various', 'M-14 SEMIAUTOMATIC ASSAULT RIFLE'),
+(125, 'Firearm', 'Metal', 'Various', 'RELIC FIREARM'),
+(200, 'Melee', 'Metal', 'Various', 'KNIFE WITH BLADE 6INCHES OR LESS'),
+(201, 'Melee', 'Metal', 'Various', 'KNIFE WITH BLADE OVER 6 INCHES IN LENGTH'),
+(202, 'Melee', 'Metal', 'Various', 'BOWIE KNIFE'),
+(203, 'Melee', 'Metal', 'Various', 'DIRK/DAGGER'),
+(204, 'Melee', 'Metal', 'Silver', 'FOLDING KNIFE'),
+(205, 'Melee', 'Metal', 'Various', 'KITCHEN KNIFE'),
+(206, 'Melee', 'Metal', 'Various', 'SWITCH BLADE'),
+(207, 'Melee', 'Metal', 'Various', 'OTHER KNIFE'),
+(208, 'Melee', 'Metal', 'Various', 'RAZOR'),
+(209, 'Melee', 'Metal', 'Various', 'STRAIGHT RAZOR'),
+(210, 'Melee', 'Metal', 'Various', 'RAZOR BLADE'),
+(211, 'Melee', 'Metal', 'Various', 'AXE'),
+(212, 'Melee', 'Glass', 'Clear', 'BOTTLE'),
+(213, 'Melee', 'Metal', 'Various', 'CLEAVER'),
+(214, 'Melee', 'Metal', 'Silver', 'ICE PICK'),
+(215, 'Melee', 'Metal', 'Various', 'MACHETE'),
+(216, 'Melee', 'Metal', 'Silver', 'SCISSORS'),
+(217, 'Melee', 'Metal', 'Various', 'SWORD'),
+(218, 'Melee', 'N/A', 'N/A', 'OTHER CUTTING INSTRUMENT'),
+(219, 'Melee', 'Metal', 'Various', 'SCREWDRIVER'),
+(220, 'Melee', 'Plastic', 'Various', 'SYRINGE'),
+(221, 'Other', 'Glass', 'Various', 'GLASS'),
+(223, 'Melee', 'Metal', 'Various', 'UNKNOWN TYPE CUTTING INSTRUMENT'),
+(300, 'Melee', 'Wood', 'Various', 'BLACKJACK'),
+(301, 'Melee', 'Metal', 'Various', 'BELT FLAILING INSTRUMENT/CHAIN'),
+(302, 'Melee', 'Wood', 'Brown', 'BLUNT INSTRUMENT'),
+(303, 'Melee', 'Metal', 'Various', 'BRASS KNUCKLES'),
+(304, 'Melee', 'N/A', 'N/A', 'CLUB/BAT'),
+(305, 'Other', 'Various', 'Various', 'FIXED OBJECT'),
+(306, 'Melee', 'Stone', 'Brown', 'ROCK/THROWN OBJECT'),
+(307, 'Other', 'Metal', 'Various', 'VEHICLE'),
+(308, 'Melee', 'Wood', 'Brown', 'STICK'),
+(309, 'Melee', 'Wood', 'Various', 'BOARD'),
+(310, 'Melee', 'Stone', 'Various', 'CONCRETE BLOCK/BRICK'),
+(311, 'Melee', 'Metal', 'Various', 'HAMMER'),
+(312, 'Melee', 'Metal', 'Various', 'PIPE/METAL PIPE'),
+(400, 'Melee', 'N/A', 'N/A', 'STRONG-ARM (HANDS, FIST, FEET OR BODILY FORCE)'),
+(500, 'Other', 'N/A', 'N/A', 'UNKNOWN WEAPON/OTHER WEAPON'),
+(501, 'Hazard', 'N/A', 'N/A', 'BOMB THREAT'),
+(502, 'Other', 'Wood', 'Various', 'BOW AND ARROW'),
+(503, 'Hazard', 'Various', 'Various', 'CAUSTIC CHEMICAL/POISON'),
+(504, 'Other', 'Paper', 'White', 'DEMAND NOTE'),
+(505, 'Hazard', 'Various', 'Various', 'EXPLOSIVE DEVICE'),
+(506, 'Hazard', 'N/A', 'N/A', 'FIRE'),
+(507, 'Other', 'Various', 'Various', 'LIQUOR/DRUGS'),
+(508, 'Melee', 'Various', 'Various', 'MARTIAL ARTS WEAPONS'),
+(509, 'Melee', 'Various', 'Various', 'ROPE/LIGATURE'),
+(510, 'Hazard', 'Various', 'Various', 'SCALDING LIQUID'),
+(511, 'Hazard', 'N/A', 'N/A', 'VERBAL THREAT'),
+(512, 'Hazard', 'Plastic', 'Various', 'MACE/PEPPER SPRAY'),
+(513, 'Hazard', 'Plastic', 'Various', 'STUN GUN'),
+(514, 'Melee', 'Metal', 'Various', 'TIRE IRON'),
+(515, 'Hazard', 'N/A', 'N/A', 'PHYSICAL PRESENCE'),
+(516, 'Other', 'N/A', 'N/A', 'DOG/ANIMAL (SIC ANIMAL ON)');
 
 --
 -- Indexes for dumped tables
@@ -2595,7 +2670,7 @@ ALTER TABLE `victim`
 -- AUTO_INCREMENT for table `weapon`
 --
 ALTER TABLE `weapon`
-  MODIFY `weapon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
+  MODIFY `weapon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=517;
 
 --
 -- Constraints for dumped tables

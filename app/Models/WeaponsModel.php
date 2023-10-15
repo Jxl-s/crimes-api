@@ -22,6 +22,21 @@ class WeaponsModel extends BaseModel
             $filters_values['type'] = $filters['type'];
         }
 
+        if (isset($filters['material'])) {
+            $sql .= ' AND material = :material';
+            $filters_values['material'] = $filters['material'];
+        }
+
+        if (isset($filters['color'])) {
+            $sql .= ' AND color = :color';
+            $filters_values['color'] = $filters['color'];
+        }
+
+        if (isset($filters['description'])) {
+            $sql .= ' AND description LIKE CONCAT(\'%\', :description, \'%\')';
+            $filters_values['description'] = $filters['description'];
+        }
+
         return $this->paginate($sql, $filters_values);
     }
 
