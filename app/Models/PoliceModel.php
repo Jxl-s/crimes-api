@@ -14,6 +14,7 @@ class PoliceModel extends BaseModel
     public function getAllPolice(array $filters)
     {
         $filters_values = [];
+
         $sql = "SELECT * FROM $this->table_name WHERE 1";
 
         if (isset($filters['first_name'])) {
@@ -54,6 +55,7 @@ class PoliceModel extends BaseModel
     public function getPoliceReports($badge_id, $filters)
     {
         $filters_values = [];
+        
         $sql = "SELECT * FROM report r
             INNER JOIN incident i ON r.incident_id = i.incident_id
             INNER JOIN location l ON r.location_id = l.location_id
