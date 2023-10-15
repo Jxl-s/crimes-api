@@ -14,13 +14,14 @@ class WeaponsController extends BaseController
 {
     private $weapons_model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->weapons_model = new WeaponsModel();
     }
 
     public function handleGetWeapons(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($this->weapons_model, $request);
+        $filters = $this->getFilters($request, $this->weapons_model, ['weapon_id', 'type', 'material', 'color', 'other']);
         $weapons = $this->weapons_model->getAllWeapons($filters);
 
         return $this->prepareOkResponse($response, (array) $weapons);
@@ -41,15 +42,16 @@ class WeaponsController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $weapon);
     }
-    
-    public function handleGetWeaponReports(Request $request, Response $response, array $uri_args) {
+
+    public function handleGetWeaponReports(Request $request, Response $response, array $uri_args)
+    {
         $weapon_id = $uri_args['weapon_id'];
         if (!Input::isInt($weapon_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
         $reports = $this->weapons_model->getWeaponReports($weapon_id);
-            if (!$reports)
-                throw new HttpNotFoundException($request, 'Reports Not Found');
+        if (!$reports)
+            throw new HttpNotFoundException($request, 'Reports Not Found');
         return $this->prepareOkResponse($response, (array) $reports);
     }
 

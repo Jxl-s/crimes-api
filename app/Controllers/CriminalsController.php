@@ -21,7 +21,7 @@ class CriminalsController extends BaseController
 
     public function handleGetCriminals(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($this->criminals_model, $request);
+        $filters = $this->getFilters($request, $this->criminals_model, ['criminal_id', 'first_name', 'last_name', 'age', 'height']);
         $criminals = $this->criminals_model->getAllCriminals($filters);
 
         return $this->prepareOkResponse($response, (array) $criminals);
@@ -43,12 +43,13 @@ class CriminalsController extends BaseController
         return $this->prepareOkResponse($response, (array) $criminal);
     }
 
-    public function handleGetCriminalReports(Request $request, Response $response, array $uri_args) {
+    public function handleGetCriminalReports(Request $request, Response $response, array $uri_args)
+    {
         // Get the ID
         $id = $uri_args['criminal_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        
+
         // Find all cases the given criminal involved in
         $reports = $this->criminals_model->getCriminalReports($id);
         //if result not exist (no police) throw exception police not found
@@ -61,7 +62,7 @@ class CriminalsController extends BaseController
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {
         $criminal = $request->getParsedBody();
-        
+
         //if an array given, throw exception    
         if (isset($criminal[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');

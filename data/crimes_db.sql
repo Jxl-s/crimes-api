@@ -145,7 +145,7 @@ CREATE TABLE `district` (
   `district_id` varchar(4) NOT NULL,
   `st_name` varchar(20) NOT NULL,
   `bureau` varchar(20) NOT NULL,
-  `precint` int(11) NOT NULL,
+  `precinct` int(11) NOT NULL,
   `omega_label` varchar(20) NOT NULL,
   `station` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -154,7 +154,7 @@ CREATE TABLE `district` (
 -- Dumping data for table `district`
 --
 
-INSERT INTO `district` (`district_id`, `st_name`, `bureau`, `precint`, `omega_label`, `station`) VALUES
+INSERT INTO `district` (`district_id`, `st_name`, `bureau`, `precinct`, `omega_label`, `station`) VALUES
 ('0', '0', '0', 0, '0', '0'),
 ('1001', 'West Valley Division', 'VALLEY BUREAU', 10, 'LAPD 1001', 'WEST VALLEY'),
 ('1003', 'West Valley Division', 'VALLEY BUREAU', 10, 'LAPD 1003', 'WEST VALLEY'),
@@ -811,7 +811,7 @@ INSERT INTO `district` (`district_id`, `st_name`, `bureau`, `precint`, `omega_la
 ('2058', 'Olympic Division', 'WEST BUREAU', 20, 'LAPD 2058', 'OLYMPIC'),
 ('2062', 'Olympic Division', 'WEST BUREAU', 20, 'LAPD 2062', 'OLYMPIC'),
 ('2063', 'Olympic Division', 'WEST BUREAU', 20, 'LAPD 2063', 'OLYMPIC');
-INSERT INTO `district` (`district_id`, `st_name`, `bureau`, `precint`, `omega_label`, `station`) VALUES
+INSERT INTO `district` (`district_id`, `st_name`, `bureau`, `precinct`, `omega_label`, `station`) VALUES
 ('2064', 'Olympic Division', 'WEST BUREAU', 20, 'LAPD 2064', 'OLYMPIC'),
 ('2069', 'Olympic Division', 'WEST BUREAU', 20, 'LAPD 2069', 'OLYMPIC'),
 ('2071', 'Olympic Division', 'WEST BUREAU', 20, 'LAPD 2071', 'OLYMPIC'),

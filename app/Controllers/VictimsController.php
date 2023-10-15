@@ -14,13 +14,14 @@ class VictimsController extends BaseController
 {
     private $victims_model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->victims_model = new VictimsModel();
     }
 
     public function handleGetVictims(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($this->victims_model, $request);
+        $filters = $this->getFilters($request, $this->victims_model, ['victim_id', 'first_name', 'last_name', 'age', 'height']);
         $victims = $this->victims_model->getAllVictims($filters);
 
         return $this->prepareOkResponse($response, (array) $victims);
@@ -32,7 +33,7 @@ class VictimsController extends BaseController
         $id = $uri_args['victim_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        
+
         // Find the victim
         $victim = $this->victims_model->getVictimById($id);
         if (!$victim)
@@ -41,7 +42,7 @@ class VictimsController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $victim);
     }
-    
+
     public function handleCreateVictims(Request $request, Response $response, array $uri_args)
     {
         $victim = $request->getParsedBody();
@@ -49,7 +50,7 @@ class VictimsController extends BaseController
         //if an array given, throw exception
         if (isset($victim[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-            
+
         //TODO: Validate contents
         $this->victims_model->createVictim($victim);
 
@@ -75,5 +76,4 @@ class VictimsController extends BaseController
         $this->victims_model->deleteVictim($victim);
         return $this->prepareOkResponse($response, (array) $victim);
     }
-
 }

@@ -14,13 +14,14 @@ class DistrictsController extends BaseController
 {
     private $districts_model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->districts_model = new DistrictsModel();
     }
 
     public function handleGetDistricts(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($this->districts_model, $request);
+        $filters = $this->getFilters($request, $this->districts_model, ['district_id', 'st_name', 'bureau', 'precinct', 'omega_label', 'station']);
         $districts = $this->districts_model->getAllDistricts($filters);
 
         return $this->prepareOkResponse($response, (array) $districts);
@@ -32,7 +33,7 @@ class DistrictsController extends BaseController
         $id = $uri_args['district_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        
+
         // Find the district
         $district = $this->districts_model->getDistrictById($id);
         if (!$district)
@@ -42,32 +43,34 @@ class DistrictsController extends BaseController
         return $this->prepareOkResponse($response, (array) $district);
     }
 
-    public function handleGetDistrictReports(Request $request, Response $response, array $uri_args) {
+    public function handleGetDistrictReports(Request $request, Response $response, array $uri_args)
+    {
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
         $reports = $this->districts_model->getDistrictReports($district_id);
-            if (!$reports)
-                throw new HttpNotFoundException($request, 'Reports Not Found');
+        if (!$reports)
+            throw new HttpNotFoundException($request, 'Reports Not Found');
         return $this->prepareOkResponse($response, (array) $reports);
     }
 
-    public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args) {
+    public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args)
+    {
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
         $police = $this->districts_model->getDistrictPolice($district_id);
-            if (!$police)
-                throw new HttpNotFoundException($request, 'Police Not Found');
+        if (!$police)
+            throw new HttpNotFoundException($request, 'Police Not Found');
         return $this->prepareOkResponse($response, (array) $police);
     }
-    
+
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)
     {
         $district = $request->getParsedBody();
-        
+
         //if an array given, throw exception
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');

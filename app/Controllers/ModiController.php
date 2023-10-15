@@ -14,13 +14,14 @@ class ModiController extends BaseController
 {
     private $modi_model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->modi_model = new ModiModel();
     }
 
     public function handleGetModi(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($this->modi_model, $request);
+        $filters = $this->getFilters($request, $this->modi_model, ['mo_code', 'mo_desc']);
         $modi = $this->modi_model->getAllModi($filters);
 
         return $this->prepareOkResponse($response, (array) $modi);
@@ -39,11 +40,11 @@ class ModiController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $modus);
     }
-    
+
     public function handleCreateModi(Request $request, Response $response, array $uri_args)
     {
         $modi = $request->getParsedBody();
-        
+
         //if an array given, throw exception
         if (isset($modi[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
@@ -64,7 +65,6 @@ class ModiController extends BaseController
         $desc = $request->getParsedBody();
         $this->modi_model->updateModus($desc, $code);
         return $this->prepareOkResponse($response, (array) $desc);
-
     }
 
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
