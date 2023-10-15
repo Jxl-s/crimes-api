@@ -21,7 +21,7 @@ class WeaponsController extends BaseController
 
     public function handleGetWeapons(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($request, $this->weapons_model, ['weapon_id', 'type', 'material', 'color', 'other']);
+        $filters = $this->getFilters($request, $this->weapons_model, ['weapon_id', 'type', 'material', 'color', 'description']);
         $weapons = $this->weapons_model->getAllWeapons($filters);
 
         return $this->prepareOkResponse($response, (array) $weapons);

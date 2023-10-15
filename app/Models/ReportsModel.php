@@ -27,7 +27,7 @@ class ReportsModel extends BaseModel
     {
         $report['incident'] = [
             'reported_time' => $report['reported_time'],
-            'occured_time' => $report['occured_time']
+            'occurred_time' => $report['occurred_time']
         ];
 
         $report['location'] = [
@@ -48,7 +48,7 @@ class ReportsModel extends BaseModel
 
         $report['modus_codes'] = explode(',', $report['modus_codes']);
 
-        unset($report['incident_id'], $report['reported_time'], $report['occured_time']);
+        unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
         unset($report['location_id'], $report['district_id'], $report['address'], $report['cross_street'], $report['area_name'], $report['latitude'], $report['longitude']);
 
         return $report;
