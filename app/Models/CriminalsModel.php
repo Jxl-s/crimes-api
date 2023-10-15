@@ -65,6 +65,7 @@ class CriminalsModel extends BaseModel
     // TODO: Implement this
     public function getCriminalReports($criminal_id, $filters)
     {
+        $filters_values = [];
         $sql = "SELECT r.*, i.*, l.* FROM report r
             INNER JOIN incident i ON r.incident_id = i.incident_id
             INNER JOIN location l ON r.location_id = l.location_id
