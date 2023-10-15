@@ -11,7 +11,6 @@ class PoliceModel extends BaseModel
         parent::__construct();
     }
 
-    // TODO: Implement this
     public function getAllPolice(array $filters)
     {
         $filters_values = [];
@@ -51,27 +50,24 @@ class PoliceModel extends BaseModel
         return $this->fetchSingle($sql, ['badge_id' => $badge_id]);
     }
 
-    // TODO: Implement this
-    public function getPoliceReports($police_id)
+    public function getPoliceReports($badge_id)
     {
         $sql = "SELECT * FROM report r
             INNER JOIN incident i ON r.incident_id = i.incident_id
             INNER JOIN location l ON r.location_id = l.location_id
+            INNER JOIN report_police rp ON r.report_id = rp.report_id
 
-            WHERE r.report_id IN (
-                SELECT report_id 
-                FROM report_police rp 
-                WHERE badge_id = :police_id
-            )
+            WHERE rp.badge_id = :police_id
         ";
-        $reports = $this->fetchAll($sql, ['police_id' => $police_id]);
-        
-        foreach ($reports as $key => $report) {
-            //set reports[$key] = a new report (map) after re-formatted
+
+        $reports = $this->fetchAll($sql, ['police_id' => $badge_id]);
+
+        foreach ($reports as &$report) {
             $report['incident'] = [
                 'reported_time' => $report['reported_time'],
                 'occurred_time' => $report['occurred_time']
             ];
+
             $report['location'] = [
                 'district_id' => $report['district_id'],
                 'address' => $report['address'],
@@ -80,12 +76,11 @@ class PoliceModel extends BaseModel
                 'latitude' => $report['latitude'],
                 'longitude' => $report['longitude'],
             ];
+
             unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
             unset($report['location_id'], $report['district_id'], $report['address'], $report['cross_street'], $report['area_name'], $report['latitude'], $report['longitude']);
-            // var_dump($report);exit;
-            $reports[$key] = $report;
         }
-        
+
         return $reports;
     }
 
