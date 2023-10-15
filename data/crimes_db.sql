@@ -1301,14 +1301,14 @@ INSERT INTO `district` (`district_id`, `st_name`, `bureau`, `precinct`, `omega_l
 CREATE TABLE `incident` (
   `incident_id` int(11) NOT NULL,
   `reported_time` datetime NOT NULL,
-  `occured_time` datetime NOT NULL
+  `occurred_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `incident`
 --
 
-INSERT INTO `incident` (`incident_id`, `reported_time`, `occured_time`) VALUES
+INSERT INTO `incident` (`incident_id`, `reported_time`, `occurred_time`) VALUES
 (1, '2020-02-22 12:00:00', '2020-02-19 12:00:00'),
 (2, '2020-01-08 12:00:00', '2020-01-08 22:30:00'),
 (3, '2020-01-02 00:00:00', '2020-01-01 03:30:00'),
