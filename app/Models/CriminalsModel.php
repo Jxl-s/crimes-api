@@ -95,9 +95,8 @@ class CriminalsModel extends BaseModel
             $filters_values['premise'] = $filters['premise'];
         }
 
-        $reports = $this->fetchAll($sql, $filters_values);
-        
-        foreach ($reports as &$report) {
+        $reports = $this->paginate($sql, $filters_values);
+        foreach ($reports['data'] as &$report) {
             $report['incident'] = [
                 'reported_time' => $report['reported_time'],
                 'occurred_time' => $report['occurred_time']
@@ -113,7 +112,9 @@ class CriminalsModel extends BaseModel
             ];
 
             unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
-            unset($report['location_id'], $report['district_id'], $report['address'], $report['cross_street'], $report['area_name'], $report['latitude'], $report['longitude']);
+            unset($report['location_id'], $report['district_id'], $report['address'], 
+                $report['cross_street'], $report['area_name'], $report['latitude'], 
+                $report['longitude']);
         }
         
         return $reports;

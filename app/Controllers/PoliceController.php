@@ -47,7 +47,7 @@ class PoliceController extends BaseController
     public function handleGetPoliceReports(Request $request, Response $response, array $uri_args)
     {
         // Get the filters
-        $filters = $this->getFilters($request, new ReportsModel(), ['report_id', 'last_update', 'fatalities', 'premise',]);
+        $filters = $this->getFilters($request, $this->police_model, ['report_id', 'last_update', 'fatalities', 'premise',]);
         
         // Get the ID
         $id = $uri_args['badge_id'];

@@ -56,7 +56,7 @@ class PoliceModel extends BaseModel
     {
         $filters_values = [];
         
-        $sql = "SELECT * FROM report r
+        $sql = "SELECT r.*, i.*, l.* FROM report r
             INNER JOIN incident i ON r.incident_id = i.incident_id
             INNER JOIN location l ON r.location_id = l.location_id
             INNER JOIN report_police rp ON r.report_id = rp.report_id
@@ -87,10 +87,9 @@ class PoliceModel extends BaseModel
             $filters_values['premise'] = $filters['premise'];
         }
 
-        $reports = $this->fetchAll($sql, $filters_values);
+        $reports = $this->paginate($sql, $filters_values);
         
-        foreach ($reports as &$report) {
-            //set reports[$key] = a new report (map) after re-formatted
+        foreach ($reports['data'] as &$report) {
             $report['incident'] = [
                 'reported_time' => $report['reported_time'],
                 'occurred_time' => $report['occurred_time']
