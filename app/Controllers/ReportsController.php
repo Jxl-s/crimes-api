@@ -19,7 +19,7 @@ class ReportsController extends BaseController
         $this->reports_model = new ReportsModel();
     }
 
-    public function handleGetReports(Request $request, Response $response, array $uri_args)
+    public function handleGetReports(Request $request, Response $response)
     {
         $filters = $this->getFilters($request, $this->reports_model, [
             'report_id',
@@ -50,13 +50,20 @@ class ReportsController extends BaseController
 
     public function handleGetReportVictims(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->reports_model, [
+            'victim_id', 
+            'first_name', 
+            'last_name', 
+            'age', 
+            'height'
+        ]);
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
 
         // Get the victims
-        $victims = $this->reports_model->getReportVictims($id);
+        $victims = $this->reports_model->getReportVictims($id, $filters);
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $victims);
@@ -64,13 +71,20 @@ class ReportsController extends BaseController
 
     public function handleGetReportCriminals(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->reports_model, [
+            'criminal_id', 
+            'first_name', 
+            'last_name', 
+            'age', 
+            'height'
+        ]);
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
 
         // Get the criminals
-        $criminals = $this->reports_model->getReportCriminals($id);
+        $criminals = $this->reports_model->getReportCriminals($id, $filters);
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $criminals);
@@ -78,13 +92,20 @@ class ReportsController extends BaseController
 
     public function handleGetReportPolice(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->reports_model, [
+            'badge_id', 
+            'first_name', 
+            'last_name', 
+            'join_date', 
+            'rank'
+        ]);
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
 
         // Get the police officers
-        $police = $this->reports_model->getReportPolice($id);
+        $police = $this->reports_model->getReportPolice($id, $filters);
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $police);
@@ -92,13 +113,17 @@ class ReportsController extends BaseController
 
     public function handleGetReportCrimes(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->reports_model, [
+            'crime_code', 
+            'crime_desc'
+        ]);
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
 
         // Get the crimes
-        $crimes = $this->reports_model->getReportCrimes($id);
+        $crimes = $this->reports_model->getReportCrimes($id, $filters);
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $crimes);
@@ -106,13 +131,18 @@ class ReportsController extends BaseController
 
     public function handleGetReportModus(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->reports_model, [
+            'mo_code', 
+            'mo_desc'
+        ]);
+
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
 
         // Get the modi
-        $modi = $this->reports_model->getReportModi($id);
+        $modi = $this->reports_model->getReportModi($id, $filters);
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $modi);

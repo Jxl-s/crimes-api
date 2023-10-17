@@ -9,7 +9,6 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\PoliceModel;
-use Vanier\Api\Models\ReportsModel;
 
 class PoliceController extends BaseController
 {
@@ -20,7 +19,7 @@ class PoliceController extends BaseController
         $this->police_model = new PoliceModel();
     }
 
-    public function handleGetPolice(Request $request, Response $response, array $uri_args)
+    public function handleGetPolice(Request $request, Response $response)
     {
         $filters = $this->getFilters($request, $this->police_model, ['badge_id', 'first_name', 'last_name', 'join_date', 'rank']);
         $police = $this->police_model->getAllPolice($filters);

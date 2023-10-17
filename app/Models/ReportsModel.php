@@ -162,7 +162,7 @@ class ReportsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getReportVictims($report_id)
+    public function getReportVictims($report_id, $filters)
     {
         $sql = "SELECT v.victim_id, first_name, last_name, age, sex, height, descent FROM report_victim rv
         INNER JOIN victim v ON rv.victim_id = v.victim_id
@@ -172,12 +172,12 @@ class ReportsModel extends BaseModel
         ";
 
         // No filters are used for this endpoint
-        $victims = $this->fetchAll($sql, ['report_id' => $report_id]);
+        $victims = $this->paginate($sql, ['report_id' => $report_id]);
         return $victims;
     }
 
     // TODO: Implement this
-    public function getReportCriminals($report_id)
+    public function getReportCriminals($report_id, $filters)
     {
         $sql = "SELECT c.criminal_id, first_name, last_name, age, sex, height, descent, is_arrested FROM report_criminal rc
         INNER JOIN criminal c ON rc.criminal_id = c.criminal_id
@@ -187,12 +187,12 @@ class ReportsModel extends BaseModel
         ";
 
         // No filters are used for this endpoint
-        $criminals = $this->fetchAll($sql, ['report_id' => $report_id]);
+        $criminals = $this->paginate($sql, ['report_id' => $report_id]);
         return $criminals;
     }
 
     // TODO: Implement this
-    public function getReportPolice($report_id)
+    public function getReportPolice($report_id, $filters)
     {
         $sql = "SELECT p.* FROM report_police rp
         INNER JOIN police p ON rp.badge_id = p.badge_id
@@ -201,12 +201,12 @@ class ReportsModel extends BaseModel
         ";
 
         // No filters are used for this endpoint
-        $police = $this->fetchAll($sql, ['report_id' => $report_id]);
+        $police = $this->paginate($sql, ['report_id' => $report_id]);
         return $police;
     }
 
     // TODO: Implement this
-    public function getReportCrimes($report_id)
+    public function getReportCrimes($report_id, $filters)
     {
         $sql = "SELECT c.* FROM report_crime rc
         INNER JOIN crime c ON rc.crime_code = c.crime_code
@@ -215,12 +215,12 @@ class ReportsModel extends BaseModel
         ";
 
         // No filters are used for this endpoint
-        $crimes = $this->fetchAll($sql, ['report_id' => $report_id]);
+        $crimes = $this->paginate($sql, ['report_id' => $report_id]);
         return $crimes;
     }
 
     // TODO: Implement this
-    public function getReportModi($report_id)
+    public function getReportModi($report_id, $filters)
     {
         $sql = "SELECT m.* FROM report_modus rm
         INNER JOIN modus m ON rm.mo_code = m.mo_code
@@ -229,7 +229,7 @@ class ReportsModel extends BaseModel
         ";
 
         // No filters are used for this endpoint
-        $crimes = $this->fetchAll($sql, ['report_id' => $report_id]);
+        $crimes = $this->paginate($sql, ['report_id' => $report_id]);
         return $crimes;
     }
 

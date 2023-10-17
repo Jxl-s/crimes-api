@@ -9,7 +9,6 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\CriminalsModel;
-use Vanier\Api\Models\ReportsModel;
 
 class CriminalsController extends BaseController
 {
