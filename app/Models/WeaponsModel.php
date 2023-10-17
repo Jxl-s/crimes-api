@@ -49,8 +49,53 @@ class WeaponsModel extends BaseModel
     // TODO: Implement this
     public function getWeaponReports($weapon_id)
     {
-        $sql = "SELECT * FROM report WHERE weapon_id = :weapon_id";
-        return $this->fetchAll($sql,[':weapon_id' => $weapon_id]);
+        $sql = "SELECT r.*, i.*, l.* FROM report r 
+        INNER JOIN location l ON r.location_id = l.location_id 
+        INNER JOIN incident i ON r.incident_id = i.incident_id WHERE weapon_id = :weapon_id";
+        $filters_values['district_id'] = $weapon_id;
+        if (isset($filters['from_last_update'])) {
+            $sql .= ' AND r.last_update >= :from_last_update';
+            $filters_values['from_last_update'] = $filters['from_last_update'];
+        }
+
+        if (isset($filters['to_last_update'])) {
+            $sql .= ' AND r.last_update <= :to_last_update';
+            $filters_values['to_last_update'] = $filters['to_last_update'];
+        }
+
+        if (isset($filters['fatalities'])) {
+            $sql .= ' AND r.fatalities = :fatalities';
+            $filters_values['fatalities'] = $filters['fatalities'];
+        }
+
+        if (isset($filters['premise'])) {
+            $sql .= ' AND r.premise LIKE CONCAT(\'%\', :premise, \'%\')';
+            $filters_values['premise'] = $filters['premise'];
+        }
+
+        $reports = $this->paginate($sql, $filters_values);
+        foreach ($reports['data'] as &$report) {
+            $report['incident'] = [
+                'reported_time' => $report['reported_time'],
+                'occurred_time' => $report['occurred_time']
+            ];
+
+            $report['location'] = [
+                'district_id' => $report['district_id'],
+                'address' => $report['address'],
+                'cross_street' => $report['cross_street'],
+                'area_name' => $report['area_name'],
+                'latitude' => $report['latitude'],
+                'longitude' => $report['longitude'],
+            ];
+
+            unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
+            unset($report['location_id'], $report['district_id'], $report['address'], 
+                $report['cross_street'], $report['area_name'], $report['latitude'], 
+                $report['longitude']);
+        }
+        
+        return $reports;
     }
 
     // TODO: Implement this

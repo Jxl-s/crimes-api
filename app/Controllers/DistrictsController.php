@@ -32,7 +32,7 @@ class DistrictsController extends BaseController
         // Get the ID
         $id = $uri_args['district_id'];
         if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
+            throw new HttpBadRequestException($request, "Invalid District Id");
 
         // Find the district
         $district = $this->districts_model->getDistrictById($id);
@@ -45,11 +45,12 @@ class DistrictsController extends BaseController
 
     public function handleGetDistrictReports(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'premise',]);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
-        $reports = $this->districts_model->getDistrictReports($district_id);
+        $reports = $this->districts_model->getDistrictReports($district_id, $filters);
         if (!$reports)
             throw new HttpNotFoundException($request, 'Reports Not Found');
         return $this->prepareOkResponse($response, (array) $reports);
@@ -57,11 +58,12 @@ class DistrictsController extends BaseController
 
     public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args)
     {
+        $filters = $this->getFilters($request, $this->districts_model, ['first_name', 'first_name', 'from_join_date', 'to_join_date', 'rank']);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
-        $police = $this->districts_model->getDistrictPolice($district_id);
+        $police = $this->districts_model->getDistrictPolice($district_id, $filters);
         if (!$police)
             throw new HttpNotFoundException($request, 'Police Not Found');
         return $this->prepareOkResponse($response, (array) $police);
