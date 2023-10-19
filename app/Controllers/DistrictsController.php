@@ -45,7 +45,7 @@ class DistrictsController extends BaseController
 
     public function handleGetDistrictReports(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'premise',]);
+        $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'premise']);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
@@ -58,7 +58,7 @@ class DistrictsController extends BaseController
 
     public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($request, $this->districts_model, ['first_name', 'first_name', 'from_join_date', 'to_join_date', 'rank']);
+        $filters = $this->getFilters($request, $this->districts_model, ['first_name', 'first_name', 'join_date', 'rank']);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
