@@ -22,6 +22,21 @@ class CriminalsController extends BaseController
     public function handleGetCriminals(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->criminals_model, ['criminal_id', 'first_name', 'last_name', 'age', 'height']);
+
+        $rules = [
+            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['optional', ['in', [0, 1]]]
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $criminals = $this->criminals_model->getAllCriminals($filters);
 
         return $this->prepareOkResponse($response, (array) $criminals);

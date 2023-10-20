@@ -22,6 +22,19 @@ class WeaponsController extends BaseController
     public function handleGetWeapons(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->weapons_model, ['weapon_id', 'type', 'material', 'color', 'description']);
+
+        $rules = [
+            'type' => ['optional', 'ascii', ['lengthMax', 50]],
+            'materia;' => ['optional', 'ascii', ['lengthMax', 50]],
+            'color' => ['optional', 'ascii', ['lengthMax', 50]],
+            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $weapons = $this->weapons_model->getAllWeapons($filters);
 
         return $this->prepareOkResponse($response, (array) $weapons);
@@ -51,6 +64,7 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, "Invalid Weapon Id");
 
         $reports = $this->weapons_model->getWeaponReports($weapon_id, $filters);
+        
         if (!$reports)
             throw new HttpNotFoundException($request, 'Reports Not Found');
         return $this->prepareOkResponse($response, (array) $reports);

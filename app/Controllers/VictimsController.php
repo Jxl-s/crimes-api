@@ -22,6 +22,20 @@ class VictimsController extends BaseController
     public function handleGetVictims(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->victims_model, ['victim_id', 'first_name', 'last_name', 'age', 'height']);
+
+        $rules = [
+            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['in', ['M', 'F', 'X']]]
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $victims = $this->victims_model->getAllVictims($filters);
 
         return $this->prepareOkResponse($response, (array) $victims);
