@@ -1,6 +1,6 @@
 <?php
 use Slim\Factory\AppFactory;
-use Vanier\Api\Middleware\HelloMiddleware;
+use Vanier\Api\Middleware\ContentNegotiationMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ .'/app/Config/app_config.php';
@@ -8,7 +8,7 @@ require_once __DIR__ .'/app/Config/app_config.php';
 // Step 1) Instantiate a Slim app.
 $app = AppFactory::create();
 
-$app->addMiddleware(new HelloMiddleware());
+$app->addMiddleware(new ContentNegotiationMiddleware());
 
 // Add the routing and body parsing middleware.
 $app->addBodyParsingMiddleware();
