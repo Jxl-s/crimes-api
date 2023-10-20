@@ -155,7 +155,9 @@ class ReportsModel extends BaseModel
         WHERE r.report_id = :report_id
         ";
 
-        $result = $this->fetchSingle($sql, ['report_id' => $report_id]);
+        $filters_values['report_id'] = $report_id;
+
+        $result = $this->fetchSingle($sql, $filters_values);
         if (!$result) return $result;
 
         return $this->formatReport((array) $result);
@@ -164,6 +166,7 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function getReportVictims($report_id, $filters)
     {
+        $filters_values = [];
         $sql = "SELECT v.victim_id, first_name, last_name, age, sex, height, descent FROM report_victim rv
         INNER JOIN victim v ON rv.victim_id = v.victim_id
         INNER JOIN person p ON v.person_id = p.person_id
@@ -171,14 +174,42 @@ class ReportsModel extends BaseModel
         WHERE rv.report_id = :report_id
         ";
 
+        // Filters
+        if (isset($filters['first_name'])) {
+            $sql .= ' AND p.first_name LIKE CONCAT(\'%\', :first_name, \'%\')';
+            $filters_values['first_name'] = $filters['first_name'];
+        }
+
+        if (isset($filters['last_name'])) {
+            $sql .= ' AND p.last_name LIKE CONCAT(\'%\', :last_name, \'%\')';
+            $filters_values['last_name'] = $filters['last_name'];
+        }
+
+        if (isset($filters['age'])) {
+            $sql .= ' AND p.age = :age';
+            $filters_values['age'] = $filters['age'];
+        }
+
+        if (isset($filters['descent'])) {
+            $sql .= ' AND p.descent = :descent';
+            $filters_values['descent'] = $filters['descent'];
+        }
+
+        if (isset($filters['sex'])) {
+            $sql .= ' AND p.sex = :sex';
+            $filters_values['sex'] = $filters['sex'];
+        }
+
+        $filters_values['report_id'] = $report_id;
         // No filters are used for this endpoint
-        $victims = $this->paginate($sql, ['report_id' => $report_id]);
+        $victims = $this->paginate($sql, $filters_values);
         return $victims;
     }
 
     // TODO: Implement this
     public function getReportCriminals($report_id, $filters)
     {
+        $filters_values = [];
         $sql = "SELECT c.criminal_id, first_name, last_name, age, sex, height, descent, is_arrested FROM report_criminal rc
         INNER JOIN criminal c ON rc.criminal_id = c.criminal_id
         INNER JOIN person p ON c.person_id = p.person_id
@@ -186,50 +217,124 @@ class ReportsModel extends BaseModel
         WHERE rc.report_id = :report_id
         ";
 
+        // Filters
+        if (isset($filters['first_name'])) {
+            $sql .= ' AND p.first_name LIKE CONCAT(\'%\', :first_name, \'%\')';
+            $filters_values['first_name'] = $filters['first_name'];
+        }
+
+        if (isset($filters['last_name'])) {
+            $sql .= ' AND p.last_name LIKE CONCAT(\'%\', :last_name, \'%\')';
+            $filters_values['last_name'] = $filters['last_name'];
+        }
+
+        if (isset($filters['age'])) {
+            $sql .= ' AND p.age = :age';
+            $filters_values['age'] = $filters['age'];
+        }
+
+        if (isset($filters['descent'])) {
+            $sql .= ' AND p.descent = :descent';
+            $filters_values['descent'] = $filters['descent'];
+        }
+
+        if (isset($filters['sex'])) {
+            $sql .= ' AND p.sex = :sex';
+            $filters_values['sex'] = $filters['sex'];
+        }
+
+        if (isset($filters['is_arrested'])) {
+            $sql .= ' AND c.is_arrested = :is_arrested';
+            $filters_values['is_arrested'] = $filters['is_arrested'];
+        }
+
+        $filters_values['report_id'] = $report_id;
+
         // No filters are used for this endpoint
-        $criminals = $this->paginate($sql, ['report_id' => $report_id]);
+        $criminals = $this->paginate($sql, $filters_values);
         return $criminals;
     }
 
     // TODO: Implement this
     public function getReportPolice($report_id, $filters)
     {
+        $filters_values = [];
         $sql = "SELECT p.* FROM report_police rp
         INNER JOIN police p ON rp.badge_id = p.badge_id
 
         WHERE rp.report_id = :report_id
         ";
 
+        if (isset($filters['first_name'])) {
+            $sql .= ' AND first_name LIKE CONCAT(\'%\', :first_name, \'%\')';
+            $filters_values['first_name'] = $filters['first_name'];
+        }
+
+        if (isset($filters['last_name'])) {
+            $sql .= ' AND last_name LIKE CONCAT(\'%\', :last_name, \'%\')';
+            $filters_values['last_name'] = $filters['last_name'];
+        }
+
+        if (isset($filters['from_join_date'])) {
+            $sql .= ' AND join_date >= :from_join_date';
+            $filters_values['from_join_date'] = $filters['from_join_date'];
+        }
+
+        if (isset($filters['to_join_date'])) {
+            $sql .= ' AND join_date <= :to_join_date';
+            $filters_values['to_join_date'] = $filters['to_join_date'];
+        }
+
+        if (isset($filters['rank'])) {
+            $sql .= ' AND rank = :rank';
+            $filters_values['rank'] = $filters['rank'];
+        }
+
+        $filters_values['report_id'] = $report_id;
         // No filters are used for this endpoint
-        $police = $this->paginate($sql, ['report_id' => $report_id]);
+        $police = $this->paginate($sql, $filters_values);
         return $police;
     }
 
     // TODO: Implement this
     public function getReportCrimes($report_id, $filters)
     {
+        $filters_values = [];
         $sql = "SELECT c.* FROM report_crime rc
         INNER JOIN crime c ON rc.crime_code = c.crime_code
 
         WHERE rc.report_id = :report_id
         ";
 
+    if (isset($filters['description'])) {
+        $sql .= ' AND crime_desc LIKE CONCAT(\'%\', :description, \'%\')';
+        $filters_values['description'] = $filters['description'];
+    }
+
+        $filters_values['report_id'] = $report_id;
         // No filters are used for this endpoint
-        $crimes = $this->paginate($sql, ['report_id' => $report_id]);
+        $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
 
     // TODO: Implement this
     public function getReportModi($report_id, $filters)
     {
+        $filters_values = [];
         $sql = "SELECT m.* FROM report_modus rm
         INNER JOIN modus m ON rm.mo_code = m.mo_code
 
         WHERE rm.report_id = :report_id
         ";
 
+        if (isset($filters['description'])) {
+            $sql .= ' AND mo_desc LIKE CONCAT(\'%\', :description, \'%\')';
+            $filters_values['description'] = $filters['description'];
+        }
+
+        $filters_values['report_id'] = $report_id;
         // No filters are used for this endpoint
-        $crimes = $this->paginate($sql, ['report_id' => $report_id]);
+        $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
 
