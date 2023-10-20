@@ -95,11 +95,11 @@ class DistrictsModel extends BaseModel
         $sql = "SELECT * FROM police p WHERE district_id = :district_id";
         $filters_values['district_id'] = $district_id;
         if (isset($filters['first_name'])) {
-            $sql .= ' AND p.first_name <= :first_name';
+            $sql .= ' AND p.first_name LIKE CONCAT(\'%\', :first_name, \'%\')';
             $filters_values['first_name'] = $filters['first_name'];
         }
         if (isset($filters['last_name'])) {
-            $sql .= ' AND p.last_name <= :last_name';
+            $sql .= ' AND p.last_name LIKE CONCAT(\'%\', :last_name, \'%\')';
             $filters_values['last_name'] = $filters['last_name'];
         }
         if (isset($filters['from_join_date'])) {

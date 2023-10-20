@@ -22,27 +22,15 @@ class DistrictsController extends BaseController
     public function handleGetDistricts(Request $request, Response $response, array $uri_args)
     {
         $get_rules = array(
-            'district_id' => [
-                ['length', 4]
-            ],
-            'st_name' => [
-                ['length', 20]
-            ],
             'bureau' => [
                 ['length', 20]
             ],
             'precinct' => [
                 'integer'
-            ],
-            'omega_label' => [
-                ['length', 20]
-            ],
-            'station' => [
-                ['length', 20]
             ]
         );
         $filters = $this->getFilters($request, $this->districts_model, ['district_id', 'st_name', 'bureau', 'precinct', 'omega_label', 'station']);
-        if($this->validateData($get_rules, $filters) === true) {
+        if($this->validateData($filters, $get_rules) === true) {
             $districts = $this->districts_model->getAllDistricts($filters);
 
             return $this->prepareOkResponse($response, (array) $districts);
@@ -53,6 +41,7 @@ class DistrictsController extends BaseController
 
     public function handleGetDistrictById(Request $request, Response $response, array $uri_args)
     {
+
         // Get the ID
         $id = $uri_args['district_id'];
         if (!Input::isInt($id, 0))
@@ -69,28 +58,69 @@ class DistrictsController extends BaseController
 
     public function handleGetDistrictReports(Request $request, Response $response, array $uri_args)
     {
+        $get_rules = array(
+            'from_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'to_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'fatalities' => [
+                'integer'
+            ],
+            'premise' => [
+                ['lengthMax', 50]
+            ]        
+        );
         $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'premise']);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-
-        $reports = $this->districts_model->getDistrictReports($district_id, $filters);
-        if (!$reports)
-            throw new HttpNotFoundException($request, 'Reports Not Found');
-        return $this->prepareOkResponse($response, (array) $reports);
+        if($this->validateData($filters, $get_rules) === true) {
+            $reports = $this->districts_model->getDistrictReports($district_id, $filters);
+            if (!$reports)
+                throw new HttpNotFoundException($request, 'Reports Not Found');
+            return $this->prepareOkResponse($response, (array) $reports);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+        }
     }
 
     public function handleGetDistrictPolice(Request $request, Response $response, array $uri_args)
     {
+        $get_rules = array(
+            'first_name' => [
+                ['lengthMax', 50]
+            ],
+            'last_name' => [
+                ['lengthMax', 50]
+            ],
+            'from_join_date' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'to_join_date' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'rank' => [
+                ['lengthMax', 20]
+            ],
+        );
         $filters = $this->getFilters($request, $this->districts_model, ['first_name', 'first_name', 'join_date', 'rank']);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-
-        $police = $this->districts_model->getDistrictPolice($district_id, $filters);
-        if (!$police)
-            throw new HttpNotFoundException($request, 'Police Not Found');
-        return $this->prepareOkResponse($response, (array) $police);
+        if($this->validateData($filters, $get_rules) === true) {
+            $police = $this->districts_model->getDistrictPolice($district_id, $filters);
+            if (!$police)
+                throw new HttpNotFoundException($request, 'Police Not Found');
+            return $this->prepareOkResponse($response, (array) $police);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+        }
     }
 
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)

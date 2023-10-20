@@ -20,11 +20,34 @@ class PoliceController extends BaseController
     }
 
     public function handleGetPolice(Request $request, Response $response)
-    {
+    {        
+        $get_rules = array(
+            'first_name' => [
+                ['lengthMax', 50]
+            ],
+            'last_name' => [
+                ['lengthMax', 50]
+            ],
+            'from_join_date' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'to_join_date' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'rank' => [
+                ['lengthMax', 20]
+            ],
+        );
         $filters = $this->getFilters($request, $this->police_model, ['badge_id', 'first_name', 'last_name', 'join_date', 'rank']);
-        $police = $this->police_model->getAllPolice($filters);
+        if($this->validateData($filters, $get_rules) === true) {
+            $police = $this->police_model->getAllPolice($filters);
 
-        return $this->prepareOkResponse($response, (array) $police);
+            return $this->prepareOkResponse($response, (array) $police);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+        }
     }
 
     public function handleGetPoliceById(Request $request, Response $response, array $uri_args)
@@ -45,6 +68,22 @@ class PoliceController extends BaseController
 
     public function handleGetPoliceReports(Request $request, Response $response, array $uri_args)
     {
+        $get_rules = array(
+            'from_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'to_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'fatalities' => [
+                'integer'
+            ],
+            'premise' => [
+                ['lengthMax', 50]
+            ]        
+        );
         // Get the filters
         $filters = $this->getFilters($request, $this->police_model, ['report_id', 'last_update', 'fatalities', 'premise']);
         
@@ -52,13 +91,16 @@ class PoliceController extends BaseController
         $id = $uri_args['badge_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-
+        if($this->validateData($filters, $get_rules) === true) {
         // Find all cases the given police involved in
-        $policeReport = $this->police_model->getPoliceReports($id, $filters);
+            $policeReport = $this->police_model->getPoliceReports($id, $filters);
 
 
-        // Send the response
-        return $this->prepareOkResponse($response, (array) $policeReport);
+            // Send the response
+            return $this->prepareOkResponse($response, (array) $policeReport);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+        }
     }
 
     public function handleCreatePolice(Request $request, Response $response, array $uri_args)

@@ -123,11 +123,11 @@ class ModiController extends BaseController
             ]
         );
         $modus = $uri_args['mo_code'];
-        if($this->validateData($modi, $put_rules) === true) {
+        if($this->validateData($modus, $delete_rules) === true) {
             $this->modi_model->deleteModus($modus);
             return $this->prepareOkResponse($response, (array) $modus);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($modi, $put_rules));
+            throw new HttpBadRequestException($request, $this->validateData($modus, $delete_rules));
         }
 
     }
