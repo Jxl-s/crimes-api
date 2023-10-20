@@ -28,6 +28,23 @@ class ReportsController extends BaseController
             'premise',
         ]);
 
+        // Validate filters
+        $rules = [
+            'from_last_update' => ['optional', 'date'],
+            'to_last_update' => ['optional', 'date'],
+            'fatalities' => ['optional', 'integer'],
+            'criminal_count' => ['optional', 'integer'],
+            'victim_count' => ['optional', 'integer'],
+            'crime_code' => ['optional', 'integer'],
+            'modus_code' => ['optional', 'numeric'],
+            'premise' => ['optional', 'ascii'],
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $reports = $this->reports_model->getAllReports($filters);
         return $this->prepareOkResponse($response, (array) $reports);
     }
@@ -51,12 +68,27 @@ class ReportsController extends BaseController
     public function handleGetReportVictims(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->reports_model, [
-            'victim_id', 
-            'first_name', 
-            'last_name', 
-            'age', 
+            'victim_id',
+            'first_name',
+            'last_name',
+            'age',
             'height'
         ]);
+
+        // Validate filters
+        $rules = [
+            'first_name' => ['optional', 'ascii'],
+            'last_name' => ['optional', 'ascii'],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['in', ['M', 'F', 'X']]]
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
@@ -72,10 +104,10 @@ class ReportsController extends BaseController
     public function handleGetReportCriminals(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->reports_model, [
-            'criminal_id', 
-            'first_name', 
-            'last_name', 
-            'age', 
+            'criminal_id',
+            'first_name',
+            'last_name',
+            'age',
             'height'
         ]);
         // Get the ID
@@ -93,10 +125,10 @@ class ReportsController extends BaseController
     public function handleGetReportPolice(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->reports_model, [
-            'badge_id', 
-            'first_name', 
-            'last_name', 
-            'join_date', 
+            'badge_id',
+            'first_name',
+            'last_name',
+            'join_date',
             'rank'
         ]);
         // Get the ID
@@ -114,7 +146,7 @@ class ReportsController extends BaseController
     public function handleGetReportCrimes(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->reports_model, [
-            'crime_code', 
+            'crime_code',
             'crime_desc'
         ]);
         // Get the ID
@@ -132,7 +164,7 @@ class ReportsController extends BaseController
     public function handleGetReportModus(Request $request, Response $response, array $uri_args)
     {
         $filters = $this->getFilters($request, $this->reports_model, [
-            'mo_code', 
+            'mo_code',
             'mo_desc'
         ]);
 
