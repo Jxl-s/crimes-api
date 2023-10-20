@@ -110,6 +110,22 @@ class ReportsController extends BaseController
             'age',
             'height'
         ]);
+
+        // Validate filters
+        $rules = [
+            'first_name' => ['optional', 'ascii'],
+            'last_name' => ['optional', 'ascii'],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['optional', ['in', [0, 1]]]
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
