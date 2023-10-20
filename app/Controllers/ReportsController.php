@@ -3,7 +3,6 @@
 namespace Vanier\Api\Controllers;
 
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
@@ -75,6 +74,21 @@ class ReportsController extends BaseController
             'age',
             'height'
         ]);
+
+        // Validate filters
+        $rules = [
+            'first_name' => ['optional', 'ascii'],
+            'last_name' => ['optional', 'ascii'],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['in', ['M', 'F', 'X']]]
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
