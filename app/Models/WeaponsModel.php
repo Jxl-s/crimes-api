@@ -47,7 +47,7 @@ class WeaponsModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function getWeaponReports($weapon_id)
+    public function getWeaponReports($weapon_id, $filters)
     {
         $sql = "SELECT r.*, i.*, l.* FROM report r 
         INNER JOIN location l ON r.location_id = l.location_id 
@@ -90,11 +90,17 @@ class WeaponsModel extends BaseModel
             ];
 
             unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
-            unset($report['location_id'], $report['district_id'], $report['address'], 
-                $report['cross_street'], $report['area_name'], $report['latitude'], 
-                $report['longitude']);
+            unset(
+                $report['location_id'],
+                $report['district_id'],
+                $report['address'],
+                $report['cross_street'],
+                $report['area_name'],
+                $report['latitude'],
+                $report['longitude']
+            );
         }
-        
+
         return $reports;
     }
 
