@@ -147,6 +147,20 @@ class ReportsController extends BaseController
             'join_date',
             'rank'
         ]);
+
+        $rules = [
+            'first_name' => ['optional', 'ascii'],
+            'last_name' => ['optional', 'ascii'],
+            'from_join_date' => ['optional', 'date'],
+            'to_join_date' => ['optional', 'date'],
+            'rank' => ['optional', 'alphaNum'],
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
