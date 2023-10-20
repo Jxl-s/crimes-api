@@ -21,16 +21,27 @@ class ModiController extends BaseController
 
     public function handleGetModi(Request $request, Response $response, array $uri_args)
     {
+        $get_rules = array(
+            'mo_desc' => [
+                ['lengthMax', 50]
+            ]
+        );
         $filters = $this->getFilters($request, $this->modi_model, ['mo_code', 'mo_desc']);
-        $modi = $this->modi_model->getAllModi($filters);
+        if($this->validateData($filters, $get_rules) === true) {
+            $modi = $this->modi_model->getAllModi($filters);
 
-        return $this->prepareOkResponse($response, (array) $modi);
+            return $this->prepareOkResponse($response, (array) $modi);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
+        }
     }
 
     public function handleGetModiByCode(Request $request, Response $response, array $uri_args)
     {
         // Get the code
         $code = $uri_args['mo_code'];
+        if (!Input::isInt($code))
+            throw new HttpBadRequestException($request, "Invalid Code");
 
         // Find the modus
         $modus = $this->modi_model->getModusByCode($code);
@@ -43,34 +54,81 @@ class ModiController extends BaseController
 
     public function handleCreateModi(Request $request, Response $response, array $uri_args)
     {
-        $modi = $request->getParsedBody();
+        $post_rules = array(
+            'mo_code' => [
+                'required',
+                ['lengthMax', 10],
+                ['regex', '/[0-9]{4}/']
+            ],
+            'mo_desc' => [
+                'required',
+                ['lengthMax', 50]
+            ]
+        );
+        $modi = (array) $request->getParsedBody();
 
         //if an array given, throw exception
-        if (isset($modi[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
         //TODO: Validate contents
-        $this->modi_model->createModus($modi);
+        if($this->validateData($modi, $post_rules) === true) {
+            $this->modi_model->createModus($modi);
 
-        $response_data = [
-            "code" => HttpCodes::STATUS_CREATED,
-            "message" => "Inserted Successfully"
-        ];
-        return $this->prepareOkResponse($response, $response_data);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Inserted Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($modi, $post_rules));
+        }
     }
 
     public function handleUpdateModi(Request $request, Response $response, array $uri_args)
     {
+        $put_rules = array(
+            'mo_code' => [
+                ['lengthMax', 10],
+                ['regex', '/[0-9]{4}/']
+            ],
+            'mo_desc' => [
+                ['lengthMax', 50]
+            ]
+        );
         $code = $uri_args['mo_code'];
         $desc = $request->getParsedBody();
-        $this->modi_model->updateModus($desc, $code);
-        return $this->prepareOkResponse($response, (array) $desc);
+        $modi = array(
+            'mode_code' => $code,
+            'mo_desc' => $desc
+        );
+        if($this->validateData($modi, $put_rules) === true) {
+            $this->modi_model->updateModus($desc, $code);
+
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Updated Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($modi, $put_rules));
+        }
     }
 
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
     {
+        $delete_rules = array(
+            'mo_code' => [
+                ['lengthMax', 10],
+                ['regex', '/[0-9]{4}/'],
+                'required'
+            ]
+        );
         $modus = $uri_args['mo_code'];
-        $this->modi_model->deleteModus($modus);
-        return $this->prepareOkResponse($response, (array) $modus);
+        if($this->validateData($modi, $put_rules) === true) {
+            $this->modi_model->deleteModus($modus);
+            return $this->prepareOkResponse($response, (array) $modus);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($modi, $put_rules));
+        }
+
     }
 }

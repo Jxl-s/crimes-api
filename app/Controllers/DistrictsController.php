@@ -21,10 +21,34 @@ class DistrictsController extends BaseController
 
     public function handleGetDistricts(Request $request, Response $response, array $uri_args)
     {
+        $get_rules = array(
+            'district_id' => [
+                ['length', 4]
+            ],
+            'st_name' => [
+                ['length', 20]
+            ],
+            'bureau' => [
+                ['length', 20]
+            ],
+            'precinct' => [
+                'integer'
+            ],
+            'omega_label' => [
+                ['length', 20]
+            ],
+            'station' => [
+                ['length', 20]
+            ]
+        );
         $filters = $this->getFilters($request, $this->districts_model, ['district_id', 'st_name', 'bureau', 'precinct', 'omega_label', 'station']);
-        $districts = $this->districts_model->getAllDistricts($filters);
+        if($this->validateData($get_rules, $filters) === true) {
+            $districts = $this->districts_model->getAllDistricts($filters);
 
-        return $this->prepareOkResponse($response, (array) $districts);
+            return $this->prepareOkResponse($response, (array) $districts);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+        }
     }
 
     public function handleGetDistrictById(Request $request, Response $response, array $uri_args)

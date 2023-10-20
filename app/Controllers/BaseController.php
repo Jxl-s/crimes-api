@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 use Vanier\Api\Models\BaseModel;
+use Vanier\Api\Helpers\Validator;
 
 class BaseController
 {
@@ -53,5 +54,14 @@ class BaseController
         $model->setSortingOptions($sort_by, $order);
 
         return $filters;
+    }
+    protected function validateData(array $data, array $rules) :mixed {
+        $validator = new Validator($data, [], 'en');
+        $validator->mapFieldsRules($rules);
+        if($validator->validate()) {
+            return true;
+        } else {
+            return $validator->errorsToJson();
+        }
     }
 }
