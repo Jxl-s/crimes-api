@@ -67,7 +67,8 @@ class ModiController extends BaseController
         );
         $modi = (array) $request->getParsedBody();
 
-        //if an array given, throw exception
+        if (isset($modi[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
         //TODO: Validate contents
         if($this->validateData($modi, $post_rules) === true) {
@@ -96,6 +97,9 @@ class ModiController extends BaseController
         );
         $code = $uri_args['mo_code'];
         $desc = $request->getParsedBody();
+        if (isset($desc[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
         $modi = array(
             'mode_code' => $code,
             'mo_desc' => $desc

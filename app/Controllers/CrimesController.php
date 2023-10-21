@@ -69,7 +69,7 @@ class CrimesController extends BaseController
 
         //if an array given, throw exception    
         if (isset($crime[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time.');
 
         //TODO: Validate Data
         if($this->validateData($crime, $post_rules) === true) {

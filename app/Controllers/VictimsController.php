@@ -28,7 +28,7 @@ class VictimsController extends BaseController
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['in', ['M', 'F', 'X']]]
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]]
         ];
 
         $validated = $this->validateData($filters, $rules);
@@ -60,12 +60,24 @@ class VictimsController extends BaseController
     public function handleCreateVictims(Request $request, Response $response, array $uri_args)
     {
         $victim = $request->getParsedBody();
-
-        //if an array given, throw exception
+        //if an array given, throw exception    
+        echo gettype($victim);
         if (isset($victim[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
-        //TODO: Validate contents
+        $rules = [
+            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]]
+        ];
+
+        $validated = $this->validateData((array) $victim, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $this->victims_model->createVictim($victim);
 
         $response_data = [
@@ -80,12 +92,29 @@ class VictimsController extends BaseController
     {
         $id = $uri_args['victim_id'];
         $victim = $request->getParsedBody();
+        if (isset($victim[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
+        $rules = [
+            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]]
+        ];
+
+        $validated = $this->validateData((array )$victim, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $this->victims_model->updateVictim($victim, $id);
         return $this->prepareOkResponse($response, (array) $victim);
     }
 
     public function handleDeleteVictims(Request $request, Response $response, array $uri_args)
     {
+        // Get the ID. Cast 
         $victim = $uri_args['victim_id'];
         $this->victims_model->deleteVictim($victim);
         return $this->prepareOkResponse($response, (array) $victim);

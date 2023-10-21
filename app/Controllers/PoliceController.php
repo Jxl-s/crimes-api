@@ -125,6 +125,9 @@ class PoliceController extends BaseController
     {
         $id = $uri_args['badge_id'];
         $police = $request->getParsedBody();
+        if (isset($police[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            
         $this->police_model->updatePolice($police, $id);
         return $this->prepareOkResponse($response, (array) $police);
     }

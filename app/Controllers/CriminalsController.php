@@ -28,8 +28,8 @@ class CriminalsController extends BaseController
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', ['in', [0, 1]]]
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['optional', ['length', 1], ['in', [0, 1]]]
         ];
 
         $validated = $this->validateData($filters, $rules);
@@ -51,8 +51,6 @@ class CriminalsController extends BaseController
 
         // Find the criminal
         $criminal = $this->criminals_model->getCriminalById($id);
-        if (!$criminal)
-            throw new HttpNotFoundException($request, 'Criminal Not Found');
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $criminal);
@@ -62,6 +60,29 @@ class CriminalsController extends BaseController
     {
         // Get the filters
         $filters = $this->getFilters($request, $this->criminals_model, ['report_id', 'last_update', 'fatalities', 'premise']);
+
+        $rules = [
+            'from_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'to_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'fatalities' => [
+                'integer'
+            ],
+            'premise' => [
+                'ascii',
+                ['lengthMax', 50]
+            ]   
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
 
         // Get the ID
         $id = $uri_args['criminal_id'];
@@ -78,12 +99,23 @@ class CriminalsController extends BaseController
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {
         $criminal = $request->getParsedBody();
-
-        //if an array given, throw exception    
         if (isset($criminal[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time. Array given.');
 
-        //TODO: Validate Data
+        $rules = [
+            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['optional', ['length', 1], ['in', [0, 1]]]
+        ];
+
+        $validated = $this->validateData((array) $criminal, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $this->criminals_model->createCriminal($criminal);
 
         $response_data = [
@@ -97,7 +129,25 @@ class CriminalsController extends BaseController
     public function handleUpdateCriminals(Request $request, Response $response, array $uri_args)
     {
         $id = $uri_args['criminal_id'];
+
         $criminal = $request->getParsedBody();
+        if (isset($criminal[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time. Array given.');
+
+        $rules = [
+            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
+            'age' => ['optional', 'integer'],
+            'descent' => ['optional', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['optional', ['length', 1], ['in', [0, 1]]]
+        ];
+
+        $validated = $this->validateData((array) $criminal, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $this->criminals_model->updateCriminal($criminal, $id);
         return $this->prepareOkResponse($response, (array) $criminal);
     }

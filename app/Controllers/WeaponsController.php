@@ -63,6 +63,29 @@ class WeaponsController extends BaseController
         if (!Input::isInt($weapon_id, 0))
             throw new HttpBadRequestException($request, "Invalid Weapon Id");
 
+        $rules = [
+            'from_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'to_last_update' => [
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'fatalities' => [
+                'integer'
+            ],
+            'premise' => [
+                'ascii',
+                ['lengthMax', 50]
+            ]   
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $reports = $this->weapons_model->getWeaponReports($weapon_id, $filters);
         
         if (!$reports)
@@ -73,12 +96,21 @@ class WeaponsController extends BaseController
     public function handleCreateWeapons(Request $request, Response $response, array $uri_args)
     {
         $weapon = $request->getParsedBody();
-
-        //if an array given, throw exception
         if (isset($weapon[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
-        //TODO: Validate contents
+        $rules = [
+            'type' => ['optional', 'ascii', ['lengthMax', 50]],
+            'materia;' => ['optional', 'ascii', ['lengthMax', 50]],
+            'color' => ['optional', 'ascii', ['lengthMax', 50]],
+            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+        ];
+
+        $validated = $this->validateData((array) $weapon, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $this->weapons_model->createWeapon($weapon);
 
         $response_data = [
@@ -92,6 +124,21 @@ class WeaponsController extends BaseController
     {
         $id = $uri_args['weapon_id'];
         $weapon = $request->getParsedBody();
+        if (isset($weapon[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
+        $rules = [
+            'type' => ['optional', 'ascii', ['lengthMax', 50]],
+            'materia;' => ['optional', 'ascii', ['lengthMax', 50]],
+            'color' => ['optional', 'ascii', ['lengthMax', 50]],
+            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+        ];
+
+        $validated = $this->validateData((array) $weapon, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
         $this->weapons_model->updateWeapon($weapon, $id);
         return $this->prepareOkResponse($response, (array) $id);
     }

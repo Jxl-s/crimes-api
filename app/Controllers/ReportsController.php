@@ -233,6 +233,9 @@ class ReportsController extends BaseController
     {
         $id = $uri_args['report_id'];
         $report = $request->getParsedBody();
+        if (isset($report[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+
         $this->reports_model->updateReport($report, $id);
         return $this->prepareOkResponse($response, (array) $id);
     }

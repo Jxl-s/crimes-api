@@ -49,8 +49,6 @@ class DistrictsController extends BaseController
 
         // Find the district
         $district = $this->districts_model->getDistrictById($id);
-        if (!$district)
-            throw new HttpNotFoundException($request, 'District Not Found');
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $district);
@@ -145,6 +143,9 @@ class DistrictsController extends BaseController
     {
         $id = $uri_args['district_id'];
         $district = $request->getParsedBody();
+        if (isset($district[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            
         $this->districts_model->updateDistrict($district, $id);
         return $this->prepareOkResponse($response, (array) $district);
     }
