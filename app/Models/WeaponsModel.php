@@ -18,17 +18,17 @@ class WeaponsModel extends BaseModel
         $sql = "SELECT * FROM $this->table_name WHERE 1";
 
         if (isset($filters['type'])) {
-            $sql .= ' AND type = :type';
+            $sql .= ' AND type LIKE CONCAT(\'%\', :type, \'%\')';
             $filters_values['type'] = $filters['type'];
         }
 
         if (isset($filters['material'])) {
-            $sql .= ' AND material = :material';
+            $sql .= ' AND material LIKE CONCAT(\'%\', :material, \'%\')';
             $filters_values['material'] = $filters['material'];
         }
 
         if (isset($filters['color'])) {
-            $sql .= ' AND color = :color';
+            $sql .= ' AND color LIKE CONCAT(\'%\', :color, \'%\')';
             $filters_values['color'] = $filters['color'];
         }
 
@@ -52,7 +52,9 @@ class WeaponsModel extends BaseModel
         $sql = "SELECT r.*, i.*, l.* FROM report r 
         INNER JOIN location l ON r.location_id = l.location_id 
         INNER JOIN incident i ON r.incident_id = i.incident_id WHERE weapon_id = :weapon_id";
+        
         $filters_values['district_id'] = $weapon_id;
+
         if (isset($filters['from_last_update'])) {
             $sql .= ' AND r.last_update >= :from_last_update';
             $filters_values['from_last_update'] = $filters['from_last_update'];
