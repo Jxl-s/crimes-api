@@ -65,17 +65,21 @@ class WeaponsController extends BaseController
 
         $rules = [
             'from_last_update' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'to_last_update' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'fatalities' => [
+                'optional',
                 'integer'
             ],
             'premise' => [
+                'optional',
                 'ascii',
                 ['lengthMax', 50]
             ]   

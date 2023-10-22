@@ -23,20 +23,26 @@ class PoliceController extends BaseController
     {        
         $get_rules = array(
             'first_name' => [
+                'optional',
                 ['lengthMax', 50]
             ],
             'last_name' => [
+                'optional',
                 ['lengthMax', 50]
             ],
             'from_join_date' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'to_join_date' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'rank' => [
+                'optional',
+                'ascii',
                 ['lengthMax', 20]
             ],
         );
@@ -70,17 +76,21 @@ class PoliceController extends BaseController
     {
         $get_rules = array(
             'from_last_update' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'to_last_update' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'fatalities' => [
+                'optional',
                 'integer'
             ],
             'premise' => [
+                'optional',
                 ['lengthMax', 50]
             ]        
         );

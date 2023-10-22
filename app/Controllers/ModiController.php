@@ -22,7 +22,9 @@ class ModiController extends BaseController
     public function handleGetModi(Request $request, Response $response, array $uri_args)
     {
         $get_rules = array(
-            'mo_desc' => [
+            'description' => [
+                'optional',
+                'ascii',
                 ['lengthMax', 50]
             ]
         );

@@ -23,9 +23,12 @@ class DistrictsController extends BaseController
     {
         $get_rules = array(
             'bureau' => [
-                ['length', 20]
+                'optional',
+                'ascii',
+                ['lengthMax', 20]
             ],
             'precinct' => [
+                'optional',
                 'integer'
             ]
         );
@@ -58,21 +61,26 @@ class DistrictsController extends BaseController
     {
         $get_rules = array(
             'from_last_update' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'to_last_update' => [
+                'optional',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'fatalities' => [
+                'optional',
                 'integer'
             ],
             'premise' => [
+                'optional',
+                'ascii',
                 ['lengthMax', 50]
             ]        
         );
-        $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'premise']);
+        $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'bureau', 'premise']);
         $district_id = $uri_args['district_id'];
         if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");

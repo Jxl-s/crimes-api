@@ -23,7 +23,9 @@ class CrimesController extends BaseController
     public function handleGetCrimes(Request $request, Response $response, array $uri_args)
     {
         $get_rules = array(
-            'crime_desc' => [
+            'description' => [
+                'optional',
+                'ascii',
                 ['lengthMax', 50]
             ]
         );

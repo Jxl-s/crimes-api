@@ -18,7 +18,7 @@ class DistrictsModel extends BaseModel
         $sql = "SELECT * FROM $this->table_name WHERE 1";
 
         if (isset($filters['bureau'])) {
-            $sql .= ' AND bureau = :bureau';
+            $sql .= ' AND bureau LIKE CONCAT(\'%\', :bureau , \'%\')';
             $filters_values['bureau'] = $filters['bureau'];
         }
 
