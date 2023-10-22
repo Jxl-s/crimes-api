@@ -2,6 +2,8 @@
 
 namespace Vanier\Api\Models;
 
+use Exception;
+
 class ReportsModel extends BaseModel
 {
     private $table_name = 'report';
@@ -158,8 +160,9 @@ class ReportsModel extends BaseModel
         $filters_values['report_id'] = $report_id;
 
         $result = $this->fetchSingle($sql, $filters_values);
-        var_dump($result);exit;
-        if (!$result) return $result;
+        if (!$result) return null;
+        if (!isset($result['report_id'])) return null;
+        if (!$result['report_id']) return null;
 
         return $this->formatReport((array) $result);
     }
