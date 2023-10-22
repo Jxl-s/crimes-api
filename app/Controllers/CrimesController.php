@@ -49,7 +49,7 @@ class CrimesController extends BaseController
         // Find the crime
         $crime = $this->crimes_model->getCrimeByCode($code);
         if (!$crime)
-            throw new HttpNotFoundException($request, "Crimes Not Found");
+            throw new HttpNotFoundException($request, "Crime Not Found");
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $crime);

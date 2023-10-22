@@ -51,7 +51,7 @@ class WeaponsController extends BaseController
         $weapon = $this->weapons_model->getWeaponById($id);
         if (!$weapon)
             throw new HttpNotFoundException($request, 'Weapon Not Found');
-
+            
         // Send the response
         return $this->prepareOkResponse($response, (array) $weapon);
     }
@@ -92,8 +92,6 @@ class WeaponsController extends BaseController
 
         $reports = $this->weapons_model->getWeaponReports($weapon_id, $filters);
         
-        if (!$reports)
-            throw new HttpNotFoundException($request, 'Reports Not Found');
         return $this->prepareOkResponse($response, (array) $reports);
     }
 

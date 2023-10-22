@@ -51,6 +51,8 @@ class CriminalsController extends BaseController
 
         // Find the criminal
         $criminal = $this->criminals_model->getCriminalById($id);
+        if (!$criminal)
+            throw new HttpNotFoundException($request, 'Criminal Not Found');
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $criminal);

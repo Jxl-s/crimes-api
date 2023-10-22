@@ -53,6 +53,9 @@ class DistrictsController extends BaseController
         // Find the district
         $district = $this->districts_model->getDistrictById($id);
 
+        if (!$district)
+                throw new HttpNotFoundException($request, 'District Not Found');
+
         // Send the response
         return $this->prepareOkResponse($response, (array) $district);
     }
@@ -86,8 +89,6 @@ class DistrictsController extends BaseController
             throw new HttpBadRequestException($request, "Invalid Code");
         if($this->validateData($filters, $get_rules) === true) {
             $reports = $this->districts_model->getDistrictReports($district_id, $filters);
-            if (!$reports)
-                throw new HttpNotFoundException($request, 'Reports Not Found');
             return $this->prepareOkResponse($response, (array) $reports);
         } else {
             throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
@@ -121,8 +122,6 @@ class DistrictsController extends BaseController
             throw new HttpBadRequestException($request, "Invalid Code");
         if($this->validateData($filters, $get_rules) === true) {
             $police = $this->districts_model->getDistrictPolice($district_id, $filters);
-            if (!$police)
-                throw new HttpNotFoundException($request, 'Police Not Found');
             return $this->prepareOkResponse($response, (array) $police);
         } else {
             throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));

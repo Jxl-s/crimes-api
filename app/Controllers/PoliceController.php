@@ -105,7 +105,6 @@ class PoliceController extends BaseController
         // Find all cases the given police involved in
             $policeReport = $this->police_model->getPoliceReports($id, $filters);
 
-
             // Send the response
             return $this->prepareOkResponse($response, (array) $policeReport);
         } else {
