@@ -179,10 +179,20 @@ class ReportsController extends BaseController
             'crime_code',
             'crime_desc'
         ]);
+
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
+
+        $rules = [
+            'description' => ['optional', 'ascii']
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
 
         // Get the crimes
         $crimes = $this->reports_model->getReportCrimes($id, $filters);
@@ -197,6 +207,15 @@ class ReportsController extends BaseController
             'mo_code',
             'mo_desc'
         ]);
+
+        $rules = [
+            'description' => ['optional', 'ascii']
+        ];
+
+        $validated = $this->validateData($filters, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
 
         // Get the ID
         $id = $uri_args['report_id'];

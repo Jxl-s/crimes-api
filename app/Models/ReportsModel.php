@@ -205,7 +205,7 @@ class ReportsModel extends BaseModel
         }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $victims = $this->paginate($sql, $filters_values);
         return $victims;
     }
@@ -254,7 +254,6 @@ class ReportsModel extends BaseModel
 
         $filters_values['report_id'] = $report_id;
 
-        // No filters are used for this endpoint
         $criminals = $this->paginate($sql, $filters_values);
         return $criminals;
     }
@@ -295,7 +294,7 @@ class ReportsModel extends BaseModel
         }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $police = $this->paginate($sql, $filters_values);
         return $police;
     }
@@ -310,13 +309,13 @@ class ReportsModel extends BaseModel
         WHERE rc.report_id = :report_id
         ";
 
-    if (isset($filters['description'])) {
-        $sql .= ' AND crime_desc LIKE CONCAT(\'%\', :description, \'%\')';
-        $filters_values['description'] = $filters['description'];
-    }
+        if (isset($filters['description'])) {
+            $sql .= ' AND crime_desc LIKE CONCAT(\'%\', :description, \'%\')';
+            $filters_values['description'] = $filters['description'];
+        }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
@@ -337,7 +336,7 @@ class ReportsModel extends BaseModel
         }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
