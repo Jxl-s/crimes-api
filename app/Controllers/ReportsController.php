@@ -233,19 +233,72 @@ class ReportsController extends BaseController
     {
         $report = $request->getParsedBody();
 
-        //if an array given, throw exception    
-        if (isset($report[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
-        //TODO: Validate Data
-        $this->reports_model->createReport($report);
+        $rules = [
+            'report_status' => ['required', ['in', ['IC', 'AO']]],
+            'fatalities' => ['required', 'integer'],
+            'case_status' => ['required', ['in', ['Solved', 'Unsolved', 'Open']]],
+            'premise' => ['required', 'ascii'],
+            'weapon_id' => ['required', 'integer'],
+            'crime_codes' => ['required', 'array'],
+            'criminal_ids' => ['required', 'array'],
+            'modus_codes' => ['required', 'array'],
+            'police_ids' => ['required', 'array'],
+            'victim_ids' => ['required', 'array'],
+            'incident' => ['required', 'array'],
+            'location' => ['required', 'array'],
+        ];
+
+        $validated = $this->validateData($report, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
+        // crime_codes, criminal_ids, victim_ids, police_ids should be arrays of integers
+        if (!Input::isIntArray($report['crime_codes'], 0)) throw new HttpBadRequestException($request, "Invalid crime codes");
+        if (!Input::isIntArray($report['criminal_ids'], 0)) throw new HttpBadRequestException($request, "Invalid criminal IDs");
+        if (!Input::isIntArray($report['victim_ids'], 0)) throw new HttpBadRequestException($request, "Invalid victim IDs");
+        if (!Input::isIntArray($report['police_ids'], 0)) throw new HttpBadRequestException($request, "Invalid police IDs");
+
+        // modus_codes is an array of numeric strings
+        if (!Input::isNumericArray($report["modus_codes"])) throw new HttpBadRequestException($request, "Invalid modus codes");
+
+        // Validate that incident is an array with reported_time and occurred_time
+        $incident_rules = [
+            'reported_time' => ['required', 'date'],
+            'occurred_time' => ['required', 'date'],
+        ];
+
+        $incident_validated = $this->validateData($report['incident'], $incident_rules);
+        if ($incident_validated !== true) {
+            throw new HttpBadRequestException($request, $incident_validated);
+        }
+
+        // Validate that location is an array with district_id, address, cross_street, area_name, latitude, longitude
+        $location_rules = [
+            'district_id' => ['required', 'integer'],
+            'address' => ['required', 'ascii'],
+            'cross_street' => ['optional', 'ascii'],
+            'area_name' => ['required', 'ascii'],
+            'latitude' => ['required', 'numeric'],
+            'longitude' => ['required', 'numeric'],
+        ];
+
+        $location_validated = $this->validateData($report['location'], $location_rules);
+        if ($location_validated !== true) {
+            throw new HttpBadRequestException($request, $location_validated);
+        }
+
+        $report_id = $this->reports_model->createReport($report);
+        if (!$report_id)
+            throw new HttpBadRequestException($request, "Failed to create report");
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Inserted Successfully"
         ];
 
-        return $this->prepareOkResponse($response, $response_data);
+        return $this->prepareOkResponse($response, $response_data, HttpCodes::STATUS_CREATED);
     }
 
     public function handleUpdateReports(Request $request, Response $response, array $uri_args)

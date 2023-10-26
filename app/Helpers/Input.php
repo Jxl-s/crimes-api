@@ -82,4 +82,30 @@ class Input
         $keys = array_keys($input);
         return array_keys($keys) !== $keys;
     }
+
+    public static function isIntArray(array $input, int $min = -1): bool
+    {
+        if (empty($input)) return false;
+
+        foreach ($input as $value) {
+            if (!self::isInt($value, $min)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static function isNumericArray(array $input): bool
+    {
+        if (empty($input)) return false;
+
+        foreach ($input as $value) {
+            if (!is_numeric($value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
