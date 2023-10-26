@@ -336,6 +336,13 @@ class ReportsModel extends BaseModel
         return $crimes;
     }
 
+    private function createReportRelations($report_id, $table_name, $ids, $key)
+    {
+        foreach ($ids as $id) {
+            $this->insert($table_name, ['report_id' => $report_id, $key => $id]);
+        }
+    }
+
     // TODO: Implement this
     public function createReport($report)
     {
@@ -345,13 +352,11 @@ class ReportsModel extends BaseModel
         $criminal_ids = $report['criminal_ids'];
         $victim_ids = $report['victim_ids'];
         $police_ids = $report['police_ids'];
-
         unset($report['crime_codes'], $report['criminal_ids'], $report['modus_codes'], $report['police_ids'], $report['victim_ids']);
 
         // Sub-entities
         $incident = $report['incident'];
         $location = $report['location'];
-
         unset($report['incident'], $report['location']);
 
         $report['incident_id'] = $this->insert('incident', $incident);
@@ -360,25 +365,11 @@ class ReportsModel extends BaseModel
         $report_id = $this->insert($this->table_name, $report);
 
         // Insert many-to-many fields
-        foreach ($crime_codes as $code) {
-            $this->insert('report_crime', ['report_id' => $report_id, 'crime_code' => $code]);
-        }
-
-        foreach ($modus_codes as $code) {
-            $this->insert('report_modus', ['report_id' => $report_id, 'mo_code' => $code]);
-        }
-
-        foreach ($criminal_ids as $id) {
-            $this->insert('report_criminal', ['report_id' => $report_id, 'criminal_id' => $id]);
-        }
-
-        foreach ($victim_ids as $id) {
-            $this->insert('report_victim', ['report_id' => $report_id, 'victim_id' => $id]);
-        }
-
-        foreach ($police_ids as $id) {
-            $this->insert('report_police', ['report_id' => $report_id, 'badge_id' => $id]);
-        }
+        $this->createReportRelations($report_id, 'report_crime', $crime_codes, 'crime_code');
+        $this->createReportRelations($report_id, 'report_modus', $modus_codes, 'mo_code');
+        $this->createReportRelations($report_id, 'report_criminal', $criminal_ids, 'criminal_id');
+        $this->createReportRelations($report_id, 'report_victim', $victim_ids, 'victim_id');
+        $this->createReportRelations($report_id, 'report_police', $police_ids, 'badge_id');
 
         return $report_id;
     }
@@ -386,8 +377,73 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function updateReport($report, $report_id)
     {
-        unset($report["report_id"]);
-        return $this->update($this->table_name, $report, ["report_id" => $report_id]);
+        // Many-to-many fields
+        $crime_codes = $report['crime_codes'];
+        $modus_codes = $report['modus_codes'];
+        $criminal_ids = $report['criminal_ids'];
+        $victim_ids = $report['victim_ids'];
+        $police_ids = $report['police_ids'];
+        unset($report['crime_codes'], $report['criminal_ids'], $report['modus_codes'], $report['police_ids'], $report['victim_ids']);
+
+        // Sub-entities
+        $incident = $report['incident'];
+        $location = $report['location'];
+        unset($report['incident'], $report['location']);
+
+        // incident_id comes from `incident_id` in the report table. we have to get it from here
+        $incident_sql = 'UPDATE incident SET
+
+        reported_time = :reported_time,
+        occurred_time = :occurred_time
+
+        WHERE incident_id = (SELECT incident_id FROM report WHERE report_id = :report_id)';
+
+        $location_sql = 'UPDATE location SET
+
+        district_id = :district_id,
+        address = :address,
+        cross_street = :cross_street,
+        area_name = :area_name,
+        latitude = :latitude,
+        longitude = :longitude
+
+        WHERE location_id = (SELECT location_id FROM report WHERE report_id = :report_id)';
+
+        $this->db->prepare($incident_sql)->execute([
+            'report_id' => $report_id,
+
+            'reported_time' => $incident['reported_time'],
+            'occurred_time' => $incident['occurred_time'],
+        ]);
+
+        $this->db->prepare($location_sql)->execute([
+            'report_id' => $report_id,
+
+            'district_id' => $location['district_id'],
+            'address' => $location['address'],
+            'cross_street' => $location['cross_street'],
+            'area_name' => $location['area_name'],
+            'latitude' => $location['latitude'],
+            'longitude' => $location['longitude'],
+        ]);
+
+        // Drop all the old many-to-many fields
+        $this->delete('report_crime', ['report_id' => $report_id], '');
+        $this->delete('report_modus', ['report_id' => $report_id], '');
+        $this->delete('report_criminal', ['report_id' => $report_id], '');
+        $this->delete('report_victim', ['report_id' => $report_id], '');
+        $this->delete('report_police', ['report_id' => $report_id], '');
+
+        // Insert many-to-many fields
+        $this->createReportRelations($report_id, 'report_crime', $crime_codes, 'crime_code');
+        $this->createReportRelations($report_id, 'report_modus', $modus_codes, 'mo_code');
+        $this->createReportRelations($report_id, 'report_criminal', $criminal_ids, 'criminal_id');
+        $this->createReportRelations($report_id, 'report_victim', $victim_ids, 'victim_id');
+        $this->createReportRelations($report_id, 'report_police', $police_ids, 'badge_id');
+
+        // Update report
+        $success = $this->update($this->table_name, $report, ['report_id' => $report_id]);
+        return $success;
     }
 
     // TODO: Implement this
