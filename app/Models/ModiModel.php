@@ -32,13 +32,16 @@ class ModiModel extends BaseModel
     }
 
     // TODO: Implement this
-    public function createModus($modi)
+    public function createModus($modus)
     {
-        if(isset($modi['description'])) {
-            $modi['mo_desc'] = $modi['description'];
-            unset($modi['description']);
+        if(isset($modus['mo_code'])) {
+            unset($modus["mo_code"]);
         }
-        return $this->insert($this->table_name, $modi);
+        if(isset($modus['description'])) {
+            $modus['mo_desc'] = $modus['description'];
+            unset($modus['description']);
+        }
+        return $this->insert($this->table_name, $modus);
     }
 
     // TODO: Implement this
@@ -46,6 +49,10 @@ class ModiModel extends BaseModel
     {
         if(isset($modus['mo_code'])) {
             unset($modus["mo_code"]);
+        }
+        if(isset($modus['description'])) {
+            $modus['mo_desc'] = $modus['description'];
+            unset($modus['description']);
         }
         return $this->update($this->table_name, $modus, ["mo_code" => $mo_code]);
     }

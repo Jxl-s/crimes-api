@@ -211,7 +211,11 @@ class DistrictsController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
         if($this->validateData($district, $update_rules) === true) {
             $this->districts_model->updateDistrict($district, $district_id);
-            return $this->prepareOkResponse($response, (array) $district);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Updated Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
         } else {
             throw new HttpBadRequestException($request, $this->validateData($district, $update_rules));
         }

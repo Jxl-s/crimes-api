@@ -88,26 +88,18 @@ class ModiController extends BaseController
     public function handleUpdateModi(Request $request, Response $response, array $uri_args)
     {
         $put_rules = array(
-            'mo_code' => [
-                'alphaNum',
-                ['lengthMax', 10],
-                ['regex', '/[0-9]{4}/']
-            ],
             'description' => [
+                'ascii',
+                'optional',
                 ['lengthMax', 50]
             ]
         );
         $code = $uri_args['mo_code'];
-        $desc = $request->getParsedBody();
+        $modus = $request->getParsedBody();
         if (isset($desc[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-
-        $modi = array(
-            'mode_code' => $code,
-            'mo_desc' => $desc
-        );
-        if($this->validateData($modi, $put_rules) === true) {
-            $this->modi_model->updateModus($desc, $code);
+        if($this->validateData($modus, $put_rules) === true) {
+            $this->modi_model->updateModus($modus, $code);
 
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
@@ -115,7 +107,7 @@ class ModiController extends BaseController
             ];
             return $this->prepareOkResponse($response, $response_data);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($modi, $put_rules));
+            throw new HttpBadRequestException($request, $this->validateData($modus, $put_rules));
         }
     }
 

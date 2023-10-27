@@ -114,6 +114,9 @@ class PoliceModel extends BaseModel
     // TODO: Implement this
     public function createPolice($police)
     {
+        if(isset($police['badge_id'])) {
+            unset($police["badge_id"]);
+        }
         return $this->insert($this->table_name, $police);
     }
 
