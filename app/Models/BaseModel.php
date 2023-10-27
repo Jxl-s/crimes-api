@@ -271,7 +271,6 @@ class BaseModel
             $limit = "LIMIT $limit";
         }
 
-        echo ("DELETE FROM $table WHERE $whereDetails $limit");
         $stmt = $this->run("DELETE FROM $table WHERE $whereDetails $limit", $values);
 
         return $stmt->rowCount();

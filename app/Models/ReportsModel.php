@@ -7,11 +7,6 @@ use Exception;
 class ReportsModel extends BaseModel
 {
     private $table_name = 'report';
-    private $report_victim = 'report_victim';
-    private $report_criminal = 'report_criminal';
-    private $report_police = 'report_police';
-    private $report_modus = 'report_modus';
-    private $report_crime = 'report_crime';
 
     public function __construct()
     {
@@ -205,7 +200,7 @@ class ReportsModel extends BaseModel
         }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $victims = $this->paginate($sql, $filters_values);
         return $victims;
     }
@@ -254,7 +249,6 @@ class ReportsModel extends BaseModel
 
         $filters_values['report_id'] = $report_id;
 
-        // No filters are used for this endpoint
         $criminals = $this->paginate($sql, $filters_values);
         return $criminals;
     }
@@ -295,7 +289,7 @@ class ReportsModel extends BaseModel
         }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $police = $this->paginate($sql, $filters_values);
         return $police;
     }
@@ -310,13 +304,13 @@ class ReportsModel extends BaseModel
         WHERE rc.report_id = :report_id
         ";
 
-    if (isset($filters['description'])) {
-        $sql .= ' AND crime_desc LIKE CONCAT(\'%\', :description, \'%\')';
-        $filters_values['description'] = $filters['description'];
-    }
+        if (isset($filters['description'])) {
+            $sql .= ' AND crime_desc LIKE CONCAT(\'%\', :description, \'%\')';
+            $filters_values['description'] = $filters['description'];
+        }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
@@ -337,63 +331,119 @@ class ReportsModel extends BaseModel
         }
 
         $filters_values['report_id'] = $report_id;
-        // No filters are used for this endpoint
+
         $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
+    }
+
+    private function createReportRelations($report_id, $table_name, $ids, $key)
+    {
+        foreach ($ids as $id) {
+            $this->insert($table_name, ['report_id' => $report_id, $key => $id]);
+        }
     }
 
     // TODO: Implement this
     public function createReport($report)
     {
-        //many to many
+        // Many-to-many fields
         $crime_codes = $report['crime_codes'];
         $modus_codes = $report['modus_codes'];
         $criminal_ids = $report['criminal_ids'];
         $victim_ids = $report['victim_ids'];
         $police_ids = $report['police_ids'];
+        unset($report['crime_codes'], $report['criminal_ids'], $report['modus_codes'], $report['police_ids'], $report['victim_ids']);
 
-        unset($report['crime_codes']);
-        unset($report['criminal_ids']);
-        unset($report['modus_codes']);
-        unset($report['police_ids']);
-        unset($report['victim_ids']);
-
-        //other entity to create
+        // Sub-entities
         $incident = $report['incident'];
         $location = $report['location'];
+        unset($report['incident'], $report['location']);
 
-        unset($report['incident']);
-        unset($report['location']);
+        $report['incident_id'] = $this->insert('incident', $incident);
+        $report['location_id'] = $this->insert('location', $location);
 
-
-        $report["incident_id"] = $this->insert('incident', $incident);
-        $report["location_id"] = $this->insert('location', $location);
         $report_id = $this->insert($this->table_name, $report);
 
-        foreach ($crime_codes as $key => $code) {
-            $this->insert($this->report_crime, ['report_id' => $report_id, 'crime_code' => $code]);
-        }
-        foreach ($modus_codes as $key => $code) {
-            $this->insert($this->report_modus, ['report_id' => $report_id, 'mo_code' => $code]);
-        }
-        foreach ($criminal_ids as $key => $id) {
-            $this->insert($this->report_criminal, ['report_id' => $report_id, 'criminal_id' => $id]);
-        }
-        foreach ($victim_ids as $key => $id) {
-            $this->insert($this->report_victim, ['report_id' => $report_id, 'victim_id' => $id]);
-        }
-        foreach ($police_ids as $key => $id) {
-            $this->insert($this->report_police, ['report_id' => $report_id, 'badge_id' => $id]);
-        }
+        // Insert many-to-many fields
+        $this->createReportRelations($report_id, 'report_crime', $crime_codes, 'crime_code');
+        $this->createReportRelations($report_id, 'report_modus', $modus_codes, 'mo_code');
+        $this->createReportRelations($report_id, 'report_criminal', $criminal_ids, 'criminal_id');
+        $this->createReportRelations($report_id, 'report_victim', $victim_ids, 'victim_id');
+        $this->createReportRelations($report_id, 'report_police', $police_ids, 'badge_id');
 
-        return;
+        return $report_id;
     }
 
     // TODO: Implement this
     public function updateReport($report, $report_id)
     {
-        unset($report["report_id"]);
-        return $this->update($this->table_name, $report, ["report_id" => $report_id]);
+        // Many-to-many fields
+        $crime_codes = $report['crime_codes'];
+        $modus_codes = $report['modus_codes'];
+        $criminal_ids = $report['criminal_ids'];
+        $victim_ids = $report['victim_ids'];
+        $police_ids = $report['police_ids'];
+        unset($report['crime_codes'], $report['criminal_ids'], $report['modus_codes'], $report['police_ids'], $report['victim_ids']);
+
+        // Sub-entities
+        $incident = $report['incident'];
+        $location = $report['location'];
+        unset($report['incident'], $report['location']);
+
+        // incident_id comes from `incident_id` in the report table. we have to get it from here
+        $incident_sql = 'UPDATE incident SET
+
+        reported_time = :reported_time,
+        occurred_time = :occurred_time
+
+        WHERE incident_id = (SELECT incident_id FROM report WHERE report_id = :report_id)';
+
+        $location_sql = 'UPDATE location SET
+
+        district_id = :district_id,
+        address = :address,
+        cross_street = :cross_street,
+        area_name = :area_name,
+        latitude = :latitude,
+        longitude = :longitude
+
+        WHERE location_id = (SELECT location_id FROM report WHERE report_id = :report_id)';
+
+        $this->db->prepare($incident_sql)->execute([
+            'report_id' => $report_id,
+
+            'reported_time' => $incident['reported_time'],
+            'occurred_time' => $incident['occurred_time'],
+        ]);
+
+        $this->db->prepare($location_sql)->execute([
+            'report_id' => $report_id,
+
+            'district_id' => $location['district_id'],
+            'address' => $location['address'],
+            'cross_street' => $location['cross_street'],
+            'area_name' => $location['area_name'],
+            'latitude' => $location['latitude'],
+            'longitude' => $location['longitude'],
+        ]);
+
+        // Drop all the old many-to-many fields
+        $this->delete('report_crime', ['report_id' => $report_id], '');
+        $this->delete('report_modus', ['report_id' => $report_id], '');
+        $this->delete('report_criminal', ['report_id' => $report_id], '');
+        $this->delete('report_victim', ['report_id' => $report_id], '');
+        $this->delete('report_police', ['report_id' => $report_id], '');
+
+        // Insert many-to-many fields
+        $this->createReportRelations($report_id, 'report_crime', $crime_codes, 'crime_code');
+        $this->createReportRelations($report_id, 'report_modus', $modus_codes, 'mo_code');
+        $this->createReportRelations($report_id, 'report_criminal', $criminal_ids, 'criminal_id');
+        $this->createReportRelations($report_id, 'report_victim', $victim_ids, 'victim_id');
+        $this->createReportRelations($report_id, 'report_police', $police_ids, 'badge_id');
+
+        // Update report
+        $success = $this->update($this->table_name, $report, ['report_id' => $report_id]);
+        return $success;
     }
 
     // TODO: Implement this

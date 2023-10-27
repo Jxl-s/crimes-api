@@ -2250,7 +2250,7 @@ INSERT INTO `police` (`badge_id`, `first_name`, `last_name`, `join_date`, `rank`
 
 CREATE TABLE `report` (
   `report_id` int(11) NOT NULL,
-  `last_update` date NOT NULL,
+  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `report_status` varchar(10) NOT NULL,
   `fatalities` int(11) NOT NULL,
   `case_status` varchar(10) NOT NULL,
