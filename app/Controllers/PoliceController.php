@@ -108,7 +108,7 @@ class PoliceController extends BaseController
             // Send the response
             return $this->prepareOkResponse($response, (array) $policeReport);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+            throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
         }
     }
 
@@ -157,7 +157,7 @@ class PoliceController extends BaseController
             ];
             return $this->prepareOkResponse($response, $response_data);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($create_rules, $police));
+            throw new HttpBadRequestException($request, $this->validateData($police, $create_rules));
         }
     }
 
@@ -201,14 +201,20 @@ class PoliceController extends BaseController
             ];
             return $this->prepareOkResponse($response, $response_data);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($update_rules, $police));
+            throw new HttpBadRequestException($request, $this->validateData($police, $update_rules));
         }
     }
 
     public function handleDeletePolice(Request $request, Response $response, array $uri_args)
     {
         $police = $uri_args['badge_id'];
+        if (!Input::isInt($police, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         $this->police_model->deletePolice($police);
-        return $this->prepareOkResponse($response, (array) $police);
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Deleted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 }

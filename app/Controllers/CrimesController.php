@@ -91,11 +91,7 @@ class CrimesController extends BaseController
     public function handleUpdateCrimes(Request $request, Response $response, array $uri_args)
     {
         $put_rules = array(
-            'crime_code' => [
-                'optional',
-                'integer'
-            ],
-            'crime_desc' => [
+            'description' => [
                 'optional',
                 ['lengthMax', 50]
             ]
@@ -108,7 +104,11 @@ class CrimesController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
         if($this->validateData($crime, $put_rules) === true) {
             $this->crimes_model->updateCrime($crime, $code);
-            return $this->prepareOkResponse($response, (array) $crime);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Updated Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
         } else {
             throw new HttpBadRequestException($request, $this->validateData($crime, $put_rules));
         }
@@ -120,6 +120,10 @@ class CrimesController extends BaseController
         if (!Input::isInt($code, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
         $this->crimes_model->deleteCrime($code);
-        return $this->prepareOkResponse($response, (array) $code);
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Deleted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 }

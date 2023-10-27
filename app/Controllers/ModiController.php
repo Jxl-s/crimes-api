@@ -31,7 +31,6 @@ class ModiController extends BaseController
         $filters = $this->getFilters($request, $this->modi_model, ['mo_code', 'description']);
         if($this->validateData($filters, $get_rules) === true) {
             $modi = $this->modi_model->getAllModi($filters);
-
             return $this->prepareOkResponse($response, (array) $modi);
         } else {
             throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
@@ -94,7 +93,7 @@ class ModiController extends BaseController
                 ['lengthMax', 10],
                 ['regex', '/[0-9]{4}/']
             ],
-            'mo_desc' => [
+            'description' => [
                 ['lengthMax', 50]
             ]
         );
@@ -130,9 +129,15 @@ class ModiController extends BaseController
             ]
         );
         $modus = $uri_args['mo_code'];
+        if (!Input::isInt($modus, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         if($this->validateData($modus, $delete_rules) === true) {
             $this->modi_model->deleteModus($modus);
-            return $this->prepareOkResponse($response, (array) $modus);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Deleted Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
         } else {
             throw new HttpBadRequestException($request, $this->validateData($modus, $delete_rules));
         }

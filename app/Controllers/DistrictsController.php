@@ -38,7 +38,7 @@ class DistrictsController extends BaseController
 
             return $this->prepareOkResponse($response, (array) $districts);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+            throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
         }
     }
 
@@ -91,7 +91,7 @@ class DistrictsController extends BaseController
             $reports = $this->districts_model->getDistrictReports($district_id, $filters);
             return $this->prepareOkResponse($response, (array) $reports);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+            throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
         }
     }
 
@@ -124,7 +124,7 @@ class DistrictsController extends BaseController
             $police = $this->districts_model->getDistrictPolice($district_id, $filters);
             return $this->prepareOkResponse($response, (array) $police);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($get_rules, $filters));
+            throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
         }
     }
 
@@ -135,6 +135,7 @@ class DistrictsController extends BaseController
         $create_rules = array(
             'district_id' => [
                 'required',
+                'integer',
                 ['regex', '/[0-9]{3,4}/']
             ],
             'st_name' => [
@@ -166,7 +167,6 @@ class DistrictsController extends BaseController
         //if an array given, throw exception
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-
         //TODO: Validate contents
         if($this->validateData($district, $create_rules) === true) {
             $this->districts_model->createDistrict($district);
@@ -176,7 +176,7 @@ class DistrictsController extends BaseController
             ];
             return $this->prepareOkResponse($response, $response_data);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($create_rules, $district));
+            throw new HttpBadRequestException($request, $this->validateData($district, $create_rules));
         }
     } 
 
@@ -213,14 +213,20 @@ class DistrictsController extends BaseController
             $this->districts_model->updateDistrict($district, $district_id);
             return $this->prepareOkResponse($response, (array) $district);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($update_rules, $district));
+            throw new HttpBadRequestException($request, $this->validateData($district, $update_rules));
         }
     }
 
     public function handleDeleteDistricts(Request $request, Response $response, array $uri_args)
     {
         $district = $uri_args['district_id'];
+        if (!Input::isInt($district, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         $this->districts_model->deleteDistrict($district);
-        return $this->prepareOkResponse($response, (array) $district);
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Deleted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 }
