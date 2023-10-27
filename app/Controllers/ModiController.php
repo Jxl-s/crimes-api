@@ -28,7 +28,7 @@ class ModiController extends BaseController
                 ['lengthMax', 50]
             ]
         );
-        $filters = $this->getFilters($request, $this->modi_model, ['mo_code', 'mo_desc']);
+        $filters = $this->getFilters($request, $this->modi_model, ['mo_code', 'description']);
         if($this->validateData($filters, $get_rules) === true) {
             $modi = $this->modi_model->getAllModi($filters);
 
@@ -62,7 +62,7 @@ class ModiController extends BaseController
                 ['lengthMax', 10],
                 ['regex', '/[0-9]{4}/']
             ],
-            'mo_desc' => [
+            'description' => [
                 'required',
                 ['lengthMax', 50]
             ]
@@ -90,6 +90,7 @@ class ModiController extends BaseController
     {
         $put_rules = array(
             'mo_code' => [
+                'alphaNum',
                 ['lengthMax', 10],
                 ['regex', '/[0-9]{4}/']
             ],

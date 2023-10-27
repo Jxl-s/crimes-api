@@ -35,13 +35,19 @@ class CrimesModel extends BaseModel
     // TODO: Implement this
     public function createCrime($crime)
     {
+        if(isset($crime['description'])) {
+            $crime['crime_desc'] = $crime['description'];
+            unset($crime['description']);
+        }
         return $this->insert($this->table_name, $crime);
     }
 
     // TODO: Implement this
     public function updateCrime($crime, $crime_code)
     {
-        unset($crime["crime_code"]);
+        if(isset($crime['description'])) {
+            unset($crime["crime_code"]);
+        }
         return $this->update($this->table_name, $crime, ["crime_code" => $crime_code]);
     }
     

@@ -130,31 +130,91 @@ class DistrictsController extends BaseController
 
     public function handleCreateDistricts(Request $request, Response $response, array $uri_args)
     {
-        $district = $request->getParsedBody();
+        
+        $district = (array) $request->getParsedBody();
+        $create_rules = array(
+            'district_id' => [
+                'required',
+                ['regex', '/[0-9]{3,4}/']
+            ],
+            'st_name' => [
+                'required',
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'bureau' => [
+                'required',
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'precinct' => [
+                'required',
+                'integer'
+            ],
+            'omega_label' => [
+                'required',
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'station' => [
+                'required',
+                'ascii',
+                ['lengthMax', 20]
+            ],
+        );
 
         //if an array given, throw exception
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
         //TODO: Validate contents
-        $this->districts_model->createDistrict($district);
-
-        $response_data = [
-            "code" => HttpCodes::STATUS_CREATED,
-            "message" => "Inserted Successfully"
-        ];
-        return $this->prepareOkResponse($response, $response_data);
-    }
+        if($this->validateData($district, $create_rules) === true) {
+            $this->districts_model->createDistrict($district);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Inserted Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($create_rules, $district));
+        }
+    } 
 
     public function handleUpdateDistricts(Request $request, Response $response, array $uri_args)
     {
-        $id = $uri_args['district_id'];
-        $district = $request->getParsedBody();
+        $district_id = $uri_args['district_id'];
+        $district = (array) $request->getParsedBody();
+        $update_rules = array(
+            'st_name' => [
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'bureau' => [
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'precinct' => [
+                'integer'
+            ],
+            'omega_label' => [
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'station' => [
+                'ascii',
+                ['lengthMax', 20]
+            ],
+        );
+        if (!Input::isInt($district_id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-            
-        $this->districts_model->updateDistrict($district, $id);
-        return $this->prepareOkResponse($response, (array) $district);
+        if($this->validateData($district, $update_rules) === true) {
+            $this->districts_model->updateDistrict($district, $district_id);
+            return $this->prepareOkResponse($response, (array) $district);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($update_rules, $district));
+        }
     }
 
     public function handleDeleteDistricts(Request $request, Response $response, array $uri_args)

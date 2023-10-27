@@ -114,31 +114,95 @@ class PoliceController extends BaseController
 
     public function handleCreatePolice(Request $request, Response $response, array $uri_args)
     {
-        $police = $request->getParsedBody();
-
+        $police = (array) $request->getParsedBody();
+        $create_rules = array(
+            'badge_id' => [
+                'required',
+                'integer'
+            ],
+            'first_name' => [
+                'required',
+                ['lengthMax', 50]
+            ],
+            'last_name' => [
+                'required',
+                ['lengthMax', 50]
+            ],
+            'join_date' => [
+                'required',
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'rank' => [
+                'required',
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'district_id' => [
+                'required',
+                'integer'
+            ],
+        );
         //if an array given, throw exception
         if (isset($police[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
         //TODO: Validate contents
-        $this->police_model->createPolice($police);
+        if($this->validateData($police, $create_rules) === true) {
+            $this->police_model->createPolice($police);
 
-        $response_data = [
-            "code" => HttpCodes::STATUS_CREATED,
-            "message" => "Inserted Successfully"
-        ];
-        return $this->prepareOkResponse($response, $response_data);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Inserted Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($create_rules, $police));
+        }
     }
 
     public function handleUpdatePolice(Request $request, Response $response, array $uri_args)
     {
         $id = $uri_args['badge_id'];
-        $police = $request->getParsedBody();
+        $police = (array) $request->getParsedBody();
+        $update_rules = array(
+            'first_name' => [
+                'optional',
+                ['lengthMax', 50]
+            ],
+            'last_name' => [
+                'optional',
+                ['lengthMax', 50]
+            ],
+            'join_date' => [
+                'optional',
+                ['dateFormat', 'Y-m-d'],
+                'date'
+            ],
+            'rank' => [
+                'optional',
+                'ascii',
+                ['lengthMax', 20]
+            ],
+            'district_id' => [
+                'optional',
+                'integer'
+            ],
+        );
         if (isset($police[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-            
-        $this->police_model->updatePolice($police, $id);
-        return $this->prepareOkResponse($response, (array) $police);
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
+        if($this->validateData($police, $update_rules) === true) {
+            $this->police_model->updatePolice($police, $id);
+            $response_data = [
+                "code" => HttpCodes::STATUS_CREATED,
+                "message" => "Updated Successfully"
+            ];
+            return $this->prepareOkResponse($response, $response_data);
+        } else {
+            throw new HttpBadRequestException($request, $this->validateData($update_rules, $police));
+        }
     }
 
     public function handleDeletePolice(Request $request, Response $response, array $uri_args)

@@ -29,7 +29,7 @@ class CrimesController extends BaseController
                 ['lengthMax', 50]
             ]
         );
-        $filters = $this->getFilters($request, $this->crimes_model, ['crime_code', 'crime_desc']);
+        $filters = $this->getFilters($request, $this->crimes_model, ['crime_code', 'description']);
         if($this->validateData($filters, $get_rules) === true) {
             $crimes = $this->crimes_model->getAllCrimes($filters);
 
@@ -62,8 +62,9 @@ class CrimesController extends BaseController
                 'required',
                 'integer'
             ],
-            'crime_desc' => [
+            'description' => [
                 'required',
+                'ascii',
                 ['lengthMax', 50]
             ]
         );
@@ -91,9 +92,11 @@ class CrimesController extends BaseController
     {
         $put_rules = array(
             'crime_code' => [
+                'optional',
                 'integer'
             ],
             'crime_desc' => [
+                'optional',
                 ['lengthMax', 50]
             ]
         );
