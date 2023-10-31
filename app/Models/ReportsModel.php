@@ -449,6 +449,16 @@ class ReportsModel extends BaseModel
     // TODO: Implement this
     public function deleteReport($report_id)
     {
-        return $this->delete($this->table_name, ["report_id" => $report_id]);
+        // Delete all the old many-to-many fields
+        $this->delete('report_crime', ['report_id' => $report_id], '');
+        $this->delete('report_modus', ['report_id' => $report_id], '');
+        $this->delete('report_criminal', ['report_id' => $report_id], '');
+        $this->delete('report_victim', ['report_id' => $report_id], '');
+        $this->delete('report_police', ['report_id' => $report_id], '');
+
+        // Delete the report
+        $success = $this->delete($this->table_name, ["report_id" => $report_id]);
+
+        return $success;
     }
 }

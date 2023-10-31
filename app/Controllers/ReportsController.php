@@ -341,8 +341,20 @@ class ReportsController extends BaseController
 
     public function handleDeleteReports(Request $request, Response $response, array $uri_args)
     {
-        $report = $uri_args['report_id'];
-        $this->reports_model->deleteReport($report);
-        return $this->prepareOkResponse($response, (array) $report);
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0)) {
+            throw new HttpBadRequestException($request, "Invalid ID");
+        }
+
+        $success = $this->reports_model->deleteReport($id);
+        if (!$success)
+            throw new HttpBadRequestException($request, "Failed to delete report");
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Report deleted successfully"
+        ];
+
+        return $this->prepareOkResponse($response, (array) $response_data);
     }
 }
