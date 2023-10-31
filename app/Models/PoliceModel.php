@@ -132,6 +132,8 @@ class PoliceModel extends BaseModel
     // TODO: Implement this
     public function deletePolice($badge_id)
     {
+        // Delete the reports
+        $this->delete('report_police', ["badge_id" => $badge_id]);
         return $this->delete($this->table_name, ["badge_id" => $badge_id]);
     }
 }

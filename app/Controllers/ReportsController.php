@@ -351,7 +351,7 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, "Failed to delete report");
 
         $response_data = [
-            "code" => HttpCodes::STATUS_CREATED,
+            "code" => HttpCodes::STATUS_OK,
             "message" => "Report deleted successfully"
         ];
 

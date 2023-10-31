@@ -20,7 +20,7 @@ class PoliceController extends BaseController
     }
 
     public function handleGetPolice(Request $request, Response $response)
-    {        
+    {
         $get_rules = array(
             'first_name' => [
                 'optional',
@@ -47,7 +47,7 @@ class PoliceController extends BaseController
             ],
         );
         $filters = $this->getFilters($request, $this->police_model, ['badge_id', 'first_name', 'last_name', 'join_date', 'rank']);
-        if($this->validateData($filters, $get_rules) === true) {
+        if ($this->validateData($filters, $get_rules) === true) {
             $police = $this->police_model->getAllPolice($filters);
 
             return $this->prepareOkResponse($response, (array) $police);
@@ -92,17 +92,17 @@ class PoliceController extends BaseController
             'premise' => [
                 'optional',
                 ['lengthMax', 50]
-            ]        
+            ]
         );
         // Get the filters
         $filters = $this->getFilters($request, $this->police_model, ['report_id', 'last_update', 'fatalities', 'premise']);
-        
+
         // Get the ID
         $id = $uri_args['badge_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        if($this->validateData($filters, $get_rules) === true) {
-        // Find all cases the given police involved in
+        if ($this->validateData($filters, $get_rules) === true) {
+            // Find all cases the given police involved in
             $policeReport = $this->police_model->getPoliceReports($id, $filters);
 
             // Send the response
@@ -148,7 +148,7 @@ class PoliceController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
 
         //TODO: Validate contents
-        if($this->validateData($police, $create_rules) === true) {
+        if ($this->validateData($police, $create_rules) === true) {
             $this->police_model->createPolice($police);
 
             $response_data = [
@@ -193,7 +193,7 @@ class PoliceController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        if($this->validateData($police, $update_rules) === true) {
+        if ($this->validateData($police, $update_rules) === true) {
             $this->police_model->updatePolice($police, $id);
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
@@ -210,11 +210,16 @@ class PoliceController extends BaseController
         $police = $uri_args['badge_id'];
         if (!Input::isInt($police, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        $this->police_model->deletePolice($police);
+
+        $success = $this->police_model->deletePolice($police);
+        if (!$success)
+            throw new HttpBadRequestException($request, "Failed to delete police");
+
         $response_data = [
-            "code" => HttpCodes::STATUS_CREATED,
+            "code" => HttpCodes::STATUS_OK,
             "message" => "Deleted Successfully"
         ];
+
         return $this->prepareOkResponse($response, $response_data);
     }
 }
