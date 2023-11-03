@@ -101,6 +101,10 @@ class CrimesController extends BaseController
             throw new HttpBadRequestException($request, "Invalid Code");
 
         $crime = $request->getParsedBody();
+        if (isset($crime['description'])) {
+            $crime['crime_desc'] = $crime['description'];
+            unset($crime['description']);
+        }
         $validation = $this->validateData($crime, $put_rules);
 
         if ($validation === true) {

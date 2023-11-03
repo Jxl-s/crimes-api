@@ -92,10 +92,17 @@ class ModiController extends BaseController
                 'ascii',
                 'optional',
                 ['lengthMax', 50]
-            ]
+            ],
         );
         $code = $uri_args['mo_code'];
         $modus = $request->getParsedBody();
+        if(isset($modus['mo_code'])) {
+            unset($modus["mo_code"]);
+        }
+        if(isset($modus['description'])) {
+            $modus['mo_desc'] = $modus['description'];
+            unset($modus['description']);
+        }
         if (isset($desc[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
         if($this->validateData($modus, $put_rules) === true) {
@@ -113,26 +120,14 @@ class ModiController extends BaseController
 
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
     {
-        $delete_rules = array(
-            'mo_code' => [
-                ['lengthMax', 10],
-                ['regex', '/[0-9]{4}/'],
-                'required'
-            ]
-        );
         $modus = $uri_args['mo_code'];
-        if (!Input::isInt($modus, 0))
+        if (!Input::isIntInRange($modus, 0, 9999))
             throw new HttpBadRequestException($request, "Invalid Code");
-        if($this->validateData($modus, $delete_rules) === true) {
-            $this->modi_model->deleteModus($modus);
-            $response_data = [
-                "code" => HttpCodes::STATUS_CREATED,
-                "message" => "Deleted Successfully"
-            ];
-            return $this->prepareOkResponse($response, $response_data);
-        } else {
-            throw new HttpBadRequestException($request, $this->validateData($modus, $delete_rules));
-        }
-
+        $this->modi_model->deleteModus($modus);
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Deleted Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 }

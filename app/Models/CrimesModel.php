@@ -40,7 +40,6 @@ class CrimesModel extends BaseModel
             $crime['crime_desc'] = $crime['description'];
             unset($crime['description']);
         }
-
         return $this->insert($this->table_name, $crime);
     }
 
@@ -51,13 +50,13 @@ class CrimesModel extends BaseModel
             $crime['crime_desc'] = $crime['description'];
             unset($crime['description']);
         }
-
         return $this->update($this->table_name, $crime, ["crime_code" => $crime_code]);
     }
 
     // TODO: Implement this
     public function deleteCrime($code)
     {
+        $this->delete('report_crime', ["crime_code" => (int) $code]);
         return $this->delete($this->table_name, ["crime_code" => (int) $code]);
     }
 }
