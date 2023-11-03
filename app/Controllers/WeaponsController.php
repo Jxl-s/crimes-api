@@ -141,14 +141,31 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        $this->weapons_model->updateWeapon($weapon, $id);
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Updated Successfully"
+        ];
+
+        $this->weapons_model->updateWeapon($weapon, $response_data);
+
+
         return $this->prepareOkResponse($response, (array) $id);
     }
 
     public function handleDeleteWeapons(Request $request, Response $response, array $uri_args)
     {
         $weapon = $uri_args['weapon_id'];
-        $this->weapons_model->deleteWeapon($weapon);
-        return $this->prepareOkResponse($response, (array) $weapon);
+        $success = $this->weapons_model->deleteWeapon($weapon);
+
+        if (!$success) {
+            throw new HttpBadRequestException($request, 'Failed to delete criminal');
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_OK,
+            "message" => "Updated Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 }
