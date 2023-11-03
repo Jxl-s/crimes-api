@@ -120,9 +120,6 @@ class DistrictsModel extends BaseModel
     // TODO: Implement this
     public function createDistrict($district)
     {
-        if(isset($district['district_id'])) {
-            unset($district["district_id"]);
-        }
         return $this->insert($this->table_name, $district);
     }
 
@@ -138,6 +135,7 @@ class DistrictsModel extends BaseModel
     // TODO: Implement this
     public function deleteDistrict($district_id)
     {
+        $this->delete('police', ["district_id" => $district_id]);
         return $this->delete($this->table_name, ["district_id" => $district_id]);
     }
 }

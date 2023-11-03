@@ -34,9 +34,6 @@ class ModiModel extends BaseModel
     // TODO: Implement this
     public function createModus($modus)
     {
-        if(isset($modus['mo_code'])) {
-            unset($modus["mo_code"]);
-        }
         if(isset($modus['description'])) {
             $modus['mo_desc'] = $modus['description'];
             unset($modus['description']);
@@ -48,11 +45,7 @@ class ModiModel extends BaseModel
     public function updateModus($modus, $mo_code)
     {
         if(isset($modus['mo_code'])) {
-            unset($modus["mo_code"]);
-        }
-        if(isset($modus['description'])) {
-            $modus['mo_desc'] = $modus['description'];
-            unset($modus['description']);
+            unset($modus['mo_code']);
         }
         return $this->update($this->table_name, $modus, ["mo_code" => $mo_code]);
     }
@@ -60,6 +53,7 @@ class ModiModel extends BaseModel
     // TODO: Implement this
     public function deleteModus($mo_code)
     {
+        $this->delete('report_modus', ["mo_code" => (int) $mo_code]);
         return $this->delete($this->table_name, ["mo_code" => $mo_code]);
     }
 }
