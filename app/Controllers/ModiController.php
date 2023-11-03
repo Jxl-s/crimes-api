@@ -41,9 +41,7 @@ class ModiController extends BaseController
     {
         // Get the code
         $code = $uri_args['mo_code'];
-        if (!Input::isInt($code))
-            throw new HttpBadRequestException($request, "Invalid Code");
-
+    
         // Find the modus
         $modus = $this->modi_model->getModusByCode($code);
         if (!$modus)
@@ -66,23 +64,23 @@ class ModiController extends BaseController
                 ['lengthMax', 50]
             ]
         );
-        $modi = (array) $request->getParsedBody();
 
-        if (isset($modi[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+        $modus = (array) $request->getParsedBody();
+        if (isset($modus[0]))
+            throw new HttpBadRequestException($request, "Bad format provided");
 
-        //TODO: Validate contents
-        if($this->validateData($modi, $post_rules) === true) {
-            $this->modi_model->createModus($modi);
+        $valid = $this->validateData($modus, $post_rules);
+        if($valid !== true) 
+            throw new HttpBadRequestException($request, $this->validateData($modus, $post_rules));
+        
+        $this->modi_model->createModus($modus);
 
-            $response_data = [
-                "code" => HttpCodes::STATUS_CREATED,
-                "message" => "Inserted Successfully"
-            ];
-            return $this->prepareOkResponse($response, $response_data);
-        } else {
-            throw new HttpBadRequestException($request, $this->validateData($modi, $post_rules));
-        }
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateModi(Request $request, Response $response, array $uri_args)
@@ -90,44 +88,51 @@ class ModiController extends BaseController
         $put_rules = array(
             'description' => [
                 'ascii',
-                'optional',
+                'required',
                 ['lengthMax', 50]
             ],
         );
+        
         $code = $uri_args['mo_code'];
         $modus = $request->getParsedBody();
-        if(isset($modus['mo_code'])) {
-            unset($modus["mo_code"]);
-        }
-        if(isset($modus['description'])) {
-            $modus['mo_desc'] = $modus['description'];
-            unset($modus['description']);
-        }
-        if (isset($desc[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-        if($this->validateData($modus, $put_rules) === true) {
-            $this->modi_model->updateModus($modus, $code);
+        if (isset($modus[0]))
+            throw new HttpBadRequestException($request, "Bad format provided");
 
-            $response_data = [
-                "code" => HttpCodes::STATUS_CREATED,
-                "message" => "Updated Successfully"
-            ];
-            return $this->prepareOkResponse($response, $response_data);
-        } else {
-            throw new HttpBadRequestException($request, $this->validateData($modus, $put_rules));
-        }
+        unset($modus["mo_code"]);
+
+        $valid = $this->validateData((array) $modus, $put_rules);
+        if ($valid !== true) 
+            throw new HttpBadRequestException($request, $valid);
+
+        $modus['mo_desc'] = $modus['description'];
+        unset($modus['description']);
+
+        $success = $this->modi_model->updateModus($modus, $code);
+
+        if (!$success)
+            throw new HttpBadRequestException($request, 'Update Failed');
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Updated Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
     {
         $modus = $uri_args['mo_code'];
-        if (!Input::isIntInRange($modus, 0, 9999))
-            throw new HttpBadRequestException($request, "Invalid Code");
-        $this->modi_model->deleteModus($modus);
+
+        $success = $this->modi_model->deleteModus($modus);
+        
+        if (!$success) 
+            throw new HttpBadRequestException($request, 'Delete Failed');
+
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Deleted Successfully"
         ];
+
         return $this->prepareOkResponse($response, $response_data);
     }
 }

@@ -131,6 +131,8 @@ class CriminalsModel extends BaseModel
     {
         $is_arrested = $criminal["is_arrested"];
         unset($criminal["is_arrested"]);
+        unset($criminal["criminal_id"]);
+
         $id = $this->insert($this->parent_table_name, $criminal);
         return $this->insert($this->table_name, ["person_id" => $id, "is_arrested" => $is_arrested]);
     }
@@ -146,9 +148,11 @@ class CriminalsModel extends BaseModel
         $sql = "SELECT `person_id` FROM `$this->table_name` WHERE `criminal_id` = :criminal_id";
         $id = $this->fetchSingle($sql, ['criminal_id' => $criminal_id]);
 
+        //return immediately if no record found
         if (!$id)
             return null;
 
+        //add up rowCount. then return if total is > 0 <- updated
         $resp = $this->update($this->parent_table_name, $criminal, ['person_id' => $id['person_id']]);
         $resp += $this->update($this->table_name, ['is_arrested'=> $is_arrested], ['criminal_id' => $criminal_id]);
 

@@ -109,6 +109,7 @@ class WeaponsModel extends BaseModel
     // TODO: Implement this
     public function createWeapon($weapon)
     {
+        unset($weapon["weapon_id"]);
         return $this->insert($this->table_name, $weapon);
     }
 

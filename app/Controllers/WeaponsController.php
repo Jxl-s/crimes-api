@@ -148,6 +148,7 @@ class WeaponsController extends BaseController
 
         $this->weapons_model->updateWeapon($weapon, $response_data);
 
+        
 
         return $this->prepareOkResponse($response, (array) $id);
     }

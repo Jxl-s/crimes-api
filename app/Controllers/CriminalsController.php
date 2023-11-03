@@ -106,7 +106,7 @@ class CriminalsController extends BaseController
     {
         $criminal = $request->getParsedBody();
         if (isset($criminal[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time. Array given.');
+            throw new HttpBadRequestException($request, 'Bad format provided');
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -114,7 +114,7 @@ class CriminalsController extends BaseController
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
             'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', ['length', 1], ['in', [0, 1]]]
+            'is_arrested' => ['optional', 'integer', ['regex', '/[0-1]/']]
         ];
 
         $validated = $this->validateData((array) $criminal, $rules);
@@ -136,6 +136,8 @@ class CriminalsController extends BaseController
     {
         $id = $uri_args['criminal_id'];
         $criminal = $request->getParsedBody();
+        if (isset($criminal[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided');
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -143,17 +145,17 @@ class CriminalsController extends BaseController
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
             'sex' => ['optional', ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', ['in', [0, 1]]]
+            'is_arrested' => ['optional', 'integer', ['regex', '/[0-1]/']]
         ];
 
-        $validated = $this->validateData($criminal, $rules);
+        $validated = $this->validateData((array) $criminal, $rules);
         if ($validated !== true) {
             throw new HttpBadRequestException($request, $validated);
         }
 
         $success = $this->criminals_model->updateCriminal($criminal, $id);
         if (!$success) {
-            throw new HttpBadRequestException($request, 'Failed to update criminal');
+            throw new HttpBadRequestException($request, 'Update Failed');
         }
 
         $response_data = [
@@ -170,7 +172,7 @@ class CriminalsController extends BaseController
         $success = $this->criminals_model->deleteCriminal($criminal);
 
         if (!$success) {
-            throw new HttpBadRequestException($request, 'Failed to delete criminal');
+            throw new HttpBadRequestException($request, 'Delete Failed');
         }
 
         $response_data = [
