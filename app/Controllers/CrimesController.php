@@ -14,7 +14,7 @@ use Vanier\Api\Models\CrimesModel;
 class CrimesController extends BaseController
 {
     private $crimes_model;
-   
+
     public function __construct()
     {
         $this->crimes_model = new CrimesModel();
@@ -30,12 +30,13 @@ class CrimesController extends BaseController
             ]
         );
         $filters = $this->getFilters($request, $this->crimes_model, ['crime_code', 'description']);
-        if($this->validateData($filters, $get_rules) === true) {
-            $crimes = $this->crimes_model->getAllCrimes($filters);
+        $validation = $this->validateData($filters, $get_rules);
 
+        if ($validation === true) {
+            $crimes = $this->crimes_model->getAllCrimes($filters);
             return $this->prepareOkResponse($response, (array) $crimes);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($filters, $get_rules));
+            throw new HttpBadRequestException($request, $validation);
         }
     }
 
@@ -68,23 +69,21 @@ class CrimesController extends BaseController
                 ['lengthMax', 50]
             ]
         );
-        $crime = (array) $request->getParsedBody();
 
-        //if an array given, throw exception    
-        if (isset($crime[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time.');
+        $crime = $request->getParsedBody();
+        $validation = $this->validateData($crime, $post_rules);
 
-        //TODO: Validate Data
-        if($this->validateData($crime, $post_rules) === true) {
+        if ($validation === true) {
             $this->crimes_model->createCrime($crime);
 
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
                 "message" => "Inserted Successfully"
             ];
+
             return $this->prepareOkResponse($response, $response_data);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($crime, $post_rules));
+            throw new HttpBadRequestException($request, $validation);
         }
     }
 
@@ -96,13 +95,15 @@ class CrimesController extends BaseController
                 ['lengthMax', 50]
             ]
         );
+
         $code = $uri_args['crime_code'];
         if (!Input::isInt($code, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        $crime = (array) $request->getParsedBody();
-        if (isset($crime[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-        if($this->validateData($crime, $put_rules) === true) {
+
+        $crime = $request->getParsedBody();
+        $validation = $this->validateData($crime, $put_rules);
+
+        if ($validation === true) {
             $this->crimes_model->updateCrime($crime, $code);
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
@@ -110,7 +111,7 @@ class CrimesController extends BaseController
             ];
             return $this->prepareOkResponse($response, $response_data);
         } else {
-            throw new HttpBadRequestException($request, $this->validateData($crime, $put_rules));
+            throw new HttpBadRequestException($request, $validation);
         }
     }
 
