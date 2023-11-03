@@ -82,7 +82,7 @@ class CriminalsController extends BaseController
                 'optional',
                 'ascii',
                 ['lengthMax', 50]
-            ]   
+            ]
         ];
 
         $validated = $this->validateData($filters, $rules);
@@ -135,33 +135,46 @@ class CriminalsController extends BaseController
     public function handleUpdateCriminals(Request $request, Response $response, array $uri_args)
     {
         $id = $uri_args['criminal_id'];
-
         $criminal = $request->getParsedBody();
-        if (isset($criminal[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time. Array given.');
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', ['length', 1], ['in', [0, 1]]]
+            'sex' => ['optional', ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['optional', ['in', [0, 1]]]
         ];
 
-        $validated = $this->validateData((array) $criminal, $rules);
+        $validated = $this->validateData($criminal, $rules);
         if ($validated !== true) {
             throw new HttpBadRequestException($request, $validated);
         }
 
         $this->criminals_model->updateCriminal($criminal, $id);
-        return $this->prepareOkResponse($response, (array) $criminal);
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Updated Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleDeleteCriminals(Request $request, Response $response, array $uri_args)
     {
         $criminal = $uri_args['criminal_id'];
-        $this->criminals_model->deleteCriminal($criminal);
-        return $this->prepareOkResponse($response, (array) $criminal);
+        $success = $this->criminals_model->deleteCriminal($criminal);
+
+        if (!$success) {
+            throw new HttpBadRequestException($request, 'Failed to delete criminal');
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_OK,
+            "message" => "Deleted Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 }

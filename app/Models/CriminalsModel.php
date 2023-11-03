@@ -112,11 +112,17 @@ class CriminalsModel extends BaseModel
             ];
 
             unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
-            unset($report['location_id'], $report['district_id'], $report['address'], 
-                $report['cross_street'], $report['area_name'], $report['latitude'], 
-                $report['longitude']);
+            unset(
+                $report['location_id'],
+                $report['district_id'],
+                $report['address'],
+                $report['cross_street'],
+                $report['area_name'],
+                $report['latitude'],
+                $report['longitude']
+            );
         }
-        
+
         return $reports;
     }
 
@@ -126,7 +132,7 @@ class CriminalsModel extends BaseModel
         $is_arrested = $criminal["is_arrested"];
         unset($criminal["is_arrested"]);
         $id = $this->insert($this->parent_table_name, $criminal);
-        return $this->insert($this->table_name, ["person_id" => $id, "is_arrested" => $is_arrested ]);
+        return $this->insert($this->table_name, ["person_id" => $id, "is_arrested" => $is_arrested]);
     }
 
     // TODO: Implement this
@@ -142,6 +148,7 @@ class CriminalsModel extends BaseModel
     // TODO: Implement this
     public function deleteCriminal($criminal_id)
     {
+        $this->delete('report_criminal', ['criminal_id' => $criminal_id]);
         return $this->delete($this->table_name, ["criminal_id" => $criminal_id]);
     }
 }
