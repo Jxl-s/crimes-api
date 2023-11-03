@@ -138,11 +138,21 @@ class CriminalsModel extends BaseModel
     // TODO: Implement this
     public function updateCriminal($criminal, $criminal_id)
     {
+        $is_arrested = $criminal["is_arrested"];
+        
         unset($criminal["is_arrested"]);
         unset($criminal["criminal_id"]);
+
         $sql = "SELECT `person_id` FROM `$this->table_name` WHERE `criminal_id` = :criminal_id";
         $id = $this->fetchSingle($sql, ['criminal_id' => $criminal_id]);
-        return $this->update($this->parent_table_name, $criminal, ['person_id' => $id['person_id']]);
+
+        if (!$id)
+            return null;
+
+        $resp = $this->update($this->parent_table_name, $criminal, ['person_id' => $id['person_id']]);
+        $resp += $this->update($this->table_name, ['is_arrested'=> $is_arrested], ['criminal_id' => $criminal_id]);
+
+        return $resp > 0;
     }
 
     // TODO: Implement this

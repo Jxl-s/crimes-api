@@ -151,7 +151,10 @@ class CriminalsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        $this->criminals_model->updateCriminal($criminal, $id);
+        $success = $this->criminals_model->updateCriminal($criminal, $id);
+        if (!$success) {
+            throw new HttpBadRequestException($request, 'Failed to update criminal');
+        }
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
