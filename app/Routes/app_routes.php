@@ -80,6 +80,7 @@ $app->get('/reports/{report_id}/criminals', [ReportsController::class, 'handleGe
 $app->get('/reports/{report_id}/police', [ReportsController::class, 'handleGetReportPolice']);
 $app->get('/reports/{report_id}/crimes', [ReportsController::class, 'handleGetReportCrimes']);
 $app->get('/reports/{report_id}/modi', [ReportsController::class, 'handleGetReportModus']);
+$app->get('/reports/{report_id}/weather', [ReportsController::class, 'handleGetReportWeather' ]);
 
 $app->post('/reports', [ReportsController::class, 'handleCreateReports']);
 $app->delete('/reports/{report_id}', [ReportsController::class, 'handleDeleteReports']);

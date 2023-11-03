@@ -9,6 +9,7 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\ReportsModel;
+use GuzzleHttp\Client as GuzzleClient;
 
 class ReportsController extends BaseController
 {
@@ -288,6 +289,43 @@ class ReportsController extends BaseController
 
         // Send the response
         return $this->prepareOkResponse($response, (array) $modi);
+    }
+    public function handleGetReportWeather(Request $request, Response $response, array $uri_args)
+    {
+        // Get the ID
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Find the report
+        $report = $this->reports_model->getReportById($id);
+
+        if (!$report)
+            throw new HttpNotFoundException($request, 'Report not found');
+        $time = $report['incident']['occurred_time'];
+        $pattern = '/(\d{4}-\d{2}-\d{2}) (\d{2}):\d{2}:\d{2}/';
+        preg_match($pattern, $time, $date_hour);
+        $params = [
+            'query' => [
+                'latitude' => $report['location']['latitude'],
+                'longitude' => $report['location']['longitude'],
+                'start_date' => $date_hour[1],
+                'end_date' => $date_hour[1],
+                'hourly' => 'temperature_2m,precipitation,weathercode',
+                'timezone' => 'America/Los_Angeles'
+            ]
+        ];
+        $client = new GuzzleClient(['base_uri' => 'https://archive-api.open-meteo.com/']);
+        $data = json_decode($client->request('GET', '/v1/archive', $params)->getBody(), true);
+        unset($data['hourly_units']['time']);
+        $weather = [
+            'hourly_units' => $data['hourly_units'],
+            'temperature' => $data['hourly']['temperature_2m'][intval($date_hour[2]-1)],
+            'precipitation' => $data['hourly']['precipitation'][intval($date_hour[2]-1)],
+            'weathercode' => $data['hourly']['weathercode'][intval($date_hour[2]-1)]
+        ];
+        // Send the response
+        return $this->prepareOkResponse($response, (array) $weather);
     }
 
     public function handleCreateReports(Request $request, Response $response, array $uri_args)
