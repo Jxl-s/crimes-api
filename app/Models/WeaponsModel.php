@@ -123,7 +123,7 @@ class WeaponsModel extends BaseModel
     public function deleteWeapon($weapon_id)
     {
         $sql = "UPDATE report SET weapon_id = NULL WHERE weapon_id = :weapon_id";
-        return $this->run($sql, ["weapon_id"=> $weapon_id]);
+        return $this->run($sql, ["weapon_id"=> $weapon_id])->rowCount();
     }
 
 }
