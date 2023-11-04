@@ -292,6 +292,19 @@ class ReportsController extends BaseController
     }
     public function handleGetReportWeather(Request $request, Response $response, array $uri_args)
     {
+        $weather_rules = [
+            "temperature_unit" => [
+                'optional',
+                'alpha',
+                ['in', ['celsius', 'fahrenheit']]
+            ],
+            "precipitation_unit" => [
+                'optional',
+                'alpha',
+                ['in', ['mm','inch']]
+            ]
+        ];
+        $filters = $request->getQueryParams();
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
@@ -299,30 +312,44 @@ class ReportsController extends BaseController
 
         // Find the report
         $report = $this->reports_model->getReportById($id);
-
         if (!$report)
             throw new HttpNotFoundException($request, 'Report not found');
         $time = $report['incident']['occurred_time'];
         $pattern = '/(\d{4}-\d{2}-\d{2}) (\d{2}):\d{2}:\d{2}/';
         preg_match($pattern, $time, $date_hour);
+        
+        $query = [
+            'latitude' => $report['location']['latitude'],
+            'longitude' => $report['location']['longitude'],
+            'start_date' => $date_hour[1],
+            'end_date' => $date_hour[1],
+            'hourly' => 'temperature_2m,precipitation,weathercode,relative_humidity_2m',
+            'timezone' => 'America/Los_Angeles'
+        ];
+
+        $validated = $this->validateData($filters, $weather_rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
+        if(isset($filters['temperature_unit']))
+            $query['temperature_unit'] = $filters['temperature_unit'];
+        if(isset($filters['precipitation_unit']))
+            $query['precipitation_unit'] = $filters['precipitation_unit'];
+
         $params = [
-            'query' => [
-                'latitude' => $report['location']['latitude'],
-                'longitude' => $report['location']['longitude'],
-                'start_date' => $date_hour[1],
-                'end_date' => $date_hour[1],
-                'hourly' => 'temperature_2m,precipitation,weathercode',
-                'timezone' => 'America/Los_Angeles'
-            ]
+            'query' => $query
         ];
         $client = new GuzzleClient(['base_uri' => 'https://archive-api.open-meteo.com/']);
         $data = json_decode($client->request('GET', '/v1/archive', $params)->getBody(), true);
         unset($data['hourly_units']['time']);
+
         $weather = [
             'hourly_units' => $data['hourly_units'],
             'temperature' => $data['hourly']['temperature_2m'][intval($date_hour[2]-1)],
             'precipitation' => $data['hourly']['precipitation'][intval($date_hour[2]-1)],
-            'weathercode' => $data['hourly']['weathercode'][intval($date_hour[2]-1)]
+            'humidity' => $data['hourly']['relative_humidity_2m'][intval($date_hour[2]-1)],
+            'weather_name' => $this->reports_model->toWeather($data['hourly']['weathercode'][intval($date_hour[2]-1)])
         ];
         // Send the response
         return $this->prepareOkResponse($response, (array) $weather);
