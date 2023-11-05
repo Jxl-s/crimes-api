@@ -29,7 +29,7 @@ class CriminalsController extends BaseController
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
             'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', ['length', 1], ['in', [0, 1]]]
+            'is_arrested' => ['optional', 'integer', ['regex', '/[0-1]{1}/']]
         ];
 
         $validated = $this->validateData($filters, $rules);
@@ -107,6 +107,9 @@ class CriminalsController extends BaseController
         $criminal = $request->getParsedBody();
         if (isset($criminal[0]))
             throw new HttpBadRequestException($request, 'Bad format provided');
+        if ($criminal === null) {
+            throw new HttpBadRequestException($request, 'Bad format provided. Please make sure no integer starts with 0');
+        }
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -114,7 +117,7 @@ class CriminalsController extends BaseController
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
             'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', 'integer', ['regex', '/[0-1]/']]
+            'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
         $validated = $this->validateData((array) $criminal, $rules);
@@ -138,6 +141,9 @@ class CriminalsController extends BaseController
         $criminal = $request->getParsedBody();
         if (isset($criminal[0]))
             throw new HttpBadRequestException($request, 'Bad format provided');
+        if ($criminal === null) {
+            throw new HttpBadRequestException($request, 'Bad format provided. Please make sure no integer starts with 0');
+        }
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -145,7 +151,7 @@ class CriminalsController extends BaseController
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
             'sex' => ['optional', ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', 'integer', ['regex', '/[0-1]/']]
+            'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
         $validated = $this->validateData((array) $criminal, $rules);

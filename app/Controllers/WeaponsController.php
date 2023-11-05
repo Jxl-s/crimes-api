@@ -99,7 +99,7 @@ class WeaponsController extends BaseController
     {
         $weapon = $request->getParsedBody();
         if (isset($weapon[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            throw new HttpBadRequestException($request, 'Bad format provided.');
 
         $rules = [
             'type' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -127,7 +127,7 @@ class WeaponsController extends BaseController
         $id = $uri_args['weapon_id'];
         $weapon = $request->getParsedBody();
         if (isset($weapon[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            throw new HttpBadRequestException($request, 'Bad format provided.');
 
         $rules = [
             'type' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -141,16 +141,14 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
+        $this->weapons_model->updateWeapon($weapon, $id);
+        
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Updated Successfully"
         ];
 
-        $this->weapons_model->updateWeapon($weapon, $response_data);
-
-        
-
-        return $this->prepareOkResponse($response, (array) $id);
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleDeleteWeapons(Request $request, Response $response, array $uri_args)
