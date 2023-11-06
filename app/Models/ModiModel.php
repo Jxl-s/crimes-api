@@ -34,11 +34,17 @@ class ModiModel extends BaseModel
     // TODO: Implement this
     public function createModus($modus)
     {
-        if(isset($modus['description'])) {
-            $modus['mo_desc'] = $modus['description'];
-            unset($modus['description']);
+        $modus['mo_desc'] = $modus['description'];
+        unset($modus['description']);
+
+        $resp = 0;
+
+        try {
+            $resp = $this->insert($this->table_name, $modus);
+        } catch (\Exception $e) {
         }
-        return $this->insert($this->table_name, $modus);
+
+        return $resp;
     }
 
     // TODO: Implement this

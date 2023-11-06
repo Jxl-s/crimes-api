@@ -45,9 +45,7 @@ class VictimsController extends BaseController
     {
         // Get the ID
         $id = $uri_args['victim_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
-
+        
         // Find the victim
         $victim = $this->victims_model->getVictimById($id);
         if (!$victim)
@@ -60,10 +58,8 @@ class VictimsController extends BaseController
     public function handleCreateVictims(Request $request, Response $response, array $uri_args)
     {
         $victim = $request->getParsedBody();
-        //if an array given, throw exception    
-        echo gettype($victim);
         if (isset($victim[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            throw new HttpBadRequestException($request, 'Bad format provided');
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -93,7 +89,7 @@ class VictimsController extends BaseController
         $id = $uri_args['victim_id'];
         $victim = $request->getParsedBody();
         if (isset($victim[0]))
-            throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+            throw new HttpBadRequestException($request, 'Bad format provided');
 
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
@@ -108,15 +104,34 @@ class VictimsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        $this->victims_model->updateVictim($victim, $id);
-        return $this->prepareOkResponse($response, (array) $victim);
+        $success = $this->victims_model->updateVictim($victim, $id);
+        if (!$success) {
+            throw new HttpBadRequestException($request, 'Update Failed');
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Updated Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleDeleteVictims(Request $request, Response $response, array $uri_args)
     {
         // Get the ID. Cast 
         $victim = $uri_args['victim_id'];
-        $this->victims_model->deleteVictim($victim);
-        return $this->prepareOkResponse($response, (array) $victim);
+
+        $success = $this->victims_model->deleteVictim($victim);
+        if (!$success) {
+            throw new HttpBadRequestException($request, 'Delete Failed');
+        }
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Deleted Successfully"
+        ];
+        
+        return $this->prepareOkResponse($response, $response_data);
     }
 }

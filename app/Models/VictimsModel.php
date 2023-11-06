@@ -12,7 +12,6 @@ class VictimsModel extends BaseModel
         parent::__construct();
     }
 
-    // TODO: Implement this
     public function getAllVictims(array $filters)
     {
         $filters_values = [];
@@ -49,32 +48,36 @@ class VictimsModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
-    // TODO: Implement this
     public function getVictimById($victim_id)
     {
         $sql = "SELECT victim_id, first_name, last_name, age, sex, height, descent FROM $this->table_name v INNER JOIN person p ON v.person_id = p.person_id WHERE v.victim_id = :victim_id";
         return $this->fetchSingle($sql, ['victim_id' => $victim_id]);
     }
 
-    // TODO: Implement this
     public function createVictim($victim)
     {
+        unset($victim['victim_id']);
         $id = $this->insert($this->parent_table_name, $victim);
         return $this->insert($this->table_name, ["person_id" => $id]);
     }
 
-    // TODO: Implement this
     public function updateVictim($victim, $victim_id)
     {
         unset($victim["victim_id"]);
+
         $sql = "SELECT `person_id` FROM `$this->table_name` WHERE `victim_id` = :victim_id";
         $id = $this->fetchSingle($sql, ['victim_id' => $victim_id]);
+
+        //return immediately if no record found
+        if (!$id)
+            return null;
+
         return $this->update($this->parent_table_name, $victim, ['person_id' => $id['person_id']]);
     }
 
-    // TODO: Implement this
     public function deleteVictim($victim_id)
     {
+        $this->delete('report_victim', ['victim_id' => $victim_id]);
         return $this->delete($this->table_name, ["victim_id" => $victim_id]);
     }
 }

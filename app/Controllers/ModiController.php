@@ -73,7 +73,11 @@ class ModiController extends BaseController
         if($valid !== true) 
             throw new HttpBadRequestException($request, $this->validateData($modus, $post_rules));
         
-        $this->modi_model->createModus($modus);
+        $success = $this->modi_model->createModus($modus);
+
+        if (!$success) {
+            throw new HttpBadRequestException($request, "Create Failed. Please make sure mo_code is not existed");
+        }
 
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
