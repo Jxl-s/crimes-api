@@ -51,7 +51,7 @@ class WeaponsController extends BaseController
         $weapon = $this->weapons_model->getWeaponById($id);
         if (!$weapon)
             throw new HttpNotFoundException($request, 'Weapon Not Found');
-            
+
         // Send the response
         return $this->prepareOkResponse($response, (array) $weapon);
     }
@@ -82,7 +82,7 @@ class WeaponsController extends BaseController
                 'optional',
                 'ascii',
                 ['lengthMax', 50]
-            ]   
+            ]
         ];
 
         $validated = $this->validateData($filters, $rules);
@@ -91,7 +91,7 @@ class WeaponsController extends BaseController
         }
 
         $reports = $this->weapons_model->getWeaponReports($weapon_id, $filters);
-        
+
         return $this->prepareOkResponse($response, (array) $reports);
     }
 
@@ -102,10 +102,10 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided.');
 
         $rules = [
-            'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'material' => ['optional', 'ascii', ['lengthMax', 50]],
-            'color' => ['optional', 'ascii', ['lengthMax', 50]],
-            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+            'type' => ['required', 'ascii', ['lengthMax', 50]],
+            'material' => ['required', 'ascii', ['lengthMax', 50]],
+            'color' => ['required', 'ascii', ['lengthMax', 50]],
+            'description' => ['required', 'ascii', ['lengthMax', 50]]
         ];
 
         $validated = $this->validateData((array) $weapon, $rules);
@@ -130,10 +130,10 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided.');
 
         $rules = [
-            'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'material' => ['optional', 'ascii', ['lengthMax', 50]],
-            'color' => ['optional', 'ascii', ['lengthMax', 50]],
-            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+            'type' => ['required', 'ascii', ['lengthMax', 50]],
+            'material' => ['required', 'ascii', ['lengthMax', 50]],
+            'color' => ['required', 'ascii', ['lengthMax', 50]],
+            'description' => ['required', 'ascii', ['lengthMax', 50]]
         ];
 
         $validated = $this->validateData((array) $weapon, $rules);
@@ -142,7 +142,7 @@ class WeaponsController extends BaseController
         }
 
         $this->weapons_model->updateWeapon($weapon, $id);
-        
+
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Updated Successfully"
@@ -153,16 +153,20 @@ class WeaponsController extends BaseController
 
     public function handleDeleteWeapons(Request $request, Response $response, array $uri_args)
     {
-        $weapon = $uri_args['weapon_id'];
-        $success = $this->weapons_model->deleteWeapon($weapon);
+        $weapon_id = $uri_args['weapon_id'];
+        $weapon = $this->weapons_model->getWeaponById($weapon_id);
+        if (!$weapon) {
+            throw new HttpNotFoundException($request, 'Weapon not found');
+        }
 
+        $success = $this->weapons_model->deleteWeapon($weapon_id);
         if (!$success) {
-            throw new HttpBadRequestException($request, 'Failed to delete criminal');
+            throw new HttpBadRequestException($request, 'Failed to delete weapon');
         }
 
         $response_data = [
             "code" => HttpCodes::STATUS_OK,
-            "message" => "Updated Successfully"
+            "message" => "Deleted Successfully"
         ];
 
         return $this->prepareOkResponse($response, $response_data);
