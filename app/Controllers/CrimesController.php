@@ -63,7 +63,7 @@ class CrimesController extends BaseController
                 'required',
                 'integer'
             ],
-            'description' => [
+            'crime_desc' => [
                 'required',
                 'ascii',
                 ['lengthMax', 50]
@@ -75,7 +75,6 @@ class CrimesController extends BaseController
 
         if ($validation === true) {
             $this->crimes_model->createCrime($crime);
-
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
                 "message" => "Inserted Successfully"
@@ -90,7 +89,7 @@ class CrimesController extends BaseController
     public function handleUpdateCrimes(Request $request, Response $response, array $uri_args)
     {
         $put_rules = array(
-            'description' => [
+            'crime_desc' => [
                 'optional',
                 ['lengthMax', 50]
             ]
@@ -101,14 +100,14 @@ class CrimesController extends BaseController
             throw new HttpBadRequestException($request, "Invalid Code");
 
         $crime = $request->getParsedBody();
-        if (isset($crime['description'])) {
-            $crime['crime_desc'] = $crime['description'];
-            unset($crime['description']);
-        }
+
         $validation = $this->validateData($crime, $put_rules);
 
         if ($validation === true) {
-            $this->crimes_model->updateCrime($crime, $code);
+            $success = $this->crimes_model->updateCrime($crime, $code);
+
+            if (!$success)
+                throw new HttpBadRequestException($request, "Failed to update crime");
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
                 "message" => "Updated Successfully"
@@ -124,7 +123,9 @@ class CrimesController extends BaseController
         $code = $uri_args['crime_code'];
         if (!Input::isInt($code, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        $this->crimes_model->deleteCrime($code);
+        $success = $this->crimes_model->deleteCrime($code);
+        if (!$success)
+            throw new HttpBadRequestException($request, "Failed to delete crime");
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Deleted Successfully"
