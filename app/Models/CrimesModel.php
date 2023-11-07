@@ -36,19 +36,26 @@ class CrimesModel extends BaseModel
     // TODO: Implement this
     public function createCrime($crime)
     {
-        return $this->insert($this->table_name, $crime);
+        try {
+            $this->insert($this->table_name, $crime);
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return 1;
     }
 
     // TODO: Implement this
     public function updateCrime($crime, $crime_code)
     {
+        unset($crime['crime_code']);
         return $this->update($this->table_name, $crime, ["crime_code" => $crime_code]);
     }
 
     // TODO: Implement this
     public function deleteCrime($code)
     {
-        $this->delete('report_crime', ["crime_code" => (int) $code]);
-        return $this->delete($this->table_name, ["crime_code" => (int) $code]);
+        $this->delete('report_crime', ["crime_code" => $code]);
+        return $this->delete($this->table_name, ["crime_code" => $code]);
     }
 }

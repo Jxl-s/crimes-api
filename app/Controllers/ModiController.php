@@ -29,6 +29,7 @@ class ModiController extends BaseController
             ]
         );
         $filters = $this->getFilters($request, $this->modi_model, ['mo_code', 'description']);
+        
         if($this->validateData($filters, $get_rules) === true) {
             $modi = $this->modi_model->getAllModi($filters);
             return $this->prepareOkResponse($response, (array) $modi);

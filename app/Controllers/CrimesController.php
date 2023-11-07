@@ -44,8 +44,6 @@ class CrimesController extends BaseController
     {
         // Get the code
         $code = $uri_args['crime_code'];
-        if (!Input::isInt($code, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
 
         // Find the crime
         $crime = $this->crimes_model->getCrimeByCode($code);
@@ -71,19 +69,26 @@ class CrimesController extends BaseController
         );
 
         $crime = $request->getParsedBody();
-        $validation = $this->validateData($crime, $post_rules);
+        if (isset($crime[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided');
+        if ($crime === null) {
+            throw new HttpBadRequestException($request, 'Bad format provided. Please make sure no integer starts with 0');
+        }
+            
+        $validation = $this->validateData((array) $crime, $post_rules);
 
-        if ($validation === true) {
-            $this->crimes_model->createCrime($crime);
-            $response_data = [
-                "code" => HttpCodes::STATUS_CREATED,
-                "message" => "Inserted Successfully"
-            ];
-
-            return $this->prepareOkResponse($response, $response_data);
-        } else {
+        if ($validation !== true) {
             throw new HttpBadRequestException($request, $validation);
         }
+
+        $this->crimes_model->createCrime($crime);
+        
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Inserted Successfully"
+        ];
+
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleUpdateCrimes(Request $request, Response $response, array $uri_args)
@@ -96,36 +101,38 @@ class CrimesController extends BaseController
         );
 
         $code = $uri_args['crime_code'];
-        if (!Input::isInt($code, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
 
         $crime = $request->getParsedBody();
+        if (isset($crime[0]))
+            throw new HttpBadRequestException($request, 'Bad format provided');
 
+        
         $validation = $this->validateData($crime, $put_rules);
 
-        if ($validation === true) {
-            $success = $this->crimes_model->updateCrime($crime, $code);
-
-            if (!$success)
-                throw new HttpBadRequestException($request, "Failed to update crime");
-            $response_data = [
-                "code" => HttpCodes::STATUS_CREATED,
-                "message" => "Updated Successfully"
-            ];
-            return $this->prepareOkResponse($response, $response_data);
-        } else {
+        if ($validation !== true) {
             throw new HttpBadRequestException($request, $validation);
         }
+        
+        $success = $this->crimes_model->updateCrime($crime, $code);
+
+        if (!$success)
+            throw new HttpBadRequestException($request, "Update Failed");
+
+        $response_data = [
+            "code" => HttpCodes::STATUS_CREATED,
+            "message" => "Updated Successfully"
+        ];
+        return $this->prepareOkResponse($response, $response_data);
     }
 
     public function handleDeleteCrimes(Request $request, Response $response, array $uri_args)
     {
         $code = $uri_args['crime_code'];
-        if (!Input::isInt($code, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
+
         $success = $this->crimes_model->deleteCrime($code);
         if (!$success)
-            throw new HttpBadRequestException($request, "Failed to delete crime");
+            throw new HttpBadRequestException($request, "Delete Failed");
+
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Deleted Successfully"

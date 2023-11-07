@@ -17,9 +17,9 @@ class ModiModel extends BaseModel
         $filters_values = [];
         $sql = "SELECT * FROM $this->table_name WHERE 1 ";
 
-        if (isset($filters['description'])) {
+        if (isset($filters['mo_desc'])) {
             $sql .= ' AND mo_desc LIKE CONCAT(\'%\', :description, \'%\')';
-            $filters_values['description'] = $filters['description'];
+            $filters_values['mo_desc'] = $filters['mo_desc'];
         }
 
         return $this->paginate($sql, $filters_values);
@@ -30,34 +30,25 @@ class ModiModel extends BaseModel
         $sql = "SELECT * FROM $this->table_name WHERE mo_code = :mo_code";
         return $this->fetchSingle($sql, ['mo_code' => $mo_code]);
     }
-
-    // TODO: Implement this
+    
     public function createModus($modus)
     {
-        $modus['mo_desc'] = $modus['description'];
-        unset($modus['description']);
-
-        $resp = 0;
-
         try {
             $resp = $this->insert($this->table_name, $modus);
         } catch (\Exception $e) {
+            return null;
         }
 
-        return $resp;
+        return 1;
     }
 
-    // TODO: Implement this
     public function updateModus($modus, $mo_code)
     {
-        if(isset($modus['mo_code'])) {
             unset($modus['mo_code']);
-        }
 
         return $this->update($this->table_name, $modus, ["mo_code" => $mo_code]);
     }
 
-    // TODO: Implement this
     public function deleteModus($mo_code)
     {
         $this->delete('report_modus', ["mo_code" => $mo_code]);

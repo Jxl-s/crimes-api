@@ -46,8 +46,6 @@ class CriminalsController extends BaseController
     {
         // Get the ID
         $id = $uri_args['criminal_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid ID");
 
         // Find the criminal
         $criminal = $this->criminals_model->getCriminalById($id);
@@ -92,8 +90,6 @@ class CriminalsController extends BaseController
 
         // Get the ID
         $id = $uri_args['criminal_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
 
         // Find all cases the given criminal involved in
         $reports = $this->criminals_model->getCriminalReports($id, $filters);
