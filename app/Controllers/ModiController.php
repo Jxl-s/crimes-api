@@ -125,9 +125,14 @@ class ModiController extends BaseController
 
     public function handleDeleteModi(Request $request, Response $response, array $uri_args)
     {
-        $modus = $uri_args['mo_code'];
+        $modus_code = $uri_args['mo_code'];
+        $modus = $this->modi_model->getModusByCode($modus_code);
 
-        $success = $this->modi_model->deleteModus($modus);
+        if (!$modus) {
+            throw new HttpNotFoundException($request, "Modus not found");
+        }
+
+        $success = $this->modi_model->deleteModus($modus_code);
         
         if (!$success) 
             throw new HttpBadRequestException($request, 'Delete Failed');
