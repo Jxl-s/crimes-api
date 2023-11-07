@@ -133,7 +133,12 @@ class CriminalsController extends BaseController
 
     public function handleUpdateCriminals(Request $request, Response $response, array $uri_args)
     {
-        $id = $uri_args['criminal_id'];
+        $criminal_id = $uri_args['criminal_id'];
+        $criminal = $this->criminals_model->getCriminalById($criminal_id);
+
+        if(!$criminal)
+            throw new HttpNotFoundException($request, "Criminal not found");
+
         $criminal = $request->getParsedBody();
         if (isset($criminal[0]))
             throw new HttpBadRequestException($request, 'Bad format provided');
@@ -155,7 +160,7 @@ class CriminalsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        $success = $this->criminals_model->updateCriminal($criminal, $id);
+        $success = $this->criminals_model->updateCriminal($criminal, $criminal_id);
         if (!$success) {
             throw new HttpBadRequestException($request, 'Update Failed');
         }
@@ -170,8 +175,13 @@ class CriminalsController extends BaseController
 
     public function handleDeleteCriminals(Request $request, Response $response, array $uri_args)
     {
-        $criminal = $uri_args['criminal_id'];
-        $success = $this->criminals_model->deleteCriminal($criminal);
+        $criminal_id = $uri_args['criminal_id'];
+        $criminal = $this->criminals_model->getCriminalById($criminal_id);
+
+        if(!$criminal)
+            throw new HttpNotFoundException($request, "Criminal not found");
+
+        $success = $this->criminals_model->deleteCriminal($criminal_id);
 
         if (!$success) {
             throw new HttpBadRequestException($request, 'Delete Failed');

@@ -158,7 +158,12 @@ class PoliceController extends BaseController
 
     public function handleUpdatePolice(Request $request, Response $response, array $uri_args)
     {
-        $id = $uri_args['badge_id'];
+        $badge_id = $uri_args['badge_id'];
+        $police = $this->police_model->getPoliceById($badge_id);
+
+        if(!$police)
+            throw new HttpNotFoundException($request, "Police not found");
+
         $police = (array) $request->getParsedBody();
         $update_rules = array(
             'first_name' => [
@@ -186,8 +191,9 @@ class PoliceController extends BaseController
         );
         if (isset($police[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
+                
         if ($this->validateData($police, $update_rules) === true) {
-            $success = $this->police_model->updatePolice($police, $id);
+            $success = $this->police_model->updatePolice($police, $badge_id);
             if (!$success)
                 throw new HttpBadRequestException($request, "Failed to update police");
             $response_data = [
@@ -202,11 +208,16 @@ class PoliceController extends BaseController
 
     public function handleDeletePolice(Request $request, Response $response, array $uri_args)
     {
-        $police = $uri_args['badge_id'];
-        if (!Input::isInt($police, 0))
+        $badge_id = $uri_args['badge_id'];
+        if (!Input::isInt($badge_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
 
-        $success = $this->police_model->deletePolice($police);
+        $police = $this->police_model->getPoliceById($badge_id);
+
+        if(!$police)
+            throw new HttpNotFoundException($request, "Police not found");
+
+        $success = $this->police_model->deletePolice($badge_id);
         if (!$success)
             throw new HttpBadRequestException($request, "Failed to delete police");
 

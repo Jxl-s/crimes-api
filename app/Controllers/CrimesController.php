@@ -102,6 +102,11 @@ class CrimesController extends BaseController
 
         $code = $uri_args['crime_code'];
 
+        $crime = $this->crimes_model->getCrimeByCode($code);
+
+        if(!$crime)
+            throw new HttpNotFoundException($request, "Crime not found");
+            
         $crime = $request->getParsedBody();
         if (isset($crime[0]))
             throw new HttpBadRequestException($request, 'Bad format provided');
@@ -128,7 +133,14 @@ class CrimesController extends BaseController
     public function handleDeleteCrimes(Request $request, Response $response, array $uri_args)
     {
         $code = $uri_args['crime_code'];
+        if (!Input::isInt($code, 0))
+            throw new HttpBadRequestException($request, "Invalid Code");
 
+        $crime = $this->crimes_model->getCrimeByCode($code);
+
+        if(!$crime)
+            throw new HttpNotFoundException($request, "Crime not found");
+            
         $success = $this->crimes_model->deleteCrime($code);
         if (!$success)
             throw new HttpBadRequestException($request, "Delete Failed");

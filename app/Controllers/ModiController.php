@@ -99,6 +99,11 @@ class ModiController extends BaseController
         );
         
         $code = $uri_args['mo_code'];
+        $modus = $this->modi_model->getModusByCode($code);
+
+        if(!$modus)
+            throw new HttpNotFoundException($request, "Modus not found");
+
         $modus = $request->getParsedBody();
         if (isset($modus[0]))
             throw new HttpBadRequestException($request, "Bad format provided");

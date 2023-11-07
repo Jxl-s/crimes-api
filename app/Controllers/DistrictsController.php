@@ -182,6 +182,11 @@ class DistrictsController extends BaseController
     public function handleUpdateDistricts(Request $request, Response $response, array $uri_args)
     {
         $district_id = $uri_args['district_id'];
+
+        $district = $this->districts_model->getDistrictById($district_id);
+        if(!$district)
+            throw new HttpNotFoundException($request, "District not found");
+            
         $district = (array) $request->getParsedBody();
         $update_rules = array(
             'st_name' => [
@@ -224,10 +229,16 @@ class DistrictsController extends BaseController
 
     public function handleDeleteDistricts(Request $request, Response $response, array $uri_args)
     {
-        $district = $uri_args['district_id'];
-        if (!Input::isInt($district, 0))
+        $district_id = $uri_args['district_id'];
+        if (!Input::isInt($district_id, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        $success = $this->districts_model->deleteDistrict($district);
+            
+        $district = $this->districts_model->getDistrictById($district_id);
+
+        if(!$district)
+            throw new HttpNotFoundException($request, "District not found");
+
+        $success = $this->districts_model->deleteDistrict($district_id);
         if (!$success)
             throw new HttpBadRequestException($request, "Failed to delete district");
         $response_data = [

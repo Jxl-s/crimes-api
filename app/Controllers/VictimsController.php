@@ -86,7 +86,12 @@ class VictimsController extends BaseController
 
     public function handleUpdateVictims(Request $request, Response $response, array $uri_args)
     {
-        $id = $uri_args['victim_id'];
+        $victim_id = $uri_args['victim_id'];
+        $victim = $this->victims_model->getVictimById($victim_id);
+
+        if(!$victim )
+            throw new HttpNotFoundException($request, "Victim not found");
+
         $victim = $request->getParsedBody();
         if (isset($victim[0]))
             throw new HttpBadRequestException($request, 'Bad format provided');
@@ -104,7 +109,7 @@ class VictimsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        $success = $this->victims_model->updateVictim($victim, $id);
+        $success = $this->victims_model->updateVictim($victim, $victim_id);
         if (!$success) {
             throw new HttpBadRequestException($request, 'Update Failed');
         }
@@ -120,9 +125,14 @@ class VictimsController extends BaseController
     public function handleDeleteVictims(Request $request, Response $response, array $uri_args)
     {
         // Get the ID. Cast 
-        $victim = $uri_args['victim_id'];
+        $victim_id = $uri_args['victim_id'];
 
-        $success = $this->victims_model->deleteVictim($victim);
+        $victim = $this->victims_model->getVictimById($victim_id);
+
+        if(!$victim )
+            throw new HttpNotFoundException($request, "Victim not found");
+
+        $success = $this->victims_model->deleteVictim($victim_id);
         if (!$success) {
             throw new HttpBadRequestException($request, 'Delete Failed');
         }

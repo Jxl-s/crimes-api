@@ -155,6 +155,7 @@ class WeaponsController extends BaseController
     {
         $weapon_id = $uri_args['weapon_id'];
         $weapon = $this->weapons_model->getWeaponById($weapon_id);
+        
         if (!$weapon) {
             throw new HttpNotFoundException($request, 'Weapon not found');
         }
