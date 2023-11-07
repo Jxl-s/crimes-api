@@ -51,7 +51,6 @@ class ReportsModel extends BaseModel
         return $report;
     }
 
-    // TODO: Implement this
     public function getAllReports(array $filters)
     {
         $filters_values = [];
@@ -162,7 +161,6 @@ class ReportsModel extends BaseModel
         return $this->formatReport((array) $result);
     }
 
-    // TODO: Implement this
     public function getReportVictims($report_id, $filters)
     {
         $filters_values = [];
@@ -205,7 +203,6 @@ class ReportsModel extends BaseModel
         return $victims;
     }
 
-    // TODO: Implement this
     public function getReportCriminals($report_id, $filters)
     {
         $filters_values = [];

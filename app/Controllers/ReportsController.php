@@ -129,6 +129,17 @@ class ReportsController extends BaseController
 
     public function handleGetReportVictims(Request $request, Response $response, array $uri_args)
     {
+        // Get the ID
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
         $filters = $this->getFilters($request, $this->reports_model, [
             'victim_id',
             'first_name',
@@ -151,11 +162,6 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        // Get the ID
-        $id = $uri_args['report_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid ID");
-
         // Get the victims
         $victims = $this->reports_model->getReportVictims($id, $filters);
 
@@ -165,6 +171,17 @@ class ReportsController extends BaseController
 
     public function handleGetReportCriminals(Request $request, Response $response, array $uri_args)
     {
+        // Get the ID
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
         $filters = $this->getFilters($request, $this->reports_model, [
             'criminal_id',
             'first_name',
@@ -188,11 +205,6 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        // Get the ID
-        $id = $uri_args['report_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid ID");
-
         // Get the criminals
         $criminals = $this->reports_model->getReportCriminals($id, $filters);
 
@@ -202,6 +214,17 @@ class ReportsController extends BaseController
 
     public function handleGetReportPolice(Request $request, Response $response, array $uri_args)
     {
+        // Get the ID
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
         $filters = $this->getFilters($request, $this->reports_model, [
             'badge_id',
             'first_name',
@@ -223,11 +246,6 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        // Get the ID
-        $id = $uri_args['report_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid ID");
-
         // Get the police officers
         $police = $this->reports_model->getReportPolice($id, $filters);
 
@@ -237,15 +255,21 @@ class ReportsController extends BaseController
 
     public function handleGetReportCrimes(Request $request, Response $response, array $uri_args)
     {
-        $filters = $this->getFilters($request, $this->reports_model, [
-            'crime_code',
-            'crime_desc'
-        ]);
-
         // Get the ID
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0))
             throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
+        $filters = $this->getFilters($request, $this->reports_model, [
+            'crime_code',
+            'crime_desc'
+        ]);
 
         $rules = [
             'description' => ['optional', 'ascii']
@@ -265,6 +289,17 @@ class ReportsController extends BaseController
 
     public function handleGetReportModus(Request $request, Response $response, array $uri_args)
     {
+        // Get the ID
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
         $filters = $this->getFilters($request, $this->reports_model, [
             'mo_code',
             'mo_desc'
@@ -279,11 +314,6 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        // Get the ID
-        $id = $uri_args['report_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid ID");
-
         // Get the modi
         $modi = $this->reports_model->getReportModi($id, $filters);
 
@@ -292,6 +322,17 @@ class ReportsController extends BaseController
     }
     public function handleGetReportWeather(Request $request, Response $response, array $uri_args)
     {
+        // Get the ID
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0))
+            throw new HttpBadRequestException($request, "Invalid ID");
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
         $weather_rules = [
             "temperature_unit" => [
                 'optional',
@@ -301,14 +342,11 @@ class ReportsController extends BaseController
             "precipitation_unit" => [
                 'optional',
                 'alpha',
-                ['in', ['mm','inch']]
+                ['in', ['mm', 'inch']]
             ]
         ];
+
         $filters = $request->getQueryParams();
-        // Get the ID
-        $id = $uri_args['report_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid ID");
 
         // Find the report
         $report = $this->reports_model->getReportById($id);
@@ -317,7 +355,7 @@ class ReportsController extends BaseController
         $time = $report['incident']['occurred_time'];
         $pattern = '/(\d{4}-\d{2}-\d{2}) (\d{2}):\d{2}:\d{2}/';
         preg_match($pattern, $time, $date_hour);
-        
+
         $query = [
             'latitude' => $report['location']['latitude'],
             'longitude' => $report['location']['longitude'],
@@ -332,9 +370,9 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, $validated);
         }
 
-        if(isset($filters['temperature_unit']))
+        if (isset($filters['temperature_unit']))
             $query['temperature_unit'] = $filters['temperature_unit'];
-        if(isset($filters['precipitation_unit']))
+        if (isset($filters['precipitation_unit']))
             $query['precipitation_unit'] = $filters['precipitation_unit'];
 
         $params = [
@@ -346,10 +384,10 @@ class ReportsController extends BaseController
 
         $weather = [
             'hourly_units' => $data['hourly_units'],
-            'temperature' => $data['hourly']['temperature_2m'][intval($date_hour[2]-1)],
-            'precipitation' => $data['hourly']['precipitation'][intval($date_hour[2]-1)],
-            'humidity' => $data['hourly']['relative_humidity_2m'][intval($date_hour[2]-1)],
-            'weather_name' => $this->reports_model->toWeather($data['hourly']['weathercode'][intval($date_hour[2]-1)])
+            'temperature' => $data['hourly']['temperature_2m'][intval($date_hour[2] - 1)],
+            'precipitation' => $data['hourly']['precipitation'][intval($date_hour[2] - 1)],
+            'humidity' => $data['hourly']['relative_humidity_2m'][intval($date_hour[2] - 1)],
+            'weather_name' => $this->reports_model->toWeather($data['hourly']['weathercode'][intval($date_hour[2] - 1)])
         ];
         // Send the response
         return $this->prepareOkResponse($response, (array) $weather);
@@ -384,6 +422,12 @@ class ReportsController extends BaseController
             throw new HttpBadRequestException($request, "Invalid ID");
         }
 
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
         $report = $request->getParsedBody();
 
         // Validate the report
@@ -409,6 +453,12 @@ class ReportsController extends BaseController
         $id = $uri_args['report_id'];
         if (!Input::isInt($id, 0)) {
             throw new HttpBadRequestException($request, "Invalid ID");
+        }
+
+        // Make sure the report exists
+        $report = $this->reports_model->getReportById($id);
+        if (!$report) {
+            throw new HttpNotFoundException($request, "Report not found");
         }
 
         $success = $this->reports_model->deleteReport($id);
