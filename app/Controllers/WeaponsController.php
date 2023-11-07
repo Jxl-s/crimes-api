@@ -102,10 +102,10 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided.');
 
         $rules = [
-            'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'material' => ['optional', 'ascii', ['lengthMax', 50]],
-            'color' => ['optional', 'ascii', ['lengthMax', 50]],
-            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+            'type' => ['required', 'ascii', ['lengthMax', 50]],
+            'material' => ['required', 'ascii', ['lengthMax', 50]],
+            'color' => ['required', 'ascii', ['lengthMax', 50]],
+            'description' => ['required', 'ascii', ['lengthMax', 50]]
         ];
 
         $validated = $this->validateData((array) $weapon, $rules);
@@ -130,10 +130,10 @@ class WeaponsController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided.');
 
         $rules = [
-            'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'material' => ['optional', 'ascii', ['lengthMax', 50]],
-            'color' => ['optional', 'ascii', ['lengthMax', 50]],
-            'description' => ['optional', 'ascii', ['lengthMax', 50]]
+            'type' => ['required', 'ascii', ['lengthMax', 50]],
+            'material' => ['required', 'ascii', ['lengthMax', 50]],
+            'color' => ['required', 'ascii', ['lengthMax', 50]],
+            'description' => ['required', 'ascii', ['lengthMax', 50]]
         ];
 
         $validated = $this->validateData((array) $weapon, $rules);
