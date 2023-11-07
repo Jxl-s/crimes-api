@@ -210,7 +210,9 @@ class DistrictsController extends BaseController
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
         if($this->validateData($district, $update_rules) === true) {
-            $this->districts_model->updateDistrict($district, $district_id);
+            $success = $this->districts_model->updateDistrict($district, $district_id);
+            if (!$success)
+                throw new HttpBadRequestException($request, "Failed to update district");
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
                 "message" => "Updated Successfully"
@@ -226,7 +228,9 @@ class DistrictsController extends BaseController
         $district = $uri_args['district_id'];
         if (!Input::isInt($district, 0))
             throw new HttpBadRequestException($request, "Invalid Code");
-        $this->districts_model->deleteDistrict($district);
+        $success = $this->districts_model->deleteDistrict($district);
+        if (!$success)
+            throw new HttpBadRequestException($request, "Failed to delete district");
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Deleted Successfully"

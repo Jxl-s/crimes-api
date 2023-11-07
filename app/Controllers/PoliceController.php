@@ -116,10 +116,6 @@ class PoliceController extends BaseController
     {
         $police = (array) $request->getParsedBody();
         $create_rules = array(
-            'badge_id' => [
-                'required',
-                'integer'
-            ],
             'first_name' => [
                 'required',
                 ['lengthMax', 50]
@@ -150,7 +146,6 @@ class PoliceController extends BaseController
         //TODO: Validate contents
         if ($this->validateData($police, $create_rules) === true) {
             $this->police_model->createPolice($police);
-
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
                 "message" => "Inserted Successfully"
@@ -191,10 +186,10 @@ class PoliceController extends BaseController
         );
         if (isset($police[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
         if ($this->validateData($police, $update_rules) === true) {
-            $this->police_model->updatePolice($police, $id);
+            $success = $this->police_model->updatePolice($police, $id);
+            if (!$success)
+                throw new HttpBadRequestException($request, "Failed to update police");
             $response_data = [
                 "code" => HttpCodes::STATUS_CREATED,
                 "message" => "Updated Successfully"

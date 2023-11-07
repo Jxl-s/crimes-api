@@ -59,7 +59,7 @@ class ModiController extends BaseController
                 ['lengthMax', 10],
                 ['regex', '/[0-9]{4}/']
             ],
-            'description' => [
+            'mo_desc' => [
                 'required',
                 ['lengthMax', 50]
             ]
@@ -90,7 +90,7 @@ class ModiController extends BaseController
     public function handleUpdateModi(Request $request, Response $response, array $uri_args)
     {
         $put_rules = array(
-            'description' => [
+            'mo_desc' => [
                 'ascii',
                 'required',
                 ['lengthMax', 50]
@@ -107,9 +107,6 @@ class ModiController extends BaseController
         $valid = $this->validateData((array) $modus, $put_rules);
         if ($valid !== true) 
             throw new HttpBadRequestException($request, $valid);
-
-        $modus['mo_desc'] = $modus['description'];
-        unset($modus['description']);
 
         $success = $this->modi_model->updateModus($modus, $code);
 
