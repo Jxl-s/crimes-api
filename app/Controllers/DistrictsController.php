@@ -135,8 +135,7 @@ class DistrictsController extends BaseController
         $create_rules = array(
             'district_id' => [
                 'required',
-                'integer',
-                ['regex', '/[0-9]{3,4}/']
+                'integer'
             ],
             'st_name' => [
                 'required',

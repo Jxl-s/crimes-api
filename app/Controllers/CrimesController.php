@@ -107,7 +107,7 @@ class CrimesController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided');
 
         
-        $validation = $this->validateData($crime, $put_rules);
+        $validation = $this->validateData((array) $crime, $put_rules);
 
         if ($validation !== true) {
             throw new HttpBadRequestException($request, $validation);
