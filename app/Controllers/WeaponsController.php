@@ -25,7 +25,7 @@ class WeaponsController extends BaseController
 
         $rules = [
             'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'materia;' => ['optional', 'ascii', ['lengthMax', 50]],
+            'material' => ['optional', 'ascii', ['lengthMax', 50]],
             'color' => ['optional', 'ascii', ['lengthMax', 50]],
             'description' => ['optional', 'ascii', ['lengthMax', 50]]
         ];
@@ -103,7 +103,7 @@ class WeaponsController extends BaseController
 
         $rules = [
             'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'materia;' => ['optional', 'ascii', ['lengthMax', 50]],
+            'material' => ['optional', 'ascii', ['lengthMax', 50]],
             'color' => ['optional', 'ascii', ['lengthMax', 50]],
             'description' => ['optional', 'ascii', ['lengthMax', 50]]
         ];
@@ -131,7 +131,7 @@ class WeaponsController extends BaseController
 
         $rules = [
             'type' => ['optional', 'ascii', ['lengthMax', 50]],
-            'materia;' => ['optional', 'ascii', ['lengthMax', 50]],
+            'material' => ['optional', 'ascii', ['lengthMax', 50]],
             'color' => ['optional', 'ascii', ['lengthMax', 50]],
             'description' => ['optional', 'ascii', ['lengthMax', 50]]
         ];
