@@ -52,7 +52,7 @@ class WeaponsModel extends BaseModel
         $sql = "SELECT r.*, i.*, l.* FROM report r 
         INNER JOIN location l ON r.location_id = l.location_id 
         INNER JOIN incident i ON r.incident_id = i.incident_id WHERE weapon_id = :weapon_id";
-        
+
         $filters_values['district_id'] = $weapon_id;
 
         if (isset($filters['from_last_update'])) {
@@ -124,7 +124,8 @@ class WeaponsModel extends BaseModel
     public function deleteWeapon($weapon_id)
     {
         $sql = "UPDATE report SET weapon_id = NULL WHERE weapon_id = :weapon_id";
-        return $this->run($sql, ["weapon_id"=> $weapon_id])->rowCount();
-    }
+        $this->run($sql, ["weapon_id" => $weapon_id]);
 
+        return $this->delete($this->table_name, ["weapon_id" => $weapon_id]);
+    }
 }
