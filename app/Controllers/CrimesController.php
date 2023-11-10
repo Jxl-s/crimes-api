@@ -81,7 +81,10 @@ class CrimesController extends BaseController
             throw new HttpBadRequestException($request, $validation);
         }
 
-        $this->crimes_model->createCrime($crime);
+        $success = $this->crimes_model->createCrime($crime);
+        if (!$success){
+            throw new HttpBadRequestException($request, 'Insert Failed');
+        }
         
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
@@ -95,7 +98,7 @@ class CrimesController extends BaseController
     {
         $put_rules = array(
             'crime_desc' => [
-                'optional',
+                'required',
                 ['lengthMax', 50]
             ]
         );

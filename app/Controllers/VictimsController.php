@@ -62,11 +62,11 @@ class VictimsController extends BaseController
             throw new HttpBadRequestException($request, 'Bad format provided');
 
         $rules = [
-            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
-            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
-            'age' => ['optional', 'integer'],
-            'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]]
+            'first_name' => ['required', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['required', 'ascii', ['lengthMax', 50]],
+            'age' => ['required', 'integer'],
+            'descent' => ['required', 'alpha', ['length', 1]],
+            'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]]
         ];
 
         $validated = $this->validateData((array) $victim, $rules);

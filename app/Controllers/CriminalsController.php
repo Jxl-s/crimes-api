@@ -108,12 +108,12 @@ class CriminalsController extends BaseController
         }
 
         $rules = [
-            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
-            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
-            'age' => ['optional', 'integer'],
-            'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
+            'first_name' => ['required', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['required', 'ascii', ['lengthMax', 50]],
+            'age' => ['required', 'integer'],
+            'descent' => ['required', 'alpha', ['length', 1]],
+            'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['required', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
         $validated = $this->validateData((array) $criminal, $rules);
@@ -147,12 +147,12 @@ class CriminalsController extends BaseController
         }
 
         $rules = [
-            'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
-            'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
-            'age' => ['optional', 'integer'],
-            'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
+            'first_name' => ['required', 'ascii', ['lengthMax', 50]],
+            'last_name' => ['required', 'ascii', ['lengthMax', 50]],
+            'age' => ['required', 'integer'],
+            'descent' => ['required', 'alpha', ['length', 1]],
+            'sex' => ['required', ['in', ['M', 'F', 'X']]],
+            'is_arrested' => ['required', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
         $validated = $this->validateData((array) $criminal, $rules);

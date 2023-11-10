@@ -167,25 +167,25 @@ class PoliceController extends BaseController
         $police = (array) $request->getParsedBody();
         $update_rules = array(
             'first_name' => [
-                'optional',
+                'required',
                 ['lengthMax', 50]
             ],
             'last_name' => [
-                'optional',
+                'required',
                 ['lengthMax', 50]
             ],
             'join_date' => [
-                'optional',
+                'required',
                 ['dateFormat', 'Y-m-d'],
                 'date'
             ],
             'rank' => [
-                'optional',
+                'required',
                 'ascii',
                 ['lengthMax', 20]
             ],
             'district_id' => [
-                'optional',
+                'required',
                 'integer'
             ],
         );

@@ -190,21 +190,26 @@ class DistrictsController extends BaseController
         $district = (array) $request->getParsedBody();
         $update_rules = array(
             'st_name' => [
+                'required',
                 'ascii',
                 ['lengthMax', 20]
             ],
             'bureau' => [
+                'required',
                 'ascii',
                 ['lengthMax', 20]
             ],
             'precinct' => [
+                'required',
                 'integer'
             ],
             'omega_label' => [
+                'required',
                 'ascii',
                 ['lengthMax', 20]
             ],
             'station' => [
+                'required',
                 'ascii',
                 ['lengthMax', 20]
             ],
