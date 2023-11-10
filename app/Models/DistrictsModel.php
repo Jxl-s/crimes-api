@@ -135,6 +135,30 @@ class DistrictsModel extends BaseModel
     // TODO: Implement this
     public function deleteDistrict($district_id)
     {
+        $sql = "SELECT badge_id FROM police where district_id = :district_id";
+        $police = $this->run($sql, ["district_id"=> $district_id]);
+        foreach ($police as $key => $val) {
+            $this->delete('report_police', ["badge_id" => $val['badge_id']]);
+        }
+
+        $sql = "SELECT location_id FROM `location` where district_id = :district_id";
+        $locations = $this->run($sql, ["district_id"=> $district_id]);
+        foreach ($locations as $key => $location) {
+            $sql = "SELECT report_id FROM `report` where `location_id` = :location_id";
+            $reports = $this->run($sql, ["location_id" => $location['location_id']]);
+
+            foreach ($reports as $key => $report) {
+                $this->delete('report_crime', ['report_id' => $report['report_id']], '');
+                $this->delete('report_modus', ['report_id' => $report['report_id']], '');
+                $this->delete('report_criminal', ['report_id' => $report['report_id']], '');
+                $this->delete('report_victim', ['report_id' => $report['report_id']], '');
+                $this->delete('report_police', ['report_id' => $report['report_id']], '');
+            }
+            
+            $this->delete('report', ["location_id" => $location['location_id']]);
+        }
+
+        $this->delete('location', ["district_id" => $district_id]);
         $this->delete('police', ["district_id" => $district_id]);
         return $this->delete($this->table_name, ["district_id" => $district_id]);
     }

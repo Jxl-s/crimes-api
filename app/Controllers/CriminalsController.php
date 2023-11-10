@@ -23,13 +23,17 @@ class CriminalsController extends BaseController
     {
         $filters = $this->getFilters($request, $this->criminals_model, ['criminal_id', 'first_name', 'last_name', 'age', 'height']);
 
+        if (isset($filters['is_arrested']) && $filters['is_arrested'] == null) {
+            throw new HttpBadRequestException($request, "Please make sure no integer is empty");
+        }
+
         $rules = [
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
             'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'is_arrested' => ['optional', 'integer', ['regex', '/[0-1]{1}/']]
+            'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
         $validated = $this->validateData($filters, $rules);
@@ -111,8 +115,9 @@ class CriminalsController extends BaseController
             'first_name' => ['required', 'ascii', ['lengthMax', 50]],
             'last_name' => ['required', 'ascii', ['lengthMax', 50]],
             'age' => ['required', 'integer'],
-            'descent' => ['required', 'alpha', ['length', 1]],
             'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'height' => ['required', 'integer', ['min', 1]],
+            'descent' => ['required', 'alpha', ['length', 1]],
             'is_arrested' => ['required', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
@@ -150,6 +155,7 @@ class CriminalsController extends BaseController
             'first_name' => ['required', 'ascii', ['lengthMax', 50]],
             'last_name' => ['required', 'ascii', ['lengthMax', 50]],
             'age' => ['required', 'integer'],
+            'height' => ['required', 'integer', ['min', 1]],
             'descent' => ['required', 'alpha', ['length', 1]],
             'sex' => ['required', ['in', ['M', 'F', 'X']]],
             'is_arrested' => ['required', 'integer', ['regex', '/^[0-1]$/']]

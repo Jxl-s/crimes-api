@@ -47,8 +47,6 @@ class DistrictsController extends BaseController
 
         // Get the ID
         $id = $uri_args['district_id'];
-        if (!Input::isInt($id, 0))
-            throw new HttpBadRequestException($request, "Invalid District Id");
 
         // Find the district
         $district = $this->districts_model->getDistrictById($id);
@@ -85,8 +83,7 @@ class DistrictsController extends BaseController
         );
         $filters = $this->getFilters($request, $this->districts_model, ['report_id', 'last_update', 'fatalities', 'bureau', 'premise']);
         $district_id = $uri_args['district_id'];
-        if (!Input::isInt($district_id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
+
         if($this->validateData($filters, $get_rules) === true) {
             $reports = $this->districts_model->getDistrictReports($district_id, $filters);
             return $this->prepareOkResponse($response, (array) $reports);
@@ -118,8 +115,6 @@ class DistrictsController extends BaseController
         );
         $filters = $this->getFilters($request, $this->districts_model, ['first_name', 'first_name', 'join_date', 'rank']);
         $district_id = $uri_args['district_id'];
-        if (!Input::isInt($district_id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
         if($this->validateData($filters, $get_rules) === true) {
             $police = $this->districts_model->getDistrictPolice($district_id, $filters);
             return $this->prepareOkResponse($response, (array) $police);
@@ -214,8 +209,6 @@ class DistrictsController extends BaseController
                 ['lengthMax', 20]
             ],
         );
-        if (!Input::isInt($district_id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
         if($this->validateData($district, $update_rules) === true) {
@@ -235,8 +228,6 @@ class DistrictsController extends BaseController
     public function handleDeleteDistricts(Request $request, Response $response, array $uri_args)
     {
         $district_id = $uri_args['district_id'];
-        if (!Input::isInt($district_id, 0))
-            throw new HttpBadRequestException($request, "Invalid Code");
             
         $district = $this->districts_model->getDistrictById($district_id);
 
@@ -246,6 +237,7 @@ class DistrictsController extends BaseController
         $success = $this->districts_model->deleteDistrict($district_id);
         if (!$success)
             throw new HttpBadRequestException($request, "Failed to delete district");
+        
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Deleted Successfully"
