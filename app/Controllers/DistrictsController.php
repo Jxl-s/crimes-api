@@ -161,7 +161,11 @@ class DistrictsController extends BaseController
         //if an array given, throw exception
         if (isset($district[0]))
             throw new HttpBadRequestException($request, 'Bad format provided. Please enter one record per time');
-        //TODO: Validate contents
+        
+        $isExist = $this->districts_model->getDistrictById($district['district_id']);
+        if ($isExist)
+            throw new HttpBadRequestException($request, 'The district_id already exist.');
+
         if($this->validateData($district, $create_rules) === true) {
             $this->districts_model->createDistrict($district);
             $response_data = [
@@ -237,7 +241,7 @@ class DistrictsController extends BaseController
         $success = $this->districts_model->deleteDistrict($district_id);
         if (!$success)
             throw new HttpBadRequestException($request, "Failed to delete district");
-        
+
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,
             "message" => "Deleted Successfully"

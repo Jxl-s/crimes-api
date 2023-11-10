@@ -81,10 +81,11 @@ class CrimesController extends BaseController
             throw new HttpBadRequestException($request, $validation);
         }
 
-        $success = $this->crimes_model->createCrime($crime);
-        if (!$success){
-            throw new HttpBadRequestException($request, 'Insert Failed');
-        }
+        $isExist = $this->crimes_model->getCrimeByCode($crime['crime_code']);
+        if ($isExist)
+            throw new HttpBadRequestException($request, 'The crime_code already exist.');
+
+        $this->crimes_model->createCrime($crime);
         
         $response_data = [
             "code" => HttpCodes::STATUS_CREATED,

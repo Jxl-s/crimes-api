@@ -33,13 +33,7 @@ class ModiModel extends BaseModel
     
     public function createModus($modus)
     {
-        try {
-            $resp = $this->insert($this->table_name, $modus);
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        return 1;
+        return  $this->insert($this->table_name, $modus);
     }
 
     public function updateModus($modus, $mo_code)

@@ -36,13 +36,7 @@ class CrimesModel extends BaseModel
     // TODO: Implement this
     public function createCrime($crime)
     {
-        try {
-            $this->insert($this->table_name, $crime);
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        return 1;
+        return $this->insert($this->table_name, $crime);
     }
 
     // TODO: Implement this

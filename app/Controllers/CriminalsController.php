@@ -31,8 +31,9 @@ class CriminalsController extends BaseController
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
-            'descent' => ['optional', 'alpha', ['length', 1]],
-            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'height' => ['required', 'integer', ['min', 1]],
+            'descent' => ['required', 'alpha', ['length', 1]],
             'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
@@ -155,9 +156,9 @@ class CriminalsController extends BaseController
             'first_name' => ['required', 'ascii', ['lengthMax', 50]],
             'last_name' => ['required', 'ascii', ['lengthMax', 50]],
             'age' => ['required', 'integer'],
+            'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]],
             'height' => ['required', 'integer', ['min', 1]],
             'descent' => ['required', 'alpha', ['length', 1]],
-            'sex' => ['required', ['in', ['M', 'F', 'X']]],
             'is_arrested' => ['required', 'integer', ['regex', '/^[0-1]$/']]
         ];
 
