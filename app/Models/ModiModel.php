@@ -11,7 +11,12 @@ class ModiModel extends BaseModel
         parent::__construct();
     }
 
-    // TODO: Implement this
+    /**
+     * Get all modus/modi records
+     *
+     * @param array $filters filter
+     * @return array all modus
+     */
     public function getAllModi(array $filters)
     {
         $filters_values = [];

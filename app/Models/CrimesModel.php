@@ -13,7 +13,12 @@ class CrimesModel extends BaseModel
         parent::__construct();
     }
 
-    // TODO: Implement this
+    /**
+     * Get all primes
+     *
+     * @param array $filters
+     * @return void
+     */
     public function getAllCrimes(array $filters)
     {
         $filters_values = [];
@@ -27,26 +32,48 @@ class CrimesModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
+    /**
+     * Get a crime with providing crime_code
+     *
+     * @param string $crime_code code of a crime records
+     * @return object crime_records
+     */
     public function getCrimeByCode($crime_code)
     {
         $sql = "SELECT * FROM $this->table_name WHERE crime_code = :crime_code";
         return $this->fetchSingle($sql, ['crime_code' => $crime_code]);
     }
 
-    // TODO: Implement this
+    /**
+     * Create a crime records
+     *
+     * @param object $crime new crime's data
+     * @return bool|string last_inserted_id
+     */
     public function createCrime($crime)
     {
         return $this->insert($this->table_name, $crime);
     }
 
-    // TODO: Implement this
+    /**
+     * Update a crime records with new providing data
+     *
+     * @param object $crime new data
+     * @param string $crime_code code of a crime to update
+     * @return bool success or not
+     */
     public function updateCrime($crime, $crime_code)
     {
         unset($crime['crime_code']);
         return $this->update($this->table_name, $crime, ["crime_code" => $crime_code]);
     }
 
-    // TODO: Implement this
+    /**
+     * Delete a Crime
+     *
+     * @param string $code code of a crime to update
+     * @return bool success or not
+     */
     public function deleteCrime($code)
     {
         $this->delete('report_crime', ["crime_code" => $code]);

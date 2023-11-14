@@ -11,7 +11,12 @@ class DistrictsModel extends BaseModel
         parent::__construct();
     }
 
-    // TODO: Implement this
+    /**
+     * Get all districts
+     *
+     * @param array $filters filters
+     * @return array all district records
+     */
     public function getAllDistricts(array $filters)
     {
         $filters_values = [];
@@ -30,13 +35,25 @@ class DistrictsModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
+    /**
+     * Get district record by ID
+     *
+     * @param string $district_id id of district
+     * @return object district record
+     */
     public function getDistrictById($district_id)
     {
         $sql = "SELECT * FROM $this->table_name WHERE district_id = :district_id";
         return $this->fetchSingle($sql, ['district_id' => $district_id]);
     }
 
-    // TODO: Implement this
+    /**
+     * Get all reports related to the given district
+     *
+     * @param string $district_id id of a district
+     * @param array $filters filters
+     * @return array all related reports
+     */
     public function getDistrictReports($district_id, $filters)
     {
         $sql = "SELECT r.*, i.*, l.* FROM report r 
@@ -89,7 +106,13 @@ class DistrictsModel extends BaseModel
         return $reports;
     }
 
-    // TODO: Implement this
+    /**
+     * Get all police in a district
+     *
+     * @param string $district_id id of a district
+     * @param array $filters filters
+     * @return array all related police
+     */
     public function getDistrictPolice($district_id, $filters)
     {
         $sql = "SELECT * FROM police p WHERE district_id = :district_id";
@@ -117,13 +140,24 @@ class DistrictsModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
-    // TODO: Implement this
+    /**
+     * Create a district record
+     *
+     * @param object $district district data
+     * @return void
+     */
     public function createDistrict($district)
     {
         return $this->insert($this->table_name, $district);
     }
 
-    // TODO: Implement this
+    /**
+     * Update a district record
+     *
+     * @param object $district new data
+     * @param string $district_id id of district
+     * @return void
+     */
     public function updateDistrict($district, $district_id)
     {
         if(isset($district['district_id'])) {
@@ -132,7 +166,12 @@ class DistrictsModel extends BaseModel
         return $this->update($this->table_name, $district, ["district_id" => $district_id]);
     }
 
-    // TODO: Implement this
+    /**
+     * Delete a district
+     *
+     * @param string $district_id id of disctrict
+     * @return void
+     */
     public function deleteDistrict($district_id)
     {
         $sql = "SELECT badge_id FROM police where district_id = :district_id";

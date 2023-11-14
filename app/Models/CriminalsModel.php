@@ -12,7 +12,12 @@ class CriminalsModel extends BaseModel
         parent::__construct();
     }
 
-    // TODO: Implement this
+    /**
+     * Get all criminals records
+     * 
+     * @param array $filters filters
+     * @return array all records
+     */
     public function getAllCriminals(array $filters)
     {
         $filters_values = [];
@@ -58,6 +63,12 @@ class CriminalsModel extends BaseModel
         return $this->paginate($sql, $filters_values);
     }
 
+    /**
+     * Get Criminal with criminal_id
+     *
+     * @param int $criminal_id id of a criminal
+     * @return object criminal record
+     */
     public function getCriminalById($criminal_id)
     {
         $sql = "SELECT criminal_id, first_name, last_name, age, sex, height, descent, is_arrested FROM $this->table_name c
@@ -67,7 +78,13 @@ class CriminalsModel extends BaseModel
         return $this->fetchSingle($sql, ['criminal_id' => $criminal_id]);
     }
 
-    // TODO: Implement this
+    /**
+     * Get all reports of a criminal
+     *
+     * @param int $criminal_id id of a criminal
+     * @param array $filters filters
+     * @return array all reports has given criminal
+     */
     public function getCriminalReports($criminal_id, $filters)
     {
         $filters_values = [];
@@ -131,7 +148,12 @@ class CriminalsModel extends BaseModel
         return $reports;
     }
 
-    // TODO: Implement this
+    /**
+     * Create a Criminal record
+     *
+     * @param object $criminal criminal data
+     * @return string last_insert_id
+     */
     public function createCriminal($criminal)
     {
         $is_arrested = $criminal["is_arrested"];
@@ -142,7 +164,13 @@ class CriminalsModel extends BaseModel
         return $this->insert($this->table_name, ["person_id" => $id, "is_arrested" => $is_arrested]);
     }
 
-    // TODO: Implement this
+    /**
+     * Update a criminal record
+     *
+     * @param object $criminal new data 
+     * @param int $criminal_id id of a criminal
+     * @return bool success or not
+     */
     public function updateCriminal($criminal, $criminal_id)
     {
         $is_arrested = $criminal["is_arrested"];
@@ -164,7 +192,12 @@ class CriminalsModel extends BaseModel
         return $resp > 0;
     }
 
-    // TODO: Implement this
+    /**
+     * Delete a Criminal
+     *
+     * @param int $criminal_id id of a criminal
+     * @return bool success or not
+     */
     public function deleteCriminal($criminal_id)
     {
         $this->delete('report_criminal', ['criminal_id' => $criminal_id]);
