@@ -1,11 +1,15 @@
 <?php
 use Slim\Factory\AppFactory;
 use Vanier\Api\Middleware\ContentNegotiationMiddleware;
+use Dotenv\Dotenv;
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ .'/app/Config/app_config.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__, 'config.env');
+$dotenv->load();
 
 // Step 1) Instantiate a Slim app.
 $app = AppFactory::create();

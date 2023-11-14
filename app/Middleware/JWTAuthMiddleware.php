@@ -10,6 +10,12 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpUnauthorizedException;
 use UnexpectedValueException;
+use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
+use Firebase\JWT\BeforeValidException;
+use Firebase\JWT\ExpiredException;
+use DomainException;
+use InvalidArgumentException;
 
 use Vanier\Api\Helpers\JWTManager;
 
@@ -25,24 +31,34 @@ class JWTAuthMiddleware implements MiddlewareInterface
               We need to ignore the routes that enables client applications
               to create account and request a JWT token.
         */
+        if($_SERVER["REQUEST_URI"] === "/token" || $_SERVER["REQUEST_URI"] === "/account") {
+            return $handler->handle($request); 
+        }
         
         // 1.a) If the request's uri contains /account or /token, handle the request:
         //return $handler->handle($request);
 
         // If not:
         //-- 2) Retrieve the token from the request Authorization's header. 
-               
-        // 3) Parse the token: remove the "Bearer " word.        
+        $header = $request->getHeader('Authorization');    
+        // 3) Parse the token: remove the "Bearer " word.
+        preg_match('/(Bearer) (.*)/', $header[0], $token);
 
         //-- 4) Try to decode the JWT token
         //@see https://github.com/firebase/php-jwt#exception-handling
-
+        try {
+            $decoded = JWT::decode($token[0], $_ENV['SECRET_KEY']);
+        } catch (InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e,400);
+        }
         
         // --5) Access to POST, PUT and DELETE operations must be restricted.
         //     Only admin accounts can be authorized.
         // If the request's method is: POST, PUT, or DELETE., only admins are allowed.
         // throw new HttpForbiddenException($request, 'Insufficient permission!');
-        
+        if($request->getMethod() === 'POST' || $request->getMethod() === 'PUT' || $request->getMethod() === 'DELETE') {
+            
+        }
 
         //-- 6) The client application has been authorized:
         // 6.a) Now we need to store the token payload in the request object. The payload is needed for logging purposes and 
