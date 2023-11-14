@@ -2,6 +2,7 @@
 use Slim\Factory\AppFactory;
 use Vanier\Api\Middleware\ContentNegotiationMiddleware;
 use Dotenv\Dotenv;
+use Vanier\Api\Middleware\JWTAuthMiddleware;
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 
@@ -18,11 +19,16 @@ $dotenv->load();
 // Step 1) Instantiate a Slim app.
 $app = AppFactory::create();
 
+// JWT middleware
+$app->addMiddleware(new JWTAuthMiddleware());
+
 $app->addMiddleware(new ContentNegotiationMiddleware());
+
 
 // Add the routing and body parsing middleware.
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
+
 
 // NOTE: the error handling middleware MUST be added last.
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);

@@ -11,6 +11,7 @@ use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpUnauthorizedException;
 use UnexpectedValueException;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
 use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
@@ -31,7 +32,7 @@ class JWTAuthMiddleware implements MiddlewareInterface
               We need to ignore the routes that enables client applications
               to create account and request a JWT token.
         */
-        if($_SERVER["REQUEST_URI"] === "/token" || $_SERVER["REQUEST_URI"] === "/account") {
+        if($_SERVER["REQUEST_URI"] === "/crimes-api/token" || $_SERVER["REQUEST_URI"] === "/crimes-api/account") {
             return $handler->handle($request); 
         }
         
@@ -42,22 +43,22 @@ class JWTAuthMiddleware implements MiddlewareInterface
         //-- 2) Retrieve the token from the request Authorization's header. 
         $header = $request->getHeader('Authorization');    
         // 3) Parse the token: remove the "Bearer " word.
-        preg_match('/(Bearer) (.*)/', $header[0], $token);
+        preg_match('/(?<=Bearer )(?s)(.*$)/', $header[0], $token);
 
         //-- 4) Try to decode the JWT token
         //@see https://github.com/firebase/php-jwt#exception-handling
         try {
-            $decoded = JWT::decode($token[0], $_ENV['SECRET_KEY']);
+            $decoded = JWT::decode($token[0], new Key($_ENV['SECRET_KEY'], 'HS256'));
         } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException($e,400);
         }
-        
+        $user = get_object_vars($decoded);
         // --5) Access to POST, PUT and DELETE operations must be restricted.
         //     Only admin accounts can be authorized.
         // If the request's method is: POST, PUT, or DELETE., only admins are allowed.
         // throw new HttpForbiddenException($request, 'Insufficient permission!');
-        if($request->getMethod() === 'POST' || $request->getMethod() === 'PUT' || $request->getMethod() === 'DELETE') {
-            
+        if(($request->getMethod() === 'POST' || $request->getMethod() === 'PUT' || $request->getMethod() === 'DELETE') && $user['role'] != "admin") {
+            throw new HttpForbiddenException($request, 'Insufficient permission!');
         }
 
         //-- 6) The client application has been authorized:
@@ -65,6 +66,7 @@ class JWTAuthMiddleware implements MiddlewareInterface
         // needs to be passed to the request's handling callbacks.  This will allow the target resource's callback 
         // to access the token payload for various purposes (such as logging, etc.)        
         // Use the APP_JWT_TOKEN_KEY as attribute name. 
+
         
         //-- 7) At this point, the client app's request has been authorized, we pass the request to the next
         // middleware in the middleware stack. 
