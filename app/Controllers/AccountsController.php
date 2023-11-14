@@ -46,7 +46,7 @@ class AccountsController extends BaseController
 
         // 3) A new account has been successfully created. 
         // Prepare and return a response.  
-        return $response;
+        return $this->prepareOkResponse($response, ['status' => "success", 'message' => 'Successfully created account!'], 200);
     }
 
     public function handleGenerateToken(Request $request, Response $response, array $args)
