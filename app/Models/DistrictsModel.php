@@ -144,7 +144,7 @@ class DistrictsModel extends BaseModel
      * Create a district record
      *
      * @param object $district district data
-     * @return void
+     * @return 
      */
     public function createDistrict($district)
     {

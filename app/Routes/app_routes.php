@@ -11,6 +11,7 @@ use Vanier\Api\Controllers\PoliceController;
 use Vanier\Api\Controllers\ReportsController;
 use Vanier\Api\Controllers\VictimsController;
 use Vanier\Api\Controllers\WeaponsController;
+use Vanier\Api\Controllers\AccountsController;
 
 // Import the app instance into this file's scope.
 global $app;
@@ -102,3 +103,9 @@ $app->get('/weapons/{weapon_id}/reports', [WeaponsController::class, 'handleGetW
 $app->post('/weapons', [WeaponsController::class, 'handleCreateWeapons']);
 $app->delete('/weapons/{weapon_id}', [WeaponsController::class, 'handleDeleteWeapons']);
 $app->put('/weapons/{weapon_id}', [WeaponsController::class, 'handleUpdateWeapons']);
+
+//token 
+$app->post('/token', [AccountsController::class,'handleGenerateToken']);
+
+//account 
+$app->post('/account', [AccountsController::class,'handleCreateAccount']);
