@@ -18,7 +18,7 @@ class ModiModel extends BaseModel
         $sql = "SELECT * FROM $this->table_name WHERE 1 ";
 
         if (isset($filters['mo_desc'])) {
-            $sql .= ' AND mo_desc LIKE CONCAT(\'%\', :description, \'%\')';
+            $sql .= ' AND mo_desc LIKE CONCAT(\'%\', :mo_desc, \'%\')';
             $filters_values['mo_desc'] = $filters['mo_desc'];
         }
 

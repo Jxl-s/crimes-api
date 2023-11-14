@@ -28,6 +28,7 @@ class VictimsController extends BaseController
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
+            'height' => ['optional', 'integer', ['min', 1]],
             'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]]
         ];
 
@@ -66,6 +67,7 @@ class VictimsController extends BaseController
             'last_name' => ['required', 'ascii', ['lengthMax', 50]],
             'age' => ['required', 'integer'],
             'descent' => ['required', 'alpha', ['length', 1]],
+            'height' => ['required', 'integer', ['min', 1]],
             'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]]
         ];
 
@@ -101,6 +103,7 @@ class VictimsController extends BaseController
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
             'descent' => ['optional', 'alpha', ['length', 1]],
+            'height' => ['optional', 'integer', ['min', 1]],
             'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]]
         ];
 

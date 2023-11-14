@@ -31,9 +31,9 @@ class CriminalsController extends BaseController
             'first_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'last_name' => ['optional', 'ascii', ['lengthMax', 50]],
             'age' => ['optional', 'integer'],
-            'sex' => ['required', ['length', 1], ['in', ['M', 'F', 'X']]],
-            'height' => ['required', 'integer', ['min', 1]],
-            'descent' => ['required', 'alpha', ['length', 1]],
+            'sex' => ['optional', ['length', 1], ['in', ['M', 'F', 'X']]],
+            'height' => ['optional', 'integer', ['min', 1]],
+            'descent' => ['optional', 'alpha', ['length', 1]],
             'is_arrested' => ['optional', 'integer', ['regex', '/^[0-1]$/']]
         ];
 

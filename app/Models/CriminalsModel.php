@@ -40,6 +40,11 @@ class CriminalsModel extends BaseModel
             $filters_values['descent'] = $filters['descent'];
         }
 
+        if (isset($filters['height'])) {
+            $sql .= ' AND p.height = :height';
+            $filters_values['height'] = $filters['height'];
+        }
+
         if (isset($filters['sex'])) {
             $sql .= ' AND p.sex = :sex';
             $filters_values['sex'] = $filters['sex'];

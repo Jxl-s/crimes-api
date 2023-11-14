@@ -30,6 +30,11 @@ class VictimsModel extends BaseModel
             $filters_values['last_name'] = $filters['last_name'];
         }
 
+        if (isset($filters['height'])) {
+            $sql .= ' AND p.height = :height';
+            $filters_values['height'] = $filters['height'];
+        }
+
         if (isset($filters['age'])) {
             $sql .= ' AND p.age = :age';
             $filters_values['age'] = $filters['age'];
