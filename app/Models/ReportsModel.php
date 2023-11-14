@@ -50,7 +50,12 @@ class ReportsModel extends BaseModel
 
         return $report;
     }
-
+    /**
+     * Get all reports
+     *
+     * @param array $filters the filters to specify a group of reports
+     * @return array return an array of reports
+     */
     public function getAllReports(array $filters)
     {
         $filters_values = [];
@@ -126,7 +131,12 @@ class ReportsModel extends BaseModel
 
         return $results;
     }
-
+    /**
+     * Get a specific report
+     *
+     * @param [type] $report_id the specific id of the report
+     * @return array return a report as an array
+     */
     public function getReportById($report_id)
     {
         $sql = "SELECT r.*, i.*, l.*,
@@ -160,7 +170,13 @@ class ReportsModel extends BaseModel
 
         return $this->formatReport((array) $result);
     }
-
+    /**
+     * Get the victims of that report
+     *
+     * @param [type] $report_id the specific id of the report
+     * @param [type] $filters the filters of the group of victims
+     * @return array return an array of victims
+     */
     public function getReportVictims($report_id, $filters)
     {
         $filters_values = [];
@@ -202,7 +218,13 @@ class ReportsModel extends BaseModel
         $victims = $this->paginate($sql, $filters_values);
         return $victims;
     }
-
+    /**
+     * Get the criminals of the report
+     *
+     * @param [type] $report_id the specific id of the report
+     * @param [type] $filters the filters of the group of criminals
+     * @return array return an array of criminals
+     */
     public function getReportCriminals($report_id, $filters)
     {
         $filters_values = [];
@@ -249,7 +271,13 @@ class ReportsModel extends BaseModel
         $criminals = $this->paginate($sql, $filters_values);
         return $criminals;
     }
-
+    /**
+     * Get the police of the report
+     *
+     * @param [type] $report_id the specific id of the report
+     * @param [type] $filters the filters of the group of police
+     * @return array return an array of police
+     */
     // TODO: Implement this
     public function getReportPolice($report_id, $filters)
     {
@@ -290,7 +318,13 @@ class ReportsModel extends BaseModel
         $police = $this->paginate($sql, $filters_values);
         return $police;
     }
-
+    /**
+     * Get the crimes of the report
+     *
+     * @param [type] $report_id the specific id of the report
+     * @param [type] $filters the filters of the group of crimes
+     * @return array return an array of crimes
+     */
     // TODO: Implement this
     public function getReportCrimes($report_id, $filters)
     {
@@ -311,7 +345,13 @@ class ReportsModel extends BaseModel
         $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
-
+    /**
+     * Get the modi of the report
+     *
+     * @param [type] $report_id the specific id of the report
+     * @param [type] $filters the filters of the group of modi
+     * @return array return an array of modi
+     */
     // TODO: Implement this
     public function getReportModi($report_id, $filters)
     {
@@ -332,7 +372,6 @@ class ReportsModel extends BaseModel
         $crimes = $this->paginate($sql, $filters_values);
         return $crimes;
     }
-
     private function createReportRelations($report_id, $table_name, $ids, $key)
     {
         foreach ($ids as $id) {

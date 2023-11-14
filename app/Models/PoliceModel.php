@@ -10,7 +10,12 @@ class PoliceModel extends BaseModel
     {
         parent::__construct();
     }
-
+    /**
+     * Get all police officers from database
+     *
+     * @param array $filters the filters for the police
+     * @return array return an array of police
+     */
     public function getAllPolice(array $filters)
     {
         $filters_values = [];
@@ -44,13 +49,24 @@ class PoliceModel extends BaseModel
 
         return $this->paginate($sql, $filters_values);
     }
-
+    /**
+     * Get a police officer of specific Id
+     *
+     * @param [type] $badge_id badge id of the police officer
+     * @return object return a police officer as an object
+     */
     public function getPoliceById($badge_id)
     {
         $sql = "SELECT * FROM $this->table_name WHERE badge_id = :badge_id";
         return $this->fetchSingle($sql, ['badge_id' => $badge_id]);
     }
-
+    /**
+     * Get the reports of that police officer 
+     *
+     * @param [type] $badge_id badge id of the police officer
+     * @param [type] $filters the filters for the police
+     * @return array return an array of reports
+     */
     // TODO: Implement this
     public function getPoliceReports($badge_id, $filters)
     {
@@ -111,12 +127,25 @@ class PoliceModel extends BaseModel
         return $reports;
     }
 
+    /**
+     * Create a police officer and record it into the database
+     *
+     * @param [type] $police an array of values detailing the data of the police
+     *
+     */
     // TODO: Implement this
     public function createPolice($police)
     {
         return $this->insert($this->table_name, $police);
     }
-
+    
+    /**
+     * Update the details of a police officer in the database
+     *
+     * @param [type] $police an array of values detailing the updated data of the police
+     * @param [type] $badge_id badge id of the police officer
+     * @return void
+     */
     // TODO: Implement this
     public function updatePolice($police, $badge_id)
     {
@@ -125,7 +154,12 @@ class PoliceModel extends BaseModel
         }
         return $this->update($this->table_name, $police, ["badge_id" => $badge_id]);
     }
-
+    /**
+     * Delete a police officer from the database
+     *
+     * @param [type] $badge_id badge id of the police officer
+     * @return void
+     */
     // TODO: Implement this
     public function deletePolice($badge_id)
     {
