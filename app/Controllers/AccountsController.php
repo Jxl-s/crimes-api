@@ -5,6 +5,7 @@ namespace Vanier\Api\Controllers;
 use Fig\Http\Message\StatusCodeInterface as HttpCodes;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
 use Vanier\Api\Helpers\JWTManager;
 use Vanier\Api\Models\AccountsModel;
 
@@ -55,6 +56,24 @@ class AccountsController extends BaseController
         //var_dump($user_data);exit;
 
         //-- 1) Reject the request if the request body is empty.
+        $rules = [
+            'email'=> [
+                'required',
+                'ascii',
+                ['lengthMin', 1]
+            ],
+            'password'=> [
+                'required',
+                'ascii',
+                ['lengthMin', 1]
+            ],
+        ];
+        
+        $validated_data = $this->validateData($account_data, $rules);
+        if (!$validated_data) {
+            return new HttpBadRequestException($request, $validated_data);
+        }
+
         if (empty($account_data)) {
             return $this->prepareOkResponse($response, ['error' => true, 'message' => 'No data was provided in the request.'], 400);
         }

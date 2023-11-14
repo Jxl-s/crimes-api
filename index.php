@@ -5,6 +5,10 @@ use Dotenv\Dotenv;
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 
+define('APP_BASE_DIR',  __DIR__);
+define('APP_ENV_FILE', 'config.env');
+define('APP_JWT_TOKEN_KEY', 'APP_JWT_TOKEN');
+
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ .'/app/Config/app_config.php';
 
