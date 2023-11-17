@@ -9,6 +9,7 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Vanier\Api\Helpers\Input;
 use Vanier\Api\Models\CriminalsModel;
+use GuzzleHttp\Client as GuzzleClient;
 
 class CriminalsController extends BaseController
 {
@@ -102,6 +103,44 @@ class CriminalsController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $reports);
     }
+    public function handleGetWantedCriminals(Request $request, Response $response, array $uri_args) {
+        $filters = $request->getQueryParams();
+        $rules = [
+            'pageSize' => [
+                'required',
+                ['min' , 1],
+                'integer'
+            ],
+            'page' => [
+                'required',
+                ['min' , 1],
+                'integer'
+            ],
+            'sort_on' => [
+                ['in' , ['publication', 'modified']]
+            ],
+            'sort_order' => [
+                ['in' , ['asc', 'desc']]
+            ],
+            'person_classification' => [
+                ['in' , ['Main', 'Victim', 'Accomplice']]
+            ],
+            'poster_classification' => [
+                ['in' , ['default', 'ten', 'terrorist', 'information', 'kidnapping', 'missing', 'most', 'crimes-against-children', 'ecap', 'law-enforcement-assistance']]
+            ]
+        ];
+        $validated = $this->validateData($filters, $rules);
+        if($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }   
+        $client = new GuzzleClient(['base_uri' => 'https://api.fbi.gov']);
+        $data = json_decode($client->request('GET', '/@wanted', [
+            'query' => $filters,     
+            'headers' => [
+                'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+        ]])->getBody(), true);
+        return $this->prepareOkResponse($response, (array) $data);
+    }   
 
     public function handleCreateCriminals(Request $request, Response $response, array $uri_args)
     {

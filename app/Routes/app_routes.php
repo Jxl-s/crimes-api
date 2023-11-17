@@ -41,6 +41,7 @@ $app->put('/crimes/{crime_code}', [CrimesController::class, 'handleUpdateCrimes'
 $app->get('/criminals', [CriminalsController::class, 'handleGetCriminals']);
 $app->get('/criminals/{criminal_id}', [CriminalsController::class, 'handleGetCriminalById']);
 $app->get('/criminals/{criminal_id}/reports', [CriminalsController::class, 'handleGetCriminalReports']);
+$app->get('/criminals/fbi/wanted', [CriminalsController::class, 'handleGetWantedCriminals']);
 
 $app->post('/criminals', [CriminalsController::class, 'handleCreateCriminals']);
 $app->delete('/criminals/{criminal_id}', [CriminalsController::class, 'handleDeleteCriminals']);
