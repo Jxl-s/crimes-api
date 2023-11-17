@@ -26,6 +26,20 @@ class AccountsController extends BaseController
     public function handleCreateAccount(Request $request, Response $response)
     {
         $account_data = $request->getParsedBody();
+
+        $rules = [
+            'first_name' => ['required','ascii', ['lengthMin', 1]],
+            'last_name' => ['required','ascii', ['lengthMin', 1]],
+            'email' => ['required','email'],
+            'password' => ['required','ascii', ['lengthMin', 4]],
+            'role' => ['required', ['IN', ['admin', 'user']]]
+        ];
+
+        $validated_data = $this->validateData((array) $account_data, $rules);
+        if ($validated_data !== true) {
+            throw new HttpBadRequestException($request, $validated_data);
+        }
+        
         // 1) Verify if any information about the new account to be created was included in the 
         // request.
         if (empty($account_data)) {
@@ -57,21 +71,13 @@ class AccountsController extends BaseController
 
         //-- 1) Reject the request if the request body is empty.
         $rules = [
-            'email'=> [
-                'required',
-                'ascii',
-                ['lengthMin', 1]
-            ],
-            'password'=> [
-                'required',
-                'ascii',
-                ['lengthMin', 1]
-            ],
+            'email' => ['required','email'],
+            'password' => ['required','ascii', ['lengthMin', 4]],
         ];
         
         $validated_data = $this->validateData($account_data, $rules);
-        if (!$validated_data) {
-            return new HttpBadRequestException($request, $validated_data);
+        if ($validated_data !== true) {
+            throw new HttpBadRequestException($request, $validated_data);
         }
 
         if (empty($account_data)) {
