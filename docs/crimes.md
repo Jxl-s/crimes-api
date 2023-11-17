@@ -21,7 +21,7 @@ The crimes resource represents possible crimes that can be committed in a report
 
 ```json
 {
-    "crime_code": "210",
+    "crime_code": 210,
     "crime_desc": "Robbery"
 }
 ```
@@ -56,6 +56,8 @@ Returns a crime with the specified crime code
 **<u>Returns</u>**: An crime object with the specified crime code
 
 ## 3. Create a crime
+
+Creates a crime with the given information
 
 `POST /crimes`
 
