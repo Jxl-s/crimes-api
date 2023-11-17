@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 15, 2023 at 06:15 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Host: 127.0.0.1
+-- Generation Time: Nov 17, 2023 at 02:47 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `crimes_db`
 --
-CREATE DATABASE IF NOT EXISTS `crimes_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `crimes_db`;
 
 -- --------------------------------------------------------
 
@@ -2250,7 +2248,7 @@ INSERT INTO `police` (`badge_id`, `first_name`, `last_name`, `join_date`, `rank`
 
 CREATE TABLE `report` (
   `report_id` int(11) NOT NULL,
-  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `report_status` varchar(10) NOT NULL,
   `fatalities` int(11) NOT NULL,
   `case_status` varchar(10) NOT NULL,
@@ -2265,11 +2263,11 @@ CREATE TABLE `report` (
 --
 
 INSERT INTO `report` (`report_id`, `last_update`, `report_status`, `fatalities`, `case_status`, `premise`, `incident_id`, `location_id`, `weapon_id`) VALUES
-(1, '2020-02-22', 'IC', 0, 'Solved', 'MULTI-UNIT DWELLING (APARTMENT, DUPLEX, ETC)', 1, 1, NULL),
-(2, '2020-01-08', 'AO', 0, 'Solved', 'SINGLE FAMILY DWELLING', 2, 2, 400),
-(3, '2020-01-01', 'IC', 0, 'Solved', 'SIDEWALK', 3, 3, 500),
-(4, '2020-04-14', 'AA', 0, 'Solved', 'POLICE FACILITY', 4, 4, NULL),
-(5, '2020-01-01', 'IC', 0, 'Solved', 'MULTI-UNIT DWELLING (APARTMENT, DUPLEX, ETC)', 5, 5, NULL);
+(1, '2020-02-22 00:00:00', 'IC', 0, 'Solved', 'MULTI-UNIT DWELLING (APARTMENT, DUPLEX, ETC)', 1, 1, NULL),
+(2, '2020-01-08 00:00:00', 'AO', 0, 'Solved', 'SINGLE FAMILY DWELLING', 2, 2, 400),
+(3, '2020-01-01 00:00:00', 'IC', 0, 'Solved', 'SIDEWALK', 3, 3, 500),
+(4, '2020-04-14 00:00:00', 'AA', 0, 'Solved', 'POLICE FACILITY', 4, 4, NULL),
+(5, '2020-01-01 00:00:00', 'IC', 0, 'Solved', 'MULTI-UNIT DWELLING (APARTMENT, DUPLEX, ETC)', 5, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -2508,6 +2506,36 @@ INSERT INTO `weapon` (`weapon_id`, `type`, `material`, `color`, `description`) V
 (515, 'Hazard', 'N/A', 'N/A', 'PHYSICAL PRESENCE'),
 (516, 'Other', 'N/A', 'N/A', 'DOG/ANIMAL (SIC ANIMAL ON)');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ws_log`
+--
+
+CREATE TABLE `ws_log` (
+  `log_id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `user_action` varchar(255) NOT NULL,
+  `logged_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `user_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ws_users`
+--
+
+CREATE TABLE `ws_users` (
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(150) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` varchar(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -2621,6 +2649,20 @@ ALTER TABLE `weapon`
   ADD PRIMARY KEY (`weapon_id`);
 
 --
+-- Indexes for table `ws_log`
+--
+ALTER TABLE `ws_log`
+  ADD PRIMARY KEY (`log_id`);
+
+--
+-- Indexes for table `ws_users`
+--
+ALTER TABLE `ws_users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `role` (`role`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -2671,6 +2713,18 @@ ALTER TABLE `victim`
 --
 ALTER TABLE `weapon`
   MODIFY `weapon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=517;
+
+--
+-- AUTO_INCREMENT for table `ws_log`
+--
+ALTER TABLE `ws_log`
+  MODIFY `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ws_users`
+--
+ALTER TABLE `ws_users`
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
