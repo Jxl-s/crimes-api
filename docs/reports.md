@@ -1,7 +1,9 @@
 # Crimes
+
 Endpoint: `/reports`
 
 ## Table of Contents
+
 - [Crimes](#crimes)
   - [Table of Contents](#table-of-contents)
   - [Details](#details)
@@ -64,8 +66,6 @@ Used in the report to indicate location details
 | longitude `float`     | Longitude component of the location                |
 | latitude `float`      | Latitude component of the location                 |
 
-
-
 ## Report Object
 
 ```json
@@ -97,7 +97,6 @@ Used in the report to indicate location details
 },
 ```
 
-
 | Field                   | Description                                                                                           |
 |-------------------------|-------------------------------------------------------------------------------------------------------|
 | report_id `int`         | Auto-incrementing ID                                                                                  |
@@ -120,56 +119,127 @@ Used in the report to indicate location details
 `GET /reports`
 
 **<u>Parameters</u>**
-**<u>Returns</u>**
+
+| Field                                  | Description                                  |
+|----------------------------------------|----------------------------------------------|
+| from_last_update `DateTime` *optional* | Filter for lower range of last_update        |
+| to_last_update `DateTime` *required*   | Filter for upper range of last_update        |
+| fatalities `int` *optional*            | Filter for exact number of fatalities        |
+| criminal_count `int` *optional*        | Filter for exact number of criminals         |
+| victim_count `int` *optional*          | Filter for exact number of victims           |
+| crime_code `int` *optional*            | Filter for reports including this crime code |
+| modus_code `string` *optional*         | Filter for reports including this modus code |
+| premise `string` *optional*            | Filter for reports including this premise    |
+
+**<u>Returns</u>**: A list of [Report](reports.md#report-object) objects that match the filters
 
 ## 2. Get report details
 
 `GET /reports/{report_id}`
 
-**<u>Parameters</u>**
-**<u>Returns</u>**
+**<u>Parameters</u>**: None
+
+**<u>Returns</u>**: A [Report](reports.md#report-object) object for the given ID
 
 ## 3. Get report victims
 
 `GET /reports/{report_id}/victims`
 
 **<u>Parameters</u>**
+
+| Field                          | Description                                               |
+|--------------------------------|-----------------------------------------------------------|
+| first_name `string` *optional* | Filter for victims containing this value their first name |
+| last_name `string` *optional*  | Filter for victims containing this value their last name  |
+| age `int` *optional*           | Filter for victims having this age                        |
+| descent `char` *optional*      | Filter for victims having this descent                    |
+| sex `M\|F\|X` *optional*       | Filters for victims having this sex                       |
+
 **<u>Returns</u>**
+
+An array of [Victim](victims.md#victim-object) objects that were involved in the report,
+and match the filters
 
 ## 4. Get report criminals
 
 `GET /reports/{report_id}/criminals`
 
 **<u>Parameters</u>**
+
+| Field                          | Description                                                 |
+|--------------------------------|-------------------------------------------------------------|
+| first_name `string` *optional* | Filter for criminals containing this value their first name |
+| last_name `string` *optional*  | Filter for criminals containing this value their last name  |
+| age `int` *optional*           | Filter for criminals having this age                        |
+| descent `char` *optional*      | Filter for criminals having this descent                    |
+| sex `M\|F\|X` *optional*       | Filters for criminals having this sex                       |
+| is_arrested `bool` *optional*  | Filters for criminals that are arrested                     |
+
 **<u>Returns</u>**
+
+An array of [Criminal](criminals.md#criminal-object) objects that were involved in the report
 
 ## 5. Get report police officers
 
 `GET /reports/{report_id}/police`
 
 **<u>Parameters</u>**
+
+| Field                                | Description                                                       |
+|--------------------------------------|-------------------------------------------------------------------|
+| first_name `string` *optional*       | Filter for police officers containing this value their first name |
+| last_name `string` *optional*        | Filter for police officers containing this value their last name  |
+| from_join_date `DateTime` *optional* | Filter for police officers joining after this date                |
+| to_join_date `DateTime` *optional*   | Filter for police officers joining before this date               |
+| rank `string` *optional*             | Filter for police officers having this rank                       |
+
 **<u>Returns</u>**
+
+A list of [Police](police.md#police-object) objects that were involved in the report
 
 ## 6. Get report crimes
 
 `GET /reports/{report_id}/crimes`
 
 **<u>Parameters</u>**
+
+| Field       | Description                                                  |
+|-------------|--------------------------------------------------------------|
+| description | Filter for crimes containing this value in their description |
+
 **<u>Returns</u>**
+
+A list of [Crime](crimes.md#crime-object) objects that were committed in the report
 
 ## 7. Get report modus codes
 
 `GET /reports/{report_id}/modi`
 
 **<u>Parameters</u>**
+
+| Field       | Description                                                       |
+|-------------|-------------------------------------------------------------------|
+| description | Filter for modus codes containing this value in their description |
+
 **<u>Returns</u>**
+
+A list of [Modus](modi.md#modus-object) objects that were associated with the report
 
 ## 8. Get report weather
 
 `GET /reports/{report_id}/weather`
 
 **<u>Parameters</u>**
+
+<!-- temperature_unit, and precipitation_unit -->
+| Field                                            | Description                                   |
+|--------------------------------------------------|-----------------------------------------------|
+| temperature_unit `celcius\|farenheit` *optional* | The unit of measurement for the temperature   |
+| precipitation_unit `mm\|inch` *optional*         | The unit of measurement for the precipitation |
+
 **<u>Returns</u>**
+
+Weather information at the time and location of the report
 
 ## 9. Create a report
 
