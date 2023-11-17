@@ -48,16 +48,21 @@ class JWTAuthMiddleware implements MiddlewareInterface
         //-- 4) Try to decode the JWT token
         //@see https://github.com/firebase/php-jwt#exception-handling
         try {
-            $decoded = JWT::decode($token[0], new Key($_ENV['SECRET_KEY'], 'HS256'));
+            $decoded = (array) JWT::decode($token[0], new Key($_ENV['SECRET_KEY'], 'HS256'));
+        }catch (LogicException $e) {
+            // errors having to do with environmental setup or malformed JWT Keys
+            throw new LogicException($e, 422);
+        } catch (UnexpectedValueException $e) {
+            // errors having to do with JWT signature and claims
+            throw new UnexpectedValueException($e,400);
         } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException($e,400);
-        }
-        $user = get_object_vars($decoded);
+        } 
         // --5) Access to POST, PUT and DELETE operations must be restricted.
         //     Only admin accounts can be authorized.
         // If the request's method is: POST, PUT, or DELETE., only admins are allowed.
         // throw new HttpForbiddenException($request, 'Insufficient permission!');
-        if(($request->getMethod() === 'POST' || $request->getMethod() === 'PUT' || $request->getMethod() === 'DELETE') && $user['role'] != "admin") {
+        if(($request->getMethod() === 'POST' || $request->getMethod() === 'PUT' || $request->getMethod() === 'DELETE') && $decoded['role'] != "admin") {
             throw new HttpForbiddenException($request, 'Insufficient permission!');
         }
 
