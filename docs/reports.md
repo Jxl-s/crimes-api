@@ -8,6 +8,17 @@ Endpoint: `/reports`
   - [Incident Object](#incident-object)
   - [Location Object](#location-object)
   - [Report Object](#report-object)
+  - [1. Get a list of reports](#1-get-a-list-of-reports)
+  - [2. Get report details](#2-get-report-details)
+  - [3. Get report victims](#3-get-report-victims)
+  - [4. Get report criminals](#4-get-report-criminals)
+  - [5. Get report police officers](#5-get-report-police-officers)
+  - [6. Get report crimes](#6-get-report-crimes)
+  - [7. Get report modus codes](#7-get-report-modus-codes)
+  - [8. Get report weather](#8-get-report-weather)
+  - [9. Create a report](#9-create-a-report)
+  - [10. Update a report](#10-update-a-report)
+  - [11. Delete a report](#11-delete-a-report)
 
 ## Details
 
@@ -103,3 +114,82 @@ Used in the report to indicate location details
 | victim_ids `int[]`      | Array of [Victim](victims.md#victim-object) IDs who were involved in the report                       |
 | incident `Incident`     | Instance of an [Incident](#incident-object), which date and time information                          |
 | location `Location`     | Instance of a [Location](#location-object), which includes the latitude and longitude of the location |
+
+## 1. Get a list of reports
+
+`GET /reports`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 2. Get report details
+
+`GET /reports/{report_id}`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 3. Get report victims
+
+`GET /reports/{report_id}/victims`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 4. Get report criminals
+
+`GET /reports/{report_id}/criminals`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 5. Get report police officers
+
+`GET /reports/{report_id}/police`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 6. Get report crimes
+
+`GET /reports/{report_id}/crimes`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 7. Get report modus codes
+
+`GET /reports/{report_id}/modi`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 8. Get report weather
+
+`GET /reports/{report_id}/weather`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
+
+## 9. Create a report
+
+`POST /reports`
+
+**<u>Parameters</u>**
+**<u>Body</u>**
+**<u>Returns</u>**
+
+## 10. Update a report
+
+`PUT /reports/{report_id}`
+
+**<u>Parameters</u>**
+**<u>Body</u>**
+**<u>Returns</u>**
+
+## 11. Delete a report
+
+`DELETE /reports/{report_id}`
+
+**<u>Parameters</u>**
+**<u>Returns</u>**
