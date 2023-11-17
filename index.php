@@ -3,6 +3,7 @@ use Slim\Factory\AppFactory;
 use Vanier\Api\Middleware\ContentNegotiationMiddleware;
 use Dotenv\Dotenv;
 use Vanier\Api\Middleware\JWTAuthMiddleware;
+use Vanier\Api\Middleware\AppLoggingMiddleware;
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 
@@ -19,6 +20,10 @@ $dotenv->load();
 
 // Step 1) Instantiate a Slim app.
 $app = AppFactory::create();
+
+// Logging middleware
+
+$app->addMiddleware(new AppLoggingMiddleware());
 
 // JWT middleware
 $app->addMiddleware(new JWTAuthMiddleware());

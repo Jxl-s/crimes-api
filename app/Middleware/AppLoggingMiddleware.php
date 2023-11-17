@@ -1,5 +1,7 @@
 <?php
 
+namespace Vanier\Api\Middleware;
+
 use Fig\Http\Message\StatusCodeInterface;
 use Monolog\Logger;
 use Monolog\Level;
@@ -10,11 +12,11 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-class AppLoggingMiddleware
+class AppLoggingMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): ResponseInterface {
         $logger = new Logger("access_logs");
-        $logger->setTimezone(new DateTimeZone("America/Toronto"));
+        $logger->setTimezone(new \DateTimeZone("America/Toronto"));
         $logger->pushHandler(new StreamHandler(APP_LOG_DIR . 'access.log', Level::Debug));
         $logger->pushHandler(new FirePHPHandler());
         $response = $handler->handle($request);
