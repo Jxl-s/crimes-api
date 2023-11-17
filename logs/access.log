@@ -1,0 +1,5 @@
+[2023-11-17T13:35:54.628246-05:00] access_logs.INFO: Log [] []
+[2023-11-17T13:35:55.264989-05:00] access_logs.INFO: Log [] []
+[2023-11-17T13:36:29.000949-05:00] access_logs.INFO: Testing 123522 [] []
+[2023-11-17T13:41:25.751584-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/token  [] []
+[2023-11-17T13:41:41.673951-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/districts  [] []

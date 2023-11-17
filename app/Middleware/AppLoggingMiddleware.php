@@ -15,10 +15,11 @@ use Psr\Http\Server\MiddlewareInterface;
 class AppLoggingMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): ResponseInterface {
+        
         $logger = new Logger("access_logs");
         $logger->setTimezone(new \DateTimeZone("America/Toronto"));
         $logger->pushHandler(new StreamHandler(APP_LOG_DIR . 'access.log', Level::Debug));
-        $logger->pushHandler(new FirePHPHandler());
+        $logger->info('Log ' . " " .  $_SERVER['REMOTE_ADDR'] . " " . $request->getUri()->getPath() . " " . $request->getUri()->getQuery());      
         $response = $handler->handle($request);
         return $response;
     }
