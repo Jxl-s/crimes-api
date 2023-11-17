@@ -155,9 +155,7 @@ Used in the report to indicate location details
 | descent `char` *optional*      | Filter for victims having this descent                    |
 | sex `M\|F\|X` *optional*       | Filters for victims having this sex                       |
 
-**<u>Returns</u>**
-
-An array of [Victim](victims.md#victim-object) objects that were involved in the report,
+**<u>Returns</u>**: An array of [Victim](victims.md#victim-object) objects that were involved in the report,
 and match the filters
 
 ## 4. Get report criminals
@@ -175,9 +173,7 @@ and match the filters
 | sex `M\|F\|X` *optional*       | Filters for criminals having this sex                       |
 | is_arrested `bool` *optional*  | Filters for criminals that are arrested                     |
 
-**<u>Returns</u>**
-
-An array of [Criminal](criminals.md#criminal-object) objects that were involved in the report
+**<u>Returns</u>**: An array of [Criminal](criminals.md#criminal-object) objects that were involved in the report
 
 ## 5. Get report police officers
 
@@ -193,9 +189,7 @@ An array of [Criminal](criminals.md#criminal-object) objects that were involved 
 | to_join_date `DateTime` *optional*   | Filter for police officers joining before this date               |
 | rank `string` *optional*             | Filter for police officers having this rank                       |
 
-**<u>Returns</u>**
-
-A list of [Police](police.md#police-object) objects that were involved in the report
+**<u>Returns</u>**: A list of [Police](police.md#police-object) objects that were involved in the report
 
 ## 6. Get report crimes
 
@@ -207,9 +201,7 @@ A list of [Police](police.md#police-object) objects that were involved in the re
 |-------------|--------------------------------------------------------------|
 | description | Filter for crimes containing this value in their description |
 
-**<u>Returns</u>**
-
-A list of [Crime](crimes.md#crime-object) objects that were committed in the report
+**<u>Returns</u>**: A list of [Crime](crimes.md#crime-object) objects that were committed in the report
 
 ## 7. Get report modus codes
 
@@ -221,9 +213,7 @@ A list of [Crime](crimes.md#crime-object) objects that were committed in the rep
 |-------------|-------------------------------------------------------------------|
 | description | Filter for modus codes containing this value in their description |
 
-**<u>Returns</u>**
-
-A list of [Modus](modi.md#modus-object) objects that were associated with the report
+**<u>Returns</u>**: A list of [Modus](modi.md#modus-object) objects that were associated with the report
 
 ## 8. Get report weather
 
@@ -237,9 +227,7 @@ A list of [Modus](modi.md#modus-object) objects that were associated with the re
 | temperature_unit `celcius\|farenheit` *optional* | The unit of measurement for the temperature   |
 | precipitation_unit `mm\|inch` *optional*         | The unit of measurement for the precipitation |
 
-**<u>Returns</u>**
-
-Weather information at the time and location of the report
+**<u>Returns</u>**: Weather information at the time and location of the report
 
 ## 9. Create a report
 
