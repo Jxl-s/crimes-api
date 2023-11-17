@@ -7,6 +7,7 @@ use Vanier\Api\Middleware\JWTAuthMiddleware;
 error_reporting(E_ALL ^ E_DEPRECATED);
 
 define('APP_BASE_DIR',  __DIR__);
+define('APP_LOG_DIR', APP_BASE_DIR."/logs/");
 define('APP_ENV_FILE', 'config.env');
 define('APP_JWT_TOKEN_KEY', 'APP_JWT_TOKEN');
 
