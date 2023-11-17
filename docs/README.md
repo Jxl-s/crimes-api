@@ -19,11 +19,11 @@ The crimes API uses JWT to authenticate requests. You may log in to generate a t
 
 ## Resources and Operations
 
-- [Crimes](docs/crimes.md)
-- [Criminals](docs/criminals.md)
-- [Districts](docs/districts.md)
-- [Modi](docs/modi.md)
-- [Police](docs/police.md)
-- [Reports](docs/reports.md)
-- [Victims](docs/victims.md)
-- [Weapons](docs/weapons.md)
+- [Crimes](crimes.md)
+- [Criminals](criminals.md)
+- [Districts](districts.md)
+- [Modi](modi.md)
+- [Police](police.md)
+- [Reports](reports.md)
+- [Victims](victims.md)
+- [Weapons](weapons.md)

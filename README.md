@@ -17,4 +17,4 @@ Run the following command to install the project dependencies. Use XAMPP to run 
 - Uncomment the `;extension=zip` line in your `php.ini` file.
 
 ## Documentation
-The project's documentation can be viewed [here](docs.md)
+The project's documentation can be viewed [here](docs/README.md)
