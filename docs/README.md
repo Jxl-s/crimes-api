@@ -1,6 +1,13 @@
-# Crimes API - Documentation
+# Crimes API Documentation
 
 ## Table of Contents
+
+- [Crimes API Documentation](#crimes-api-documentation)
+  - [Table of Contents](#table-of-contents)
+  - [Resource Representations](#resource-representations)
+  - [Authentication and Authorization](#authentication-and-authorization)
+  - [Pagination and Sorting](#pagination-and-sorting)
+  - [Resources and Operations](#resources-and-operations)
 
 ## Resource Representations
 
