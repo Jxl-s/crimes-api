@@ -19,6 +19,13 @@ The crimes resource represents possible crimes that can be committed in a report
 
 ## Crime Object
 
+```json
+{
+    "crime_code": "210",
+    "crime_desc": "Robbery"
+}
+```
+
 | Field               | Description                                   |
 |---------------------|-----------------------------------------------|
 | crime_code `int`    | Uniquely identifies a crime, through its code |
