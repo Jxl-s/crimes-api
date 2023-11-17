@@ -17,12 +17,24 @@ The crimes resource represents possible crimes that can be committed in a report
 
 ### Get a list of crimes
 
-Endpoint: `GET /crimes`
+Returns a list of possible crimes committed in reports.
+
+#### Endpoint
+
+`GET /crimes`
+
+#### Parameters
+
+| Field                              | Description                                                  |
+|------------------------------------|--------------------------------------------------------------|
+| **crime_desc** `string` *optional* | A filter, to find which crimes has this specific description |
+
+#### Returns
+
+An object with a `data` property that contains an array of crime objects
 
 
-
-
-- Get details about a specific crime
-- Create a crime
-- Delete a crime
-- Update a crime
+### Get details about a specific crime
+### Create a crime
+### Delete a crime
+### Update a crime
