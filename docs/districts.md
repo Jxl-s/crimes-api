@@ -8,6 +8,13 @@ Endpoint: `/districts`
     - [Table of Contents](#table-of-contents)
     - [Details](#details)
     - [District Object](#district-object)
+    - [1. Get a list of districts](#1-get-a-list-of-districts)
+    - [2. Get district information](#2-get-district-information)
+    - [3. Get district reports](#3-get-district-reports)
+    - [4. Get district police](#4-get-district-police)
+    - [5. Create a district](#5-create-a-district)
+    - [6. Delete a crime](#6-delete-a-crime)
+    - [7. Update a crime](#7-update-a-crime)
 
 ## Details
 
