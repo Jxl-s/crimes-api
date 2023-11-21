@@ -98,6 +98,16 @@ Returns a list of police with the specified district id
 
 `GET /district/{district_id}/police`
 
+| Field                                | Description                                                       |
+|--------------------------------------|-------------------------------------------------------------------|
+| first_name `string` *optional*       | Filter for police officers containing this value their first name |
+| last_name `string` *optional*        | Filter for police officers containing this value their last name  |
+| from_join_date `DateTime` *optional* | Filter for police officers joining after this date                |
+| to_join_date `DateTime` *optional*   | Filter for police officers joining before this date               |
+| rank `string` *optional*             | Filter for police officers having this rank                       |
+
+The police object
+
 | Field                   | Description                                                                                           |
 |-------------------------|-------------------------------------------------------------------------------------------------------|
 | badge_id  `int`         | Auto-incrementing ID                                                                                  |
