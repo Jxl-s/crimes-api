@@ -42,7 +42,7 @@ The criminal resource represents criminals who are linked in a crime report
 
 ## 1. Get a list of criminals
 
-`GET /reports/criminals`
+`GET /criminals`
 
 **<u>Parameters</u>**
 
@@ -67,7 +67,7 @@ The criminal resource represents criminals who are linked in a crime report
 
 Get the crime reports associated with a criminal
 
-`GET /reports/criminals/{criminal_id}/reports`
+`GET /criminals/{criminal_id}/reports`
 
 **<u>Parameters</u>**
 
@@ -86,7 +86,7 @@ Get the crime reports associated with a criminal
 
 ## 4. Create a criminal
 
-`POST /reports/criminals`
+`POST /criminals`
 
 **<u>Parameters</u>**
 
@@ -114,7 +114,7 @@ Deletes a criminal with the specified criminal id
 
 ## 6. Update a criminal
 
-Updates a crime with the specified district id, with the specified data
+Updates a criminal with the specified criminal id, with the specified data
 
 `PUT /criminal/{criminal_id}`
 
@@ -131,4 +131,4 @@ Updates a crime with the specified district id, with the specified data
 | sex `M\|F\|X` *optional*       | Filters for criminals having this sex                       |
 | is_arrested `bool` *optional*  | Filters for criminals that are arrested                     |
 
-**<u>Returns</u>**: Status indicating whether the crime was successfully updated or not
+**<u>Returns</u>**: Status indicating whether the criminal was successfully updated or not

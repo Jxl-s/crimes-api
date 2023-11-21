@@ -6,3 +6,7 @@
 [2023-11-20T23:23:11.605636-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/token  [] []
 [2023-11-20T23:23:21.236085-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/token  [] []
 [2023-11-20T23:23:45.229940-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/police  [] []
+[2023-11-21T00:13:03.907725-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/token  [] []
+[2023-11-21T00:15:34.467119-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/criminals  [] []
+[2023-11-21T00:37:20.235022-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/token  [] []
+[2023-11-21T00:37:33.870467-05:00] access_logs.INFO: Log  127.0.0.1 /crimes-api/victims  [] []
