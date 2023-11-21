@@ -6,7 +6,7 @@ Endpoint: `/modi`
 - [modi](#modi)
   - [Table of Contents](#table-of-contents)
   - [Details](#details)
-  - [modus Object](#modus-object)
+  - [Modus Object](#modus-object)
   - [1. Get a list of modi](#1-get-a-list-of-modi)
   - [2. Get modus information](#2-get-modus-information)
   - [3. Create a modus](#3-create-a-modus)
@@ -17,7 +17,7 @@ Endpoint: `/modi`
 
 The modi resource represents possible modi that can be committed in a report.
 
-## modus Object
+## Modus Object
 
 ```json
 {
@@ -53,7 +53,7 @@ Returns a modus with the specified modus code
 
 **<u>Parameters</u>**: No parameters
 
-**<u>Returns</u>**: An modus object with the specified mo code
+**<u>Returns</u>**: An [modus object](#modus-object) with the specified mo code
 
 ## 3. Create a modus
 
