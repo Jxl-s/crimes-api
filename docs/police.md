@@ -2,6 +2,16 @@
 
 Endpoint: `/police`
 
+- [Police](#police)
+  - [Details](#details)
+  - [Police Object](#police-object)
+  - [1. Get a list of police](#1-get-a-list-of-police)
+  - [2. Get police information](#2-get-police-information)
+  - [3. Get police reports](#3-get-police-reports)
+  - [4. Create police](#4-create-police)
+  - [5. Delete a police officer](#5-delete-a-police-officer)
+  - [6. Update a police officer](#6-update-a-police-officer)
+
 ## Details
 
 The police resource represents police officers who are working for the LAPD. 
