@@ -2661,7 +2661,7 @@ ALTER TABLE `ws_log`
 ALTER TABLE `ws_users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `role` (`role`);
+  ADD KEY `role` (`role`);
 
 --
 -- AUTO_INCREMENT for dumped tables

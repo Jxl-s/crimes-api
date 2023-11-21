@@ -1,4 +1,5 @@
 <?php
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -21,11 +22,11 @@ global $app;
 // The Vanier\Api must be used as namespace prefix. 
 
 // ROUTE: GET /
-$app->get('/', [AboutController::class, 'handleAboutApi']); 
+$app->get('/', [AboutController::class, 'handleAboutApi']);
 
 // ROUTE: GET /hello
 $app->get('/hello', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Reporting! Hello there!");            
+    $response->getBody()->write("Reporting! Hello there!");
     return $response;
 });
 
@@ -82,7 +83,8 @@ $app->get('/reports/{report_id}/criminals', [ReportsController::class, 'handleGe
 $app->get('/reports/{report_id}/police', [ReportsController::class, 'handleGetReportPolice']);
 $app->get('/reports/{report_id}/crimes', [ReportsController::class, 'handleGetReportCrimes']);
 $app->get('/reports/{report_id}/modi', [ReportsController::class, 'handleGetReportModus']);
-$app->get('/reports/{report_id}/weather', [ReportsController::class, 'handleGetReportWeather' ]);
+$app->get('/reports/{report_id}/weather', [ReportsController::class, 'handleGetReportWeather']);
+$app->get('/reports/{report_id}/distance', [ReportsController::class, 'handleGetReportDistance']);
 
 $app->post('/reports', [ReportsController::class, 'handleCreateReports']);
 $app->delete('/reports/{report_id}', [ReportsController::class, 'handleDeleteReports']);
@@ -106,7 +108,7 @@ $app->delete('/weapons/{weapon_id}', [WeaponsController::class, 'handleDeleteWea
 $app->put('/weapons/{weapon_id}', [WeaponsController::class, 'handleUpdateWeapons']);
 
 //token 
-$app->post('/token', [AccountsController::class,'handleGenerateToken']);
+$app->post('/token', [AccountsController::class, 'handleGenerateToken']);
 
 //account 
-$app->post('/account', [AccountsController::class,'handleCreateAccount']);
+$app->post('/account', [AccountsController::class, 'handleCreateAccount']);

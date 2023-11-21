@@ -18,9 +18,10 @@ Endpoint: `/reports`
   - [6. Get report crimes](#6-get-report-crimes)
   - [7. Get report modus codes](#7-get-report-modus-codes)
   - [8. Get report weather](#8-get-report-weather)
-  - [9. Create a report](#9-create-a-report)
-  - [10. Update a report](#10-update-a-report)
-  - [11. Delete a report](#11-delete-a-report)
+  - [9. Get distance between two reports](#9-get-distance-between-two-reports)
+  - [10. Create a report](#10-create-a-report)
+  - [11. Update a report](#11-update-a-report)
+  - [12. Delete a report](#12-delete-a-report)
 
 ## Details
 
@@ -221,7 +222,6 @@ and match the filters
 
 **<u>Parameters</u>**
 
-<!-- temperature_unit, and precipitation_unit -->
 | Field                                            | Description                                   |
 |--------------------------------------------------|-----------------------------------------------|
 | temperature_unit `celcius\|farenheit` *optional* | The unit of measurement for the temperature   |
@@ -229,7 +229,20 @@ and match the filters
 
 **<u>Returns</u>**: Weather information at the time and location of the report
 
-## 9. Create a report
+## 9. Get distance between two reports
+
+`GET /reports/{report_id}/distance`
+
+**<u>Parameters</u>**
+
+| Field                    | Description                                              |
+|--------------------------|----------------------------------------------------------|
+| to `int` *required*      | The report to calculate the distance to                  |
+| unit `km\|mi` *optional* | The unit of measurement for the distance, defaults to km |
+
+**<u>Returns</u>**: Distance information for the two reports
+
+## 10. Create a report
 
 `POST /reports`
 
@@ -237,7 +250,7 @@ and match the filters
 **<u>Body</u>**
 **<u>Returns</u>**
 
-## 10. Update a report
+## 11. Update a report
 
 `PUT /reports/{report_id}`
 
@@ -245,7 +258,7 @@ and match the filters
 **<u>Body</u>**
 **<u>Returns</u>**
 
-## 11. Delete a report
+## 12. Delete a report
 
 `DELETE /reports/{report_id}`
 
