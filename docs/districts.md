@@ -53,7 +53,7 @@ Returns a list of reporting districts in the city of Los Angeles.
 | **bureau** `string` *optional*   | A filter, to find which districts has this specific bureau          |
 | **precinct** `string` *optional* | A filter, to find which districts has this specific precinct number |
 
-**<u>Returns</u>**: An object with a `data` property that contains an array of districts objects
+**<u>Returns</u>**: An array of [District](#district-object) objects that match the filters
 
 ## 2. Get district information
 

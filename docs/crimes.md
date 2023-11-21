@@ -43,7 +43,7 @@ Returns a list of possible crimes committed in reports.
 |------------------------------------|--------------------------------------------------------------|
 | **crime_desc** `string` *optional* | A filter, to find which crimes has this specific description |
 
-**<u>Returns</u>**: An object with a `data` property that contains an array of crime objects
+**<u>Returns</u>**: An array of [Crime](#crime-object) objects that match the filters
 
 ## 2. Get crime information
 

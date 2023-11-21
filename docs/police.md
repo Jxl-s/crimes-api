@@ -31,7 +31,7 @@ The police resource represents police officers who are working for the LAPD.
 
 | Field               | Description                                                            |
 |---------------------|------------------------------------------------------------------------|
-| badge_id  `int`     | Auto-incrementing ID                                                   |
+| badge_id  `int`     | Uniquely identifies police, through its badge id                       |
 | first_name `string` | First name of the police                                               |
 | last_name `string`  | Last name of the police                                                |
 | join_date `date`    | When the police joined the department                                  |
@@ -53,6 +53,8 @@ Returns a list of police officers possible modi committed in reports.
 | from_join_date `DateTime` *optional* | Filter for police officers joining after this date                |
 | to_join_date `DateTime` *optional*   | Filter for police officers joining before this date               |
 | rank `string` *optional*             | Filter for police officers having this rank                       |
+
+**<u>Returns</u>**: An array of [Police](#police-object) objects that match the filters
 
 ## 2. Get police information
 

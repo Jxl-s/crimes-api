@@ -31,6 +31,7 @@ The victim resource represents Victims who are linked in a crime report
 
 | Field               | Description                                               |
 |---------------------|-----------------------------------------------------------|
+| victim_id `int`     | Uniquely identifies victim, through its id                |
 | first_name `string` | The first name of the victim                              |
 | last_name `string`  | The last name of the victim                               |
 | age `int`           | The age of the victim                                     |
@@ -44,17 +45,19 @@ The victim resource represents Victims who are linked in a crime report
 
 **<u>Parameters</u>**
 
-| Field                          | Description                                               |
-|--------------------------------|-----------------------------------------------------------|
-| first_name `string` *optional* | Filter for Victims containing this value their first name |
-| last_name `string` *optional*  | Filter for Victims containing this value their last name  |
-| age `int` *optional*           | Filter for Victims having this age                        |
-| descent `char` *optional*      | Filter for Victims having this descent                    |
-| sex `M\|F\|X` *optional*       | Filters for Victims having this sex                       |
+| Field                          | Description                                                   |
+|--------------------------------|---------------------------------------------------------------|
+| first_name `string` *optional* | Filter for victims containing this value for their first name |
+| last_name `string` *optional*  | Filter for victims containing this value for  their last name |
+| age `int` *optional*           | Filter for victims having this age                            |
+| descent `char` *optional*      | Filter for victims having this descent                        |
+| sex `M\|F\|X` *optional*       | Filters for victims having this sex                           |
 
-**<u>Returns</u>**: An array of [Victim](#victim-object) objects that were involved in the report
+**<u>Returns</u>**: An array of [Victim](#victim-object) objects that match the filters
 
 ## 2. Get victim details
+
+`GET /victims/{victim_id}`
 
 **<u>Parameters</u>**: None
 
@@ -89,12 +92,13 @@ Get the crime reports associated with a victim
 
 | Field                          | Description                                               |
 |--------------------------------|-----------------------------------------------------------|
-| victim_id `int` *required*     | Uniquely identifies a victim, through its id              |
-| first_name `string` *required* | Filter for Victims containing this value their first name |
-| last_name `string` *required*  | Filter for Victims containing this value their last name  |
-| age `int` *required*           | Filter for Victims having this age                        |
-| descent `char` *required*      | Filter for Victims having this descent                    |
-| sex `M\|F\|X` *required*       | Filters for Victims having this sex                       |
+| victim_id `int` *required*     | Uniquely identifies victim, through its id                |
+| first_name `string` *required* | The first name of the victim                              |
+| last_name `string` *required*  | The last name of the victim                               |
+| age `int`      *required*      | The age of the victim                                     |
+| sex `M\|F\|X`   *required*     | The sex of the victim. Can be 'Male', 'Female' or 'Other' |
+| height `int`    *required*     | The height of the victim in centimeters                   |
+| descent `char`  *required*     | The race of the victim                                    |
 
 **<u>Returns</u>**: Status indicating whether the victim was successfully created or not
 
@@ -118,12 +122,12 @@ Updates a victim with the specified victim id, with the specified data
 
 **<u>Request Body</u>**:
 
-| Field                          | Description                                               |
-|--------------------------------|-----------------------------------------------------------|
-| first_name `string` *optional* | Filter for victims containing this value their first name |
-| last_name `string` *optional*  | Filter for victims containing this value their last name  |
-| age `int` *optional*           | Filter for victims having this age                        |
-| descent `char` *optional*      | Filter for victims having this descent                    |
-| sex `M\|F\|X` *optional*       | Filters for victims having this sex                       |
+| Field                          | Description                                                   |
+|--------------------------------|---------------------------------------------------------------|
+| first_name `string` *optional* | Filter for victims containing this value for their first name |
+| last_name `string` *optional*  | Filter for victims containing this value for their last name  |
+| age `int` *optional*           | Filter for victims having this age                            |
+| descent `char` *optional*      | Filter for victims having this descent                        |
+| sex `M\|F\|X` *optional*       | Filters for victims having this sex                           |
 
 **<u>Returns</u>**: Status indicating whether the victim was successfully updated or not

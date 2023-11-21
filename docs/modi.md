@@ -43,7 +43,7 @@ Returns a list of possible modi committed in reports.
 |---------------------------------|------------------------------------------------------------|
 | **mo_desc** `string` *optional* | A filter, to find which modi has this specific description |
 
-**<u>Returns</u>**: An object with a `data` property that contains an array of modus objects
+**<u>Returns</u>**: An array of [Modi](#modus-object) objects that match the filters
 
 ## 2. Get modus information
 
