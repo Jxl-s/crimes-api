@@ -246,21 +246,63 @@ and match the filters
 
 `POST /reports`
 
-**<u>Parameters</u>**
-**<u>Body</u>**
-**<u>Returns</u>**
+**<u>Parameters</u>**: No parameters
+
+**<u>Request Body</u>**:
+
+Provide a `Report` object in the body, with the report_id excluded for report creation
+
+| Field                   | Description                                                                                           |
+|-------------------------|-------------------------------------------------------------------------------------------------------|
+| last_update `DateTime`  | When the crime was last updated                                                                       |
+| report_status `string`  | Details on the report status. Can be `IC` or `AO`                                                     |
+| fatalities `int`        | Number of fatalities in the report                                                                    |
+| case_status `string`    | The status of the case, can be `Solved`, `Unsolved`, `Open`                                           |
+| premise `string`        | Description of where the crime took place                                                             |
+| weapon_id `int`         | The ID of the [Weapon](weapons.md#weapon-object) used in the report                                   |
+| crime_codes `int[]`     | Array of [Crime](crimes.md#crime-object) IDs committed in the report                                  |
+| criminal_ids `int[]`    | Array of [Criminal](criminals.md#criminal-object) IDs who were involved in the report                 |
+| modus_codes `numeric[]` | Array of [Modus](modi.md#modus-object) codes associated with the report                               |
+| police_ids `int[]`      | Array of [Police](police.md#police-object) IDs who were involved in the report                        |
+| victim_ids `int[]`      | Array of [Victim](victims.md#victim-object) IDs who were involved in the report                       |
+| incident `Incident`     | Instance of an [Incident](#incident-object), which date and time information                          |
+| location `Location`     | Instance of a [Location](#location-object), which includes the latitude and longitude of the location |
+
+**<u>Returns</u>**: Status indicating whether the report was successfully created or not
 
 ## 11. Update a report
 
 `PUT /reports/{report_id}`
 
-**<u>Parameters</u>**
-**<u>Body</u>**
-**<u>Returns</u>**
+**<u>Parameters</u>**: No parameters
+
+**<u>Request Body</u>**:
+
+Provide a `Report` object in the body, with the report_id included for report update
+
+| Field                   | Description                                                                                           |
+|-------------------------|-------------------------------------------------------------------------------------------------------|
+| last_update `DateTime`  | When the crime was last updated                                                                       |
+| report_status `string`  | Details on the report status. Can be `IC` or `AO`                                                     |
+| fatalities `int`        | Number of fatalities in the report                                                                    |
+| case_status `string`    | The status of the case, can be `Solved`, `Unsolved`, `Open`                                           |
+| premise `string`        | Description of where the crime took place                                                             |
+| weapon_id `int`         | The ID of the [Weapon](weapons.md#weapon-object) used in the report                                   |
+| crime_codes `int[]`     | Array of [Crime](crimes.md#crime-object) IDs committed in the report                                  |
+| criminal_ids `int[]`    | Array of [Criminal](criminals.md#criminal-object) IDs who were involved in the report                 |
+| modus_codes `numeric[]` | Array of [Modus](modi.md#modus-object) codes associated with the report                               |
+| police_ids `int[]`      | Array of [Police](police.md#police-object) IDs who were involved in the report                        |
+| victim_ids `int[]`      | Array of [Victim](victims.md#victim-object) IDs who were involved in the report                       |
+| incident `Incident`     | Instance of an [Incident](#incident-object), which date and time information                          |
+| location `Location`     | Instance of a [Location](#location-object), which includes the latitude and longitude of the location |
+
+
+**<u>Returns</u>**: Status indicating whether the report was successfully updated or not
 
 ## 12. Delete a report
 
 `DELETE /reports/{report_id}`
 
-**<u>Parameters</u>**
-**<u>Returns</u>**
+**<u>Parameters</u>**: No parameters
+
+**<u>Returns</u>**: Status indicating whether the report was successfully deleted or not
