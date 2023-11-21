@@ -26,10 +26,10 @@ The modi resource represents possible modi that can be committed in a report.
 }
 ```
 
-| Field               | Description                                   |
-|---------------------|-----------------------------------------------|
+| Field              | Description                                                         |
+|--------------------|---------------------------------------------------------------------|
 | modo_code `int`    | Uniquely identifies a modus, through its code with a 4 digit number |
-| modo_desc `string` | The modus's description                       |
+| modo_desc `string` | The modus's description                                             |
 
 ## 1. Get a list of modi
 
@@ -39,8 +39,8 @@ Returns a list of possible modi committed in reports.
 
 **<u>Parameters</u>**
 
-| Field                              | Description                                                  |
-|------------------------------------|--------------------------------------------------------------|
+| Field                           | Description                                                |
+|---------------------------------|------------------------------------------------------------|
 | **mo_desc** `string` *optional* | A filter, to find which modi has this specific description |
 
 **<u>Returns</u>**: An object with a `data` property that contains an array of modus objects
@@ -65,10 +65,10 @@ Creates a modus with the given information
 
 **<u>Request Body</u>**:
 
-| Field                          | Description                                   |
-|--------------------------------|-----------------------------------------------|
+| Field                       | Description                                                         |
+|-----------------------------|---------------------------------------------------------------------|
 | mo_code `int` *required*    | Uniquely identifies a modus, through its code with a 4 digit number |
-| mo_desc `string` *required* | The modus's description                       |
+| mo_desc `string` *required* | The modus's description                                             |
 
 **<u>Returns</u>**: Status indicating whether the modus was successfully created or not
 
@@ -92,9 +92,9 @@ Updates a modus with the specified modus code, with the specified data
 
 **<u>Request Body</u>**:
 
-| Field                          | Description                                   |
-|--------------------------------|-----------------------------------------------|
+| Field                       | Description                                                         |
+|-----------------------------|---------------------------------------------------------------------|
 | mo_code `int` *required*    | Uniquely identifies a modus, through its code with a 4 digit number |
-| mo_desc `string` *required* | The modus's description                       |
+| mo_desc `string` *required* | The modus's description                                             |
 
 **<u>Returns</u>**: Status indicating whether the modus was successfully updated or not

@@ -29,14 +29,14 @@ The police resource represents police officers who are working for the LAPD.
     }
 ```
 
-| Field                   | Description                                                                                           |
-|-------------------------|-------------------------------------------------------------------------------------------------------|
-| badge_id  `int`         | Auto-incrementing ID                                                                                  |
-| first_name `string`  | First name of the police                                                                       |
-| last_name `string`  | Last name of the police                                                     |
-| join_date `date`        | When the police joined the department                                                                    |
-| rank `string`    | Police Rank                                          |
-| district_id `int`        | [District](districts.md#district-object) where the police is stationed |
+| Field               | Description                                                            |
+|---------------------|------------------------------------------------------------------------|
+| badge_id  `int`     | Auto-incrementing ID                                                   |
+| first_name `string` | First name of the police                                               |
+| last_name `string`  | Last name of the police                                                |
+| join_date `date`    | When the police joined the department                                  |
+| rank `string`       | Police Rank                                                            |
+| district_id `int`   | [District](districts.md#district-object) where the police is stationed |
 
 ## 1. Get a list of police
 
@@ -93,14 +93,14 @@ Creates a police officer with the given information
 
 **<u>Parameters</u>**:
 
-| Field                                | Description                                                       |
-|--------------------------------------|-------------------------------------------------------------------|
-| badge_id  `int` *required*           | Auto-incrementing ID                                              |
-| first_name `string` *required*   | First name of the police |
-| last_name `string` *required*   | Last name of the police   |
-| join_date `date`  *required*        | When the police joined the department  |
-| rank `string`  *required*    | Police Rank                                          |
-| district_id `int` *required* | [District](districts.md#district-object) where the police is stationed |
+| Field                          | Description                                                            |
+|--------------------------------|------------------------------------------------------------------------|
+| badge_id  `int` *required*     | Uniquely identifies a criminal, through its id                         |
+| first_name `string` *required* | First name of the police                                               |
+| last_name `string` *required*  | Last name of the police                                                |
+| join_date `date`  *required*   | When the police joined the department                                  |
+| rank `string`  *required*      | Police Rank                                                            |
+| district_id `int` *required*   | [District](districts.md#district-object) where the police is stationed |
 
 **<u>Returns</u>**: Status indicating whether the police officer was successfully created or not
 
@@ -124,12 +124,12 @@ Updates a police officer with the specified badge id, with the specified data
 
 **<u>Request Body</u>**:
 
-| Field                          | Description                                   |
-|--------------------------------|-----------------------------------------------|
-| first_name `string` *optional*   | First name of the police |
-| last_name `string` *optional*   | Last name of the police   |
-| join_date `date`  *optional*        | When the police joined the department  |
-| rank `string`  *optional*    | Police Rank                                          |
-| district_id `int` *optional* | [District](districts.md#district-object) where the police is stationed |
+| Field                          | Description                                                            |
+|--------------------------------|------------------------------------------------------------------------|
+| first_name `string` *optional* | First name of the police                                               |
+| last_name `string` *optional*  | Last name of the police                                                |
+| join_date `date`  *optional*   | When the police joined the department                                  |
+| rank `string`  *optional*      | Police Rank                                                            |
+| district_id `int` *optional*   | [District](districts.md#district-object) where the police is stationed |
 
 **<u>Returns</u>**: Status indicating whether the police officer was successfully updated or not
