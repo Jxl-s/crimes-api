@@ -472,4 +472,79 @@ class ReportsController extends BaseController
 
         return $this->prepareOkResponse($response, (array) $response_data);
     }
+
+    public function handleGetReportDistance(Request $request, Response $response, array $uri_args)
+    {
+        $id = $uri_args['report_id'];
+        if (!Input::isInt($id, 0)) {
+            throw new HttpBadRequestException($request, "Invalid ID");
+        }
+
+        $params = $request->getQueryParams();
+        $rules = [
+            'to' => ['required', 'integer', ['min', 1]],
+            'unit' => ['optional', ['in', ['km', 'mi']]]
+        ];
+
+        // Validate parameters
+        $validated = $this->validateData($params, $rules);
+        if ($validated !== true) {
+            throw new HttpBadRequestException($request, $validated);
+        }
+
+        // Find coordinates
+        $from = $this->reports_model->getReportById($id);
+        $to = $this->reports_model->getReportById($params['to']);
+
+        if (!$from || !$to) {
+            throw new HttpNotFoundException($request, "Report not found");
+        }
+
+        // Extract coordinates
+        $from_lat = $from['location']['latitude'];
+        $from_long = $from['location']['longitude'];
+
+        $to_lat = $to['location']['latitude'];
+        $to_long = $to['location']['longitude'];
+
+        $unit = isset($params['unit']) ? $params['unit'] : 'km';
+        $distance = $this->distanceCalc($from_lat, $from_long, $to_lat, $to_long);
+
+        // Miles conversion
+        if ($unit == 'mi') {
+            $distance *= 0.621371;
+        }
+
+        // Prepare response
+        $distance = round($distance, 4);
+        $response_data = [
+            "code" => HttpCodes::STATUS_OK,
+            "message" => "Distance calculated successfully",
+            "distance" => $distance,
+            "unit" => $unit
+        ];
+
+        return $this->prepareOkResponse($response, (array) $response_data);
+    }
+
+    /**
+     * Function to calculate the distance between two points on a globe
+     *
+     * @param float $from_lat Origin latitude
+     * @param float $from_long Origin longitude
+     * @param float $to_lat Destination latitude
+     * @param float $to_long Destination longitude
+     * @return float Distance between the two points
+     */
+    private function distanceCalc($from_lat, $from_long, $to_lat, $to_long)
+    {
+        $earth_radius = 6371;
+        $dLat = deg2rad($to_lat - $from_lat);
+        $dLon = deg2rad($to_long - $from_long);
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($from_lat)) * cos(deg2rad($to_lat)) * sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * asin(sqrt($a));
+
+        $result = $earth_radius * $c;
+        return $result;
+    }
 }
