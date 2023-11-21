@@ -43,6 +43,9 @@ class JWTAuthMiddleware implements MiddlewareInterface
         //-- 2) Retrieve the token from the request Authorization's header. 
         $header = $request->getHeader('Authorization');    
         // 3) Parse the token: remove the "Bearer " word.
+        if(!$header) {
+            throw new HttpUnauthorizedException($request, 'Authorization token is required');
+        }
         preg_match('/(?<=Bearer )(?s)(.*$)/', $header[0], $token);
 
         //-- 4) Try to decode the JWT token

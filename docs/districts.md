@@ -98,14 +98,15 @@ Returns a list of police with the specified district id
 
 `GET /district/{district_id}/police`
 
-| Field                   | Description                                                                                           |
-|-------------------------|-------------------------------------------------------------------------------------------------------|
-| badge_id  `int`         | Auto-incrementing ID                                                                                  |
-| first_name `string`  | First name of the police                                                                       |
-| last_name `string`  | Last name of the police                                                     |
-| join_date `date`        | When the police joined the department                                                                    |
-| rank `string`    | Police Rank                                          |
-| district_id `int`        | [District](#district-object) where the police is stationed |
+| Field                                | Description                                                       |
+|--------------------------------------|-------------------------------------------------------------------|
+| first_name `string` *optional*       | Filter for police officers containing this value their first name |
+| last_name `string` *optional*        | Filter for police officers containing this value their last name  |
+| from_join_date `DateTime` *optional* | Filter for police officers joining after this date                |
+| to_join_date `DateTime` *optional*   | Filter for police officers joining before this date               |
+| rank `string` *optional*             | Filter for police officers having this rank                       |
+
+**<u>Returns</u>**: An [police object](police.md#police-object) with the specified badge id
 
 ## 5. Create a district
 
