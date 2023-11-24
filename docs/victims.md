@@ -1,7 +1,10 @@
 # Victims
 Endpoint: `/victims`
 
+## Table of Contents
+
 - [Victims](#victims)
+  - [Table of Contents](#table-of-contents)
   - [Details](#details)
   - [Victim Object](#victim-object)
   - [1. Get a list of victims](#1-get-a-list-of-victims)

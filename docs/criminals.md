@@ -1,7 +1,10 @@
 # Criminals
 Endpoint: `/criminals`
 
+## Table of Contents
+
 - [Criminals](#criminals)
+  - [Table of Contents](#table-of-contents)
   - [Details](#details)
   - [Criminal Object](#criminal-object)
   - [1. Get a list of criminals](#1-get-a-list-of-criminals)

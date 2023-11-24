@@ -2,7 +2,10 @@
 
 Endpoint: `/police`
 
+## Table of Contents
+
 - [Police](#police)
+  - [Table of Contents](#table-of-contents)
   - [Details](#details)
   - [Police Object](#police-object)
   - [1. Get a list of police](#1-get-a-list-of-police)

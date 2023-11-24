@@ -1,7 +1,10 @@
 # Weapons
 Endpoint: `/weapons`
 
+## Table of Contents
+
 - [Weapons](#weapons)
+  - [Table of Contents](#table-of-contents)
   - [Details](#details)
   - [Weapon Object](#weapon-object)
   - [1. Get a list of weapons](#1-get-a-list-of-weapons)
