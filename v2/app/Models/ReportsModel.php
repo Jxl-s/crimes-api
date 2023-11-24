@@ -38,13 +38,6 @@ class ReportsModel extends BaseModel
 
         $array_to_ints = fn ($arr) => array_map(fn ($x) => intval($x), $arr);
 
-        $report['crime_codes'] = $array_to_ints(explode(',', $report['crime_codes']));
-        $report['criminal_ids'] = $array_to_ints(explode(',', $report['criminal_ids']));
-        $report['police_ids'] = $array_to_ints(explode(',', $report['police_ids']));
-        $report['victim_ids'] = $array_to_ints(explode(',', $report['victim_ids']));
-
-        $report['modus_codes'] = explode(',', $report['modus_codes']);
-
         unset($report['incident_id'], $report['reported_time'], $report['occurred_time']);
         unset($report['location_id'], $report['district_id'], $report['address'], $report['cross_street'], $report['area_name'], $report['latitude'], $report['longitude']);
 
@@ -59,24 +52,12 @@ class ReportsModel extends BaseModel
     public function getAllReports(array $filters)
     {
         $filters_values = [];
-        $sql = "SELECT r.*, i.*, l.*,
-
-        GROUP_CONCAT(DISTINCT c.crime_code) as crime_codes,
-        GROUP_CONCAT(DISTINCT cr.criminal_id) as criminal_ids,
-        GROUP_CONCAT(DISTINCT m.mo_code) as modus_codes,
-        GROUP_CONCAT(DISTINCT p.badge_id) as police_ids,
-        GROUP_CONCAT(DISTINCT v.victim_id) as victim_ids
+        $sql = "SELECT r.*, i.*, l.*
 
         FROM $this->table_name r
 
         INNER JOIN incident i ON r.incident_id = i.incident_id
         INNER JOIN location l ON r.location_id = l.location_id
-
-        INNER JOIN report_crime c ON r.report_id = c.report_id
-        INNER JOIN report_criminal cr ON r.report_id = cr.report_id
-        INNER JOIN report_modus m ON r.report_id = m.report_id
-        INNER JOIN report_police p ON r.report_id = p.report_id
-        INNER JOIN report_victim v ON r.report_id = v.report_id
 
         WHERE 1
         ";
@@ -139,24 +120,12 @@ class ReportsModel extends BaseModel
      */
     public function getReportById($report_id)
     {
-        $sql = "SELECT r.*, i.*, l.*,
-
-        GROUP_CONCAT(DISTINCT c.crime_code) as crime_codes,
-        GROUP_CONCAT(DISTINCT cr.criminal_id) as criminal_ids,
-        GROUP_CONCAT(DISTINCT m.mo_code) as modus_codes,
-        GROUP_CONCAT(DISTINCT p.badge_id) as police_ids,
-        GROUP_CONCAT(DISTINCT v.victim_id) as victim_ids
+        $sql = "SELECT r.*, i.*, l.*
 
         FROM $this->table_name r
 
         INNER JOIN incident i ON r.incident_id = i.incident_id
         INNER JOIN location l ON r.location_id = l.location_id
-
-        INNER JOIN report_crime c ON r.report_id = c.report_id
-        INNER JOIN report_criminal cr ON r.report_id = cr.report_id
-        INNER JOIN report_modus m ON r.report_id = m.report_id
-        INNER JOIN report_police p ON r.report_id = p.report_id
-        INNER JOIN report_victim v ON r.report_id = v.report_id
 
         WHERE r.report_id = :report_id
         ";
