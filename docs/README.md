@@ -6,6 +6,7 @@
   - [Table of Contents](#table-of-contents)
   - [Resource Representations](#resource-representations)
   - [Authentication and Authorization](#authentication-and-authorization)
+  - [Versioning](#versioning)
   - [Pagination and Sorting](#pagination-and-sorting)
   - [Resources and Operations](#resources-and-operations)
 
@@ -34,6 +35,13 @@ The crimes API uses JWT to authenticate requests. You may log in to generate a t
     "password": "your_password"
 }
 ```
+
+## Versioning
+
+There are two versions of the API. For example, to access the `reports` resource, you can use the following URLs to access the different versions.
+
+1. `GET /crimes-api/v1/reports`
+2. `GET /crimes-api/v2/reports`
 
 ## Pagination and Sorting
 
