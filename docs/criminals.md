@@ -1,4 +1,5 @@
 # Criminals
+
 Endpoint: `/criminals`
 
 ## Table of Contents
@@ -24,7 +25,7 @@ The criminal resource represents criminals who are linked in a crime report
     {
       "criminal_id": 1,
       "first_name": "Rene",
-      "last_name": "Martell ",
+      "last_name": "Martell",
       "age": 26,
       "sex": "M",
       "height": 173,

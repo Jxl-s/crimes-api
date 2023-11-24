@@ -90,7 +90,7 @@ Returns a list of reports with the specified district id
 
 **<u>Parameters</u>**: No parameters
 
-**<u>Returns</u>**: An list of report objects with the specified district id
+**<u>Returns</u>**: An list of [Report](reports.md#report-object) objects with the specified district id
 
 ## 4. Get district police
 
@@ -106,13 +106,13 @@ Returns a list of police with the specified district id
 | to_join_date `DateTime` *optional*   | Filter for police officers joining before this date               |
 | rank `string` *optional*             | Filter for police officers having this rank                       |
 
-**<u>Returns</u>**: An [police object](police.md#police-object) with the specified badge id
+**<u>Returns</u>**: An [Police](police.md#police-object) object with the specified badge id
 
 ## 5. Create a district
 
 Creates a district with the given information
 
-`POST /crimes`
+`POST /district`
 
 **<u>Parameters</u>**: No parameters
 
@@ -127,7 +127,7 @@ Creates a district with the given information
 | omega_label `string` *required* | Label of the district by combining the police department and district id |
 | station `string` *required*     | The district's station name                                              |
 
-**<u>Returns</u>**: Status indicating whether the crime was successfully created or not
+**<u>Returns</u>**: Status indicating whether the district was successfully created or not
 
 ## 6. Delete a district
 
@@ -137,11 +137,11 @@ Deletes a district with the specified district id
 
 **<u>Parameters</u>**: No parameters
 
-**<u>Returns</u>**: Status indicating whether the crime was successfully deleted or not
+**<u>Returns</u>**: Status indicating whether the district was successfully deleted or not
 
 ## 7. Update a district
 
-Updates a crime with the specified district id, with the specified data
+Updates a district with the specified district id, with the specified data
 
 `PUT /district/{crime_code}`
 
@@ -157,4 +157,4 @@ Updates a crime with the specified district id, with the specified data
 | omega_label `string` *optional* | Label of the district by combining the police department and district id |
 | station `string` *optional*     | The district's station name                                              |
 
-**<u>Returns</u>**: Status indicating whether the crime was successfully updated or not
+**<u>Returns</u>**: Status indicating whether the district was successfully updated or not
