@@ -32,7 +32,7 @@ class JWTAuthMiddleware implements MiddlewareInterface
               We need to ignore the routes that enables client applications
               to create account and request a JWT token.
         */
-        if($_SERVER["REQUEST_URI"] === "/crimes-api/token" || $_SERVER["REQUEST_URI"] === "/crimes-api/account") {
+        if($_SERVER["REQUEST_URI"] === "/crimes-api/v1/token" || $_SERVER["REQUEST_URI"] === "/crimes-api/v1/account") {
             return $handler->handle($request); 
         }
         

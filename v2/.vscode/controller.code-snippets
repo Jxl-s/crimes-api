@@ -1,0 +1,56 @@
+{
+    "slim-controller": {
+        "prefix": "controller",
+        "body": [
+            "<?php",
+            "",
+            "namespace Vanier\\Api\\Controllers;",
+            "",
+            "use Psr\\Http\\Message\\ResponseInterface as Response;",
+            "use Psr\\Http\\Message\\ServerRequestInterface as Request;",
+            "",
+            "class ${1:Name}Controller extends BaseController",
+            "{",
+            "    public function handleGet${1:Name}(Request \\$request, Response \\$response, array \\$uri_args)",
+            "    {",
+            "        return \\$response;",
+            "    }",
+            "",
+            "    public function handleCreate${1:Name}(Request \\$request, Response \\$response, array \\$uri_args)",
+            "    {",
+            "        return \\$response;",
+            "    }",
+            "",
+            "    public function handleUpdate${1:Name}(Request \\$request, Response \\$response, array \\$uri_args)",
+            "    {",
+            "        return \\$response;",
+            "    }",
+            "",
+            "    public function handleDelete${1:Name}(Request \\$request, Response \\$response, array \\$uri_args)",
+            "    {",
+            "        return \\$response;",
+            "    }",
+            "}"
+        ],
+        "description": "Slim Controller"
+    },
+    "slim-model": {
+        "prefix": "model",
+        "body": [
+            "<?php",
+            "",
+            "namespace Vanier\\Api\\Models;",
+            "",
+            "class ${1:Name}Model extends BaseModel",
+            "{",
+            "    private \\$table_name = '${2:Table}';",
+            "",
+            "    public function __construct()",
+            "    {",
+            "        parent::__construct();",
+            "    }",
+            "}"
+        ],
+        "description": "Slim model"
+    }
+}
