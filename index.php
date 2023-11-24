@@ -1,9 +1,13 @@
 <?php
 use Slim\Factory\AppFactory;
+use Vanier\Api\Helpers\ErrorLoggingHelper;
 use Vanier\Api\Middleware\ContentNegotiationMiddleware;
 use Dotenv\Dotenv;
 use Vanier\Api\Middleware\JWTAuthMiddleware;
 use Vanier\Api\Middleware\AppLoggingMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use Vanier\Api\Helpers;
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 
@@ -24,6 +28,35 @@ $app = AppFactory::create();
 // Logging middleware
 
 $app->addMiddleware(new AppLoggingMiddleware());
+
+// Define Custom Error Handler
+$customErrorHandler = function (
+    ServerRequestInterface $request,
+    Throwable $exception,
+    bool $displayErrorDetails,
+    bool $logErrors,
+    bool $logErrorDetails,
+    ?LoggerInterface $logger = null
+) use ($app) {
+    if ($logger) {
+        $logger->error($exception->getMessage());
+    }
+
+    $payload = ['error' => $exception->getMessage(). ' '.$request->getUri()->getPath()];
+    // TODO Make a helper class that logs errors
+    $response = $app->getResponseFactory()->createResponse($exception->getCode());
+    $response->getBody()->write(
+        json_encode($payload, JSON_UNESCAPED_UNICODE)
+    );
+    $response->withStatus($exception->getCode())->withAddedHeader(HEADERS_CONTENT_TYPE, APP_MEDIA_TYPE_JSON);
+    $error = new ErrorLoggingHelper();
+    $error->process($request, $response);
+    return $response;
+};
+
+// Add Error Middleware
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+$errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 
 // JWT middleware
 $app->addMiddleware(new JWTAuthMiddleware());
