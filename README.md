@@ -4,10 +4,16 @@ Project for 420-511-VA (Web Services)
 
 ## Getting Started
 
-Run the following command to install the project dependencies. Use XAMPP to run the project.
+Run the following command the v1 and v2 folders to install the project dependencies. Use XAMPP to run the project.
 
 ```shell
 .\composer.bat install
+```
+
+Create a config.env file in the v1 and v2 folders. Each config.env file consist of:
+
+```
+SECRET_KEY=insertyourkeyhere
 ```
 
 ## Common Issues
