@@ -103,6 +103,14 @@ class CriminalsController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $reports);
     }
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $uri_args
+     * @return void
+     */
     public function handleGetWantedCriminals(Request $request, Response $response, array $uri_args) {
         $filters = $request->getQueryParams();
         $rules = [

@@ -29,10 +29,10 @@ class AccessLogModel extends BaseModel
      */
     public function createLogEntry($account_data, $user_action)
     {
-        $log_data["user_id"] = $account_data["id"];
+        $log_data["user_id"] = $account_data["user_id"];
         $log_data["email"] = $account_data["email"];
         $log_data["user_action"] = $user_action;
-        $log_data["logged_at"] = DateTimeHelper::getDateAndTime(DateTimeHelper::M_D_Y_H_M_S);
+        $log_data["logged_at"] = DateTimeHelper::getDateAndTime(DateTimeHelper::Y_M_D_H_M_S);
         return $this->insert($this->table_name, $log_data);
     }
 }
