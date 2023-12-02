@@ -22,12 +22,20 @@ class AppLoggingMiddleware implements MiddlewareInterface
         $this->model = new AccessLogModel();
     }
 
+    /**
+     * Process login to file in detail
+     *  user-action
+     *  date-time
+     * 
+     * @param Request $request
+     * @param RequestHandler $handler
+     * @return ResponseInterface $response
+     */
     public function process(Request $request, RequestHandler $handler): ResponseInterface {
 
         $logger = new Logger("access_logs");
         $logger->setTimezone(new \DateTimeZone("America/Toronto"));
         $logger->pushHandler(new StreamHandler(APP_LOG_DIR . 'access.log', Level::Debug));
-        
         $response = $handler->handle($request);
         $logger->info('Log ' . " " .  $_SERVER['REMOTE_ADDR'] . " " . $request->getUri()->getPath() . " " . $request->getUri()->getQuery() . " " . 
             $response->getBody() . " " . $response->getStatusCode());

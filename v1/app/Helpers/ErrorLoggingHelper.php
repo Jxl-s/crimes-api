@@ -16,6 +16,15 @@ class ErrorLoggingHelper
     public function __construct()
     {
     }
+
+    /**
+     * Log error to error.log file in detail
+     *  user's action
+     *  status code
+     * 
+     * @param ServerRequestInterface $request
+     * @param Response $response
+     */
     public function process(ServerRequestInterface $request, Response $response) {
         $error = new Logger("error_logs");
         $error->setTimezone(new \DateTimeZone("America/Toronto"));

@@ -26,6 +26,19 @@ class JWTAuthMiddleware implements MiddlewareInterface
     public function __construct(array $options = [])
     {
     }
+
+    /**
+     * Handle authorization
+     *  Create account
+     *  Login - get token
+     * 
+     * To process -> if valid token
+     *  handle request (user's action)
+     * 
+     * @param Request $request
+     * @param RequestHandler $handler
+     * @return ResponseInterface $response
+     */
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
         /*-- 1) Routes to ignore (public routes):
