@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Thang Manh Tran
  * Vinh Quang Mai
  * Jia Xuan Li 
  */
+
 use Slim\Factory\AppFactory;
 use Vanier\Api\Helpers\ErrorLoggingHelper;
 use Vanier\Api\Middleware\ContentNegotiationMiddleware;

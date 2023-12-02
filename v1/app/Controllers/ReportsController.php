@@ -320,13 +320,14 @@ class ReportsController extends BaseController
         // Send the response
         return $this->prepareOkResponse($response, (array) $modi);
     }
+
     /**
-     * Undocumented function
+     * Get the weather at a time of a report
      *
      * @param Request $request
      * @param Response $response
      * @param array $uri_args
-     * @return void
+     * @return weather in json
      */
     public function handleGetReportWeather(Request $request, Response $response, array $uri_args)
     {
@@ -482,12 +483,12 @@ class ReportsController extends BaseController
     }
 
     /**
-     * Undocumented function
+     * Calculation the distance of a report to another report
      *
      * @param Request $request
      * @param Response $response
      * @param array $uri_args
-     * @return void
+     * @return json distance of 2 reports
      */
     public function handleGetReportDistance(Request $request, Response $response, array $uri_args)
     {

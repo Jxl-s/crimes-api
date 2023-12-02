@@ -33,7 +33,6 @@ class AccessLogModel extends BaseModel
         $log_data["email"] = $account_data["email"];
         $log_data["user_action"] = $user_action;
         $log_data["logged_at"] = DateTimeHelper::getDateAndTime(DateTimeHelper::Y_M_D_H_M_S);
-        var_dump($log_data);
         return $this->insert($this->table_name, $log_data);
     }
 }
