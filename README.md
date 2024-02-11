@@ -2,6 +2,8 @@
 
 Project for 420-511-VA (Web Services)
 
+This is a RESTful web API that follows REST principles, implements error handling, validation, filtering, pagination, sorting, content negotiation, logging, identity management, versioning, and more.
+
 ## Getting Started
 
 Run the following command the v1 and v2 folders to install the project dependencies. Use XAMPP to run the project.
